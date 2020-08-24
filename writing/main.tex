@@ -22,7 +22,7 @@
     \clearfield{url}
   }
 }
-\addbibresource{references.bib}
+\addbibresource{refbib.bib}
 
 
 
@@ -78,7 +78,7 @@ The proposed mechanism is not necessarily a new concept, nor is it a radical tec
 	
 	\item[Discourage wasteful behavior] by letting users sell unused booked trips and avoiding ``use it or lose it'' behavior.
 	
-	\item[Provide realtime future demand] data as a result of the pre-booked trip payment log.
+	\item[Provide real-time future demand] data as a result of the pre-booked trip payment log.
 \end{description}
 
 
@@ -88,7 +88,7 @@ The proposed mechanism is not necessarily a new concept, nor is it a radical tec
 The basic concept for the system is shown in Figure~\ref{fig:systemmodel}, where travel demand (e.g., over a bridge, along a corridor, or in a zone) can be divided into discrete travel windows (e.g., between 8:00-9:00) where there is a finite number of capacity available (e.g., a road capacity of 2,000 vehicles per hour). Travelers then have the option to pre-purchase a planned trip from the available capacity, with price increasing as booked trips in that time-frame increase. This encourages travelers to purchase trips ahead of time while the price remains low or discounted as well as potentially avoid traveling during those peak periods as the price increases towards capacity. Otherwise, travelers that do not pre-purchase their trip are subject to the ``market rate'' price determined by some price function at the time of travel, as is done in conventional dynamic pricing.
 
 \begin{figure}[h]
-	\includegraphics[width=\linewidth]{figures/systemmodel}
+	\includegraphics[width=0.75\linewidth]{figures/systemmodel}
 	\centering
 	\caption{Conceptual system model}
 	\label{fig:systemmodel}
@@ -108,7 +108,7 @@ A basic booking interface could be a website or app where users can purchase the
 Although pricing could be determined by some free floating free market price as long as it is calibrated to match the limited ``supply'' of road capacity, such an uncontrollable system may be unstable and result in public dissatisfaction. Alternatively, an engineered market price could be determined using a parametric function designed to achieve the best possible results while remaining stable. An example pricing function shown in Figure~\ref{fig:costflow} uses an S-shaped sigmoid as a function of traffic density $k$. 
 
 \begin{figure}[h]
-	\includegraphics[width=\linewidth]{figures/costdensity}
+	\includegraphics[width=0.75\linewidth]{figures/costdensity}
 	\centering
 	\caption{Pricing sigmoid function}
 	\label{fig:costflow}
@@ -169,7 +169,7 @@ Although a flexible travel time window can be specified (e.g., 8:12 $\pm$ 30 min
 \noindent where $\hat{k}(t)$ is the estimated density function for time $t$, $K$ is the non-negative kernel function (e.g., Gaussian normal curve), and $h$ is a smoothing bandwidth parameter that must be greater than 0. KDE essentially functions by cumulatively applying a continuous density function $K$ at each finite sample point, providing a smoothed probability distribution, such as shown in Figure~\ref{fig:kernal}. 
 
 \begin{figure}[h]
-	\includegraphics[width=\linewidth]{figures/KDE.pdf}
+	\includegraphics[width=0.75\linewidth]{figures/KDE.pdf}
 	\centering
 	\caption{Kernel Density Estimation using Gaussian function}
 	\label{fig:kernal}
@@ -199,7 +199,7 @@ Although theoretically possible to operate with narrow time intervals, such as $
  
  \begin{figure}[h]
  	\centering
- 	\includegraphics[width=\linewidth]{figures/silvergate}
+ 	\includegraphics[width=0.75\linewidth]{figures/silvergate}
  	\caption{Toy example scenario}
  	\label{fig:toymap}
  \end{figure}
@@ -227,7 +227,7 @@ Although theoretically possible to operate with narrow time intervals, such as $
  
  \begin{figure}[h]
  	\centering
- 	\includegraphics[width=\linewidth]{figures/toyprice}
+ 	\includegraphics[width=0.75\linewidth]{figures/toyprice}
  	\caption{Toy pricing sigmoid function}
  	\label{fig:toyprice}
  \end{figure}
@@ -259,7 +259,7 @@ The approximated demand resulting from dynamic pricing are calculated using simp
   
   \begin{figure}[h]
  	\centering
- 	\includegraphics[width=\linewidth]{figures/toyelasticity}
+ 	\includegraphics[width=0.75\linewidth]{figures/toyelasticity}
  	\caption{Price elasticity}
  	\label{fig:toyelasticity}
  \end{figure}
@@ -269,7 +269,7 @@ The net revenue resulting from the simple example actually yielded a slight incr
  
  \begin{figure}[h]
  	\centering
- 	\includegraphics[width=\linewidth]{figures/toyrevenue}
+ 	\includegraphics[width=0.75\linewidth]{figures/toyrevenue}
  	\caption{Aggregate revenue}
  	\label{fig:toyrevenue}
  \end{figure}
