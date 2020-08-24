@@ -25,11 +25,9 @@
 \addbibresource{references.bib}
 
 %Load in the R scripts
-% <<echo=FALSE, cache=TRUE>>==
-<< >>==
+<<echo=FALSE, cache=TRUE>>==
     source("../analysis/toymodel.R")
  @
-
 
 \linenumbers
 
@@ -225,7 +223,7 @@ Although theoretically possible to operate with narrow time intervals, such as $
      \begin{subfigure}{\linewidth}
      	\centering
     %  	\includegraphics[width=0.66\textwidth]{figures/toydemand}
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.66, warning=FALSE>>=
+     	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, warning=FALSE>>=
         plot.demanddensity
         @
      	\caption{Demand density}
@@ -233,7 +231,10 @@ Although theoretically possible to operate with narrow time intervals, such as $
      \end{subfigure}
      \begin{subfigure}{\linewidth}
      	\centering
-     	\includegraphics[width=0.66\textwidth]{figures/toytoll}
+     	%\includegraphics[width=0.66\textwidth]{figures/toytoll}
+     	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, warning=FALSE>>=
+        plot.toll
+        @
      	\caption{Toll pricing}
      	\label{fig:toytoll}
      \end{subfigure}
@@ -245,7 +246,10 @@ Although theoretically possible to operate with narrow time intervals, such as $
  
  \begin{figure}[H]
  	\centering
- 	\includegraphics[width=0.66\linewidth]{figures/toyprice}
+ 	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, warning=FALSE>>=
+    plot.price
+    @
  	\caption{Toy pricing sigmoid function}
  	\label{fig:toyprice}
  \end{figure}
@@ -278,6 +282,9 @@ The approximated demand resulting from dynamic pricing are calculated using simp
   \begin{figure}[H]
  	\centering
  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
+%   	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, warning=FALSE>>=
+%     plot.elasticity
+%     @
  	\caption{Price elasticity}
  	\label{fig:toyelasticity}
  \end{figure}
