@@ -58,8 +58,8 @@ plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) +
   stat_function(fun = fun.price, args = list(pmin, pmax, a, b)) +
   scale_y_continuous("Price [$/veh]", labels = scales::dollar, breaks = seq(0,15,by=2), limits = c(0,pmax)) +
   scale_x_continuous("Traffic density [veh/km/lane]") +
-  theme_classic() +
-  theme(text=element_text(family="Times New Roman"))
+  theme_classic()
+# theme(text=element_text(family="Times New Roman"))
 plot.price
 
 plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) + 
@@ -69,8 +69,8 @@ plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) +
   annotate("text", x=-0.4, y=-.25, label = paste("Constant elasticity =",E), family = "Times New Roman") +
   scale_x_continuous(expression(Delta~"Price"), labels = scales::percent, limits = c(-1,1)) +
   scale_y_continuous(expression(Delta~"Demand"), labels = scales::percent, limits = c(-0.5,0.5)) +
-  theme_classic() +
-  theme(text=element_text(family="Times New Roman"))
+  theme_classic()
+# theme(text=element_text(family="Times New Roman"))
 plot.elasticity
 
 
@@ -83,8 +83,8 @@ plot.demanddensity <- ggplot(dat) +
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
   theme_classic() +
   theme(legend.position = c(0.2,0.7), 
-        legend.background = element_blank(),
-        text=element_text(family="Times New Roman"))
+        legend.background = element_blank())
+        #text=element_text(family="Times New Roman"))
 plot.demanddensity
 
 
@@ -96,8 +96,8 @@ plot.demandflow <- ggplot(dat) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
   theme_classic() +
-  theme(legend.position = c(0.15,0.6), 
-        text=element_text(family="Times New Roman"))
+  theme(legend.position = c(0.15,0.6))
+        #text=element_text(family="Times New Roman"))
 plot.demandflow
 
 
@@ -110,8 +110,8 @@ plot.toll <- ggplot(dat) +
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
   theme_classic() +
   theme(legend.position = c(0.2,0.7),
-        legend.background = element_blank(),
-        text=element_text(family="Times New Roman"))
+        legend.background = element_blank())
+        #text=element_text(family="Times New Roman"))
 plot.toll
 
 
@@ -124,8 +124,8 @@ plot.revenue <- ggplot(dat) +
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
   theme_classic() +
   theme(legend.position = c(0.2,0.7),
-        legend.background = element_blank(),
-        text=element_text(family="Times New Roman"))
+        legend.background = element_blank())
+        #text=element_text(family="Times New Roman"))
 plot.revenue
 
 
@@ -140,8 +140,8 @@ plot.kernel <- ggplot(rand, aes(rand)) +
   geom_density(aes(y=..count..), bw=d$bw) +
   scale_y_continuous("Density", limits = c(0, 1)) +
   scale_x_continuous("Random value", limits = c(-7.5,12)) +
-  theme_classic() + 
-  theme(text=element_text(family="Times New Roman"))
+  theme_classic() 
+  #theme(text=element_text(family="Times New Roman"))
 for(x in rand$rand) plot.kernel <- plot.kernel + stat_function(fun = dnorm, args = list(mean = x, sd = d$bw), linetype=2)
 plot.kernel
 
