@@ -60,7 +60,7 @@ plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) +
   scale_x_continuous("Traffic density [veh/km/lane]") +
   theme_classic()
 # theme(text=element_text(family="Times New Roman"))
-plot.price
+# plot.price
 
 plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) + 
   stat_function(fun = function(x) exp(-E*x)-1) +
@@ -71,7 +71,7 @@ plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) +
   scale_y_continuous(expression(Delta~"Demand"), labels = scales::percent, limits = c(-0.5,0.5)) +
   theme_classic()
 # theme(text=element_text(family="Times New Roman"))
-plot.elasticity
+# plot.elasticity
 
 
 plot.demanddensity <- ggplot(dat) + 
@@ -85,7 +85,7 @@ plot.demanddensity <- ggplot(dat) +
   theme(legend.position = c(0.2,0.7), 
         legend.background = element_blank())
         #text=element_text(family="Times New Roman"))
-plot.demanddensity
+# plot.demanddensity
 
 
 plot.demandflow <- ggplot(dat) + 
@@ -98,7 +98,7 @@ plot.demandflow <- ggplot(dat) +
   theme_classic() +
   theme(legend.position = c(0.15,0.6))
         #text=element_text(family="Times New Roman"))
-plot.demandflow
+# plot.demandflow
 
 
 plot.toll <- ggplot(dat) +  
@@ -112,7 +112,7 @@ plot.toll <- ggplot(dat) +
   theme(legend.position = c(0.2,0.7),
         legend.background = element_blank())
         #text=element_text(family="Times New Roman"))
-plot.toll
+# plot.toll
 
 
 plot.revenue <- ggplot(dat) + 
@@ -126,7 +126,7 @@ plot.revenue <- ggplot(dat) +
   theme(legend.position = c(0.2,0.7),
         legend.background = element_blank())
         #text=element_text(family="Times New Roman"))
-plot.revenue
+# plot.revenue
 
 
 #rand = data.table(rand = c(rlnorm(50, sd=0.5), rnorm(50, mean=3, sd=0.5)))
@@ -143,7 +143,7 @@ plot.kernel <- ggplot(rand, aes(rand)) +
   theme_classic() 
   #theme(text=element_text(family="Times New Roman"))
 for(x in rand$rand) plot.kernel <- plot.kernel + stat_function(fun = dnorm, args = list(mean = x, sd = d$bw), linetype=2)
-plot.kernel
+# plot.kernel
 
 # ggsave("../figures/toyprice.pdf", plot.price, device = cairo_pdf, width=4.25, height=2, units = "in")
 # ggsave("../figures/toyelasticity.pdf", plot.elasticity, device = cairo_pdf, width=4.25, height=2, units = "in")
