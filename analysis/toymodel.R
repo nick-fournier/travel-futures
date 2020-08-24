@@ -66,7 +66,7 @@ plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) +
   stat_function(fun = function(x) exp(-E*x)-1) +
   geom_vline(xintercept = 0, linetype="dotted") +
   geom_hline(yintercept = 0, linetype="dotted") +
-  annotate("text", x=-0.4, y=-.25, label = paste("Constant elasticity =",E), family = "Times New Roman") +
+  annotate("text", x=-0.4, y=-.25, label = paste("Constant elasticity =",E)) + #, family = "Times New Roman") +
   scale_x_continuous(expression(Delta~"Price"), labels = scales::percent, limits = c(-1,1)) +
   scale_y_continuous(expression(Delta~"Demand"), labels = scales::percent, limits = c(-0.5,0.5)) +
   theme_classic()
