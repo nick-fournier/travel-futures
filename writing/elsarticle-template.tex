@@ -1,40 +1,22 @@
 \documentclass[review]{elsarticle}
 
+
+%\usepackage[square,sort&compress,comma,numbers]{natbib})
+\usepackage[style=numeric-comp, natbib=true, sorting=none]{biblatex}
+\AtEveryBibitem{%
+  \clearfield{issn} % Remove issn
+  \clearfield{doi} % Remove doi
+  \ifentrytype{online}{}{% Remove url except for @online
+    \clearfield{url}
+  }
+}
+\addbibresource{mybibfile.bib}
+
 \usepackage{lineno,hyperref}
 \modulolinenumbers[5]
 
 \journal{Journal of \LaTeX\ Templates}
 
-%%%%%%%%%%%%%%%%%%%%%%%
-%% Elsevier bibliography styles
-%%%%%%%%%%%%%%%%%%%%%%%
-%% To change the style, put a % in front of the second line of the current style and
-%% remove the % from the second line of the style you would like to use.
-%%%%%%%%%%%%%%%%%%%%%%%
-
-%% Numbered
-%\bibliographystyle{model1-num-names}
-
-%% Numbered without titles
-%\bibliographystyle{model1a-num-names}
-
-%% Harvard
-%\bibliographystyle{model2-names.bst}\biboptions{authoryear}
-
-%% Vancouver numbered
-%\usepackage{numcompress}\bibliographystyle{model3-num-names}
-
-%% Vancouver name/year
-%\usepackage{numcompress}\bibliographystyle{model4-names}\biboptions{authoryear}
-
-%% APA style
-%\bibliographystyle{model5-names}\biboptions{authoryear}
-
-%% AMA style
-%\usepackage{numcompress}\bibliographystyle{model6-num-names}
-
-%% `Elsevier LaTeX' style
-\bibliographystyle{elsarticle-num}
 %%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
@@ -103,10 +85,10 @@ See the front matter of this document for examples. You are recommended to confo
 
 There are various bibliography styles available. You can select the style of your choice in the preamble of this document. These styles are Elsevier styles based on standard styles like Harvard and Vancouver. Please use Bib\TeX\ to generate your bibliography and include DOIs whenever available.
 
-Here are two sample references: \cite{Feynman1963118,Dirac1953888}.
+Here are two sample references: \citep{Feynman1963118,Dirac1953888}.
 
 \section*{References}
 
-\bibliography{mybibfile}
+%\bibliography{mybibfile}
 
 \end{document}
