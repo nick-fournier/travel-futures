@@ -2,7 +2,7 @@
 library(data.table)
 library(ggplot2)
 library(scales)
-library(extrafont)
+# library(extrafont)
 
 #Functions 
 fun.price <- function(k, pmin, pmax, a, b)  pmin + (pmax-pmin)/(1 + exp(a-b*k))
