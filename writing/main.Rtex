@@ -25,8 +25,9 @@
 \addbibresource{references.bib}
 
 %Load in the R scripts
-<<echo=FALSE, cache=TRUE>>==
-    source("../../analysis/toymodel.R")
+% <<echo=FALSE, cache=TRUE>>==
+<< >>==
+    source("../analysis/toymodel.R")
  @
 
 
@@ -111,7 +112,7 @@ There are two benefits to having users purchase small tokenized units of time, r
 
 The discretized tokens also lends well to using blockchain technology for ownership data storage as an alternative to a centralized database. For a single mode, a decentralized block-chain technology does not necessarily provide significant benefit, but enables easier future integration with other modes and services, such as tolls, parking, mobility companies, etc. 
 
-\subsecton{Trip booking interface}
+\subsection{Trip booking interface}
 A basic booking interface could be a website or app where users can purchase their trip by time slot for a given date period (e.g., hourly time slots for a given date). For convenience, it would be wise to provide the option to buy trips in bulk for commuters (e.g., 9am-10am and 5pm-6pm time slots every Monday-Friday for the next month), as well as a customizable option for irregular trips. The system can then be easily integrated with existing fare collection and payment systems.
 
 \subsection{Booking interface}
@@ -161,24 +162,24 @@ It is possible, and likely, that there will be discrepancy between the futures p
 
 
 \subsection{Traffic flow}
-\begin{figure*}[ht!]
+\begin{figure}[H]
 	\hfill
 	\centering
-	\begin{subfigure}[h]{0.32\linewidth}
+	\begin{subfigure}{0.32\linewidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/speeddensity}
 		\caption{Speed-density}
 		\label{fig:speeddensity}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[h]{0.32\linewidth}
+	\begin{subfigure}{0.32\linewidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/speedflow}
 		\caption{Speed-flow}
 		\label{fig:speedflow}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[h]{0.32\linewidth}
+	\begin{subfigure}{0.32\linewidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/flowdensity}
 		\caption{Flow-density}
@@ -187,7 +188,7 @@ It is possible, and likely, that there will be discrepancy between the futures p
 	\hfill
 	\caption{Macroscopic Fundamental Diagram}
 	\label{fig:MFD}
-\end{figure*}
+\end{figure}
 
 Although the dynamic pricing could be based on traffic speed, simply increasing when speed decreases by some function, the pricing function in this case is based on traffic density. This is for two reasons, first is that it enables the pricing function to be integrated with the futures market, which is based on some expected trip density. Second, if the goal is to increase infrastructure utilization and efficiency, not simply maintain high speeds, then speed is not a reliable measure of demand because traffic speed will remain relatively stable before smooth flow breaks down. This can be explained by the classical macroscopic fundamental diagram (MFD) in Figure~\ref{fig:MFD} where traffic speed and flow are inextricably linked by density. Figures~\ref{fig:speedflow} and ~\ref{fig:speeddensity} show that speed is relatively stable until some critical traffic density in Figure~\ref{fig:flowdensity} causes smooth traffic flow to break down at $q_{max}$.
 
@@ -211,7 +212,7 @@ Although theoretically possible to operate with narrow time intervals, such as $
 \section{Toy example}
  As an example application, suppose there are two adjacent cities as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a six lane bridge, three lanes in each direction, that carries 100,000 trips per day with an existing fixed toll of \$7.75.
  
- \begin{figure}[h]
+ \begin{figure}[H]
  	\centering
  	\includegraphics[width=0.75\linewidth]{figures/silvergate}
  	\caption{Toy example scenario}
@@ -221,13 +222,16 @@ Although theoretically possible to operate with narrow time intervals, such as $
  \noindent For simplicity, assume the traffic flow is balanced in each direction but possess a demand distribution with two peaks as shown in Figure~\ref{fig:toydem}. Note that the demand in Figure~\ref{fig:toydem} shows demand as traffic density, not volume. For reference, optimal traffic flow is $\approx 20 \sfrac{veh}{km}$ and traffic flow begins to become unstable above $\approx 30 \sfrac{veh}{km}$.
    
  \begin{figure}[H]
-     \begin{subfigure}[h]{\linewidth}
+     \begin{subfigure}{\linewidth}
      	\centering
-     	\includegraphics[width=0.66\textwidth]{figures/toydemand}
+    %  	\includegraphics[width=0.66\textwidth]{figures/toydemand}
+     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.66, warning=FALSE>>=
+        plot.demanddensity
+        @
      	\caption{Demand density}
      	\label{fig:toydem}
      \end{subfigure}
-     \begin{subfigure}[h]{\linewidth}
+     \begin{subfigure}{\linewidth}
      	\centering
      	\includegraphics[width=0.66\textwidth]{figures/toytoll}
      	\caption{Toll pricing}
