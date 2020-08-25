@@ -296,7 +296,7 @@ The net revenue resulting from the simple example actually yielded a slight incr
 \begin{figure}[H]
     \centering
 %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.33, out.width="\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
     plot.revenue
     @
  	\caption{Revenue collection by time of day}
@@ -314,7 +314,7 @@ The $P_{max}$ required to maintain the same or higher
  \begin{figure}[H]
  	\centering
 %  	\includegraphics[width=0.66\linewidth]{figures/revmat}
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, out.width="0.75\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.6, out.width="0.75\\textwidth", warning=FALSE>>=
     plot.revmat
     @
  	\caption{Comparison of total revenue by elasticity $E$ and $P_{max}$}
