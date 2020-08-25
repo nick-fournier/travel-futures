@@ -299,7 +299,7 @@ The net revenue resulting from the simple example actually yielded a slight incr
      	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
         plot.revenue
         @
-     	\caption{Revenue by time of day}
+     	\caption{Revenue per hour}
      	\label{fig:toyrevenue}
      \end{subfigure}
      \begin{subfigure}{\linewidth}
@@ -311,7 +311,7 @@ The net revenue resulting from the simple example actually yielded a slight incr
      	\caption{Cumulative revenue by time of day}
      	\label{fig:toyrevsum}
      \end{subfigure}
-     \caption{Toy example toll pricing and demand density}
+     \caption{Revenue by time of day}
      \label{fig:toymodel}
  \end{figure}
  
