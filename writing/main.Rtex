@@ -77,7 +77,7 @@ Although the term ``gridlock'' was not coined until the 1970's [CITE], congestio
 
 The obvious solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during congested periods and shift it to periods of low demand (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive, as has been done for decades in other non-automobile transportation sectors (e.g., bus, rail, and air travel), but have seldom been implemented due to negative political appeal [CITE]. Travelers generally do not want to pay for travel, let alone be subject to increased costs that they perceive as having little control over. Moreover, without any feasible alternative travel options, dynamic road pricing is little more than extortion. 
 
-An alternative approach that has been proposed is the concept of travel credits [CITE], exploiting the aspect of finite roadway capacity as the basis for a ``cap and trade'' type model for mitigating congestion by crediting travelers for not traveling during the peak. Another more market based evolution of the approach has also been proposed, enabling travelers to ``sell'' their trip rights to the highest bidder, achieving a similar goal without the need for governments to credit travelers. Recently a great deal of hype has been drawn around the concept of Mobility as a Service (MaaS) where ``travel brokers'' like automated travel agencies provide integrated multi-modal trip packages to users for travelers. However, few of these concepts other than dynamic pricing have had little traction outside of academia in recent years, but some technology companies have implemented conceptually similar trip routing and payment integration features in their platforms (e.g., mobile payment systems with transit and ride hailing services), laying the groundwork for such concepts. 
+An alternative approach that has been proposed is the concept of travel credits, exploiting the aspect of finite roadway capacity as the basis for a “cap and trade” type model for mitigating congestion by crediting travelers for not traveling during the peak \citep{Perrels2010}. Another more market-based evolution of the approach has also been proposed, enabling travelers to “sell” their trip rights to the highest bidder, achieving a similar goal without the need for governments to credit travelers \citep{Akamatsu2017,Fan2013,Wang2012,Yang2011}. Recently a great deal of hype has been drawn around the concept of Mobility as a Service (MaaS) where ``travel brokers'', like an automated travel agency, provide integrated multi-modal trip packages to users for travelers. However, few of these concepts other than dynamic pricing have had little traction outside of academia in recent years, but some technology companies have implemented conceptually similar trip routing and payment integration features in their platforms (e.g., mobile payment systems with transit and ride hailing services), laying the groundwork for such concepts. 
 
 The proposed mechanism is not necessarily a new concept, nor is it a radical technologically driven revolution, but merely an attempt to implement efficient congestion reducing market mechanisms by augmenting existing conventional revenue collection technologies (e.g., automated tolls). The proposed concept is simple, travelers have the option to purchase trips ahead of time while the price remains low, or at some fixed discount rate, with the option to sell unused trips back to the system at market rate. The proposed mechanism is intended to provide the following transportation operational benefits:
 \begin{description}
@@ -223,7 +223,7 @@ Although theoretically possible to operate with narrow time intervals, such as $
      \begin{subfigure}{\linewidth}
      	\centering
     %  	\includegraphics[width=0.66\textwidth]{figures/toydemand}
-     	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, warning=FALSE>>=
+     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
         plot.demanddensity
         @
      	\caption{Demand density}
@@ -232,7 +232,7 @@ Although theoretically possible to operate with narrow time intervals, such as $
      \begin{subfigure}{\linewidth}
      	\centering
      	%\includegraphics[width=0.66\textwidth]{figures/toytoll}
-     	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, warning=FALSE>>=
+     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
         plot.toll
         @
      	\caption{Toll pricing}
@@ -247,7 +247,7 @@ Although theoretically possible to operate with narrow time intervals, such as $
  \begin{figure}[H]
  	\centering
  	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
     plot.price
     @
  	\caption{Toy pricing sigmoid function}
@@ -281,10 +281,10 @@ The approximated demand resulting from dynamic pricing are calculated using simp
   
   \begin{figure}[H]
  	\centering
- 	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-%   	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, warning=FALSE>>=
-%     plot.elasticity
-%     @
+%  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
+    plot.elasticity
+    @
  	\caption{Price elasticity}
  	\label{fig:toyelasticity}
  \end{figure}
@@ -294,17 +294,32 @@ The net revenue resulting from the simple example actually yielded a slight incr
  
  \begin{figure}[H]
  	\centering
- 	\includegraphics[width=0.66\linewidth]{figures/toyrevenue}
- 	\caption{Aggregate revenue}
+%  	\includegraphics[width=0.66\linewidth]{figures/toyrevenue}
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
+    plot.revenue
+    @
+ 	\caption{Cumulative revenue by time of day}
  	\label{fig:toyrevenue}
  \end{figure}
  
 This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. This is especially true if overall demand does not decrease as could be the case with introducing flat tolls. Of course, an increase in revenue is not guaranteed and depends upon the parameters selected in the pricing function. An obvious solution to this is to calibrate the parameters to optimize for revenue and/or congestion, or alternatively the pricing function itself could be altered to suit a particular scenario (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to this optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
 
-\section{Future futures}
-Although presented for a simple bridge toll, it can be easily expanded to other applications, such as corridor tolls, congestion pricing zones, transit fares, ride hailing, or applications beyond transportation. This could provide a basic framework for a broader more mode agnostic transportation system, which is of growing importance as ride sharing, hailing, and other future mobility platforms emerge, 
+ \begin{figure}[H]
+ 	\centering
+%  	\includegraphics[width=0.66\linewidth]{figures/revmat}
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
+    plot.revmat
+    @
+ 	\caption{Comparison of total revenue by elasticity $E$ and $P_{max}$}
+ 	\label{fig:toyrevmat}
+ \end{figure}
 
-\section{Tech to market plan}
+
+\section{Discussion}
+
+\subsection{Implementation}
+The proposed “futures market” offers tech-to-market startup potential, which can grow into a self-sustaining enterprise. Implementation will require a combination academic research required to develop and calibrate models and other practical constraints, but also to work alongside industry partners to implement the necessary but non-research aspects, such as the web/mobile interface, market database, and fare collection integration. Major barriers to implementation are largely institutional, requiring a volunteer transit agency to participate in testing and development, as well as approval from governing budgetary agencies.
+
 There are essentially three basic implementations of a futures market:
 \begin{description}
     \item[An existing dynamic toll system] can be easily augmented with a futures market to further improve demand optimization with only software changes necessary. In this case, the futures market would have no negative impact revenue collection. 
@@ -313,6 +328,13 @@ There are essentially three basic implementations of a futures market:
     
     \item[No existing toll system] is naturally the most difficult case to implement, requiring both hardware and software investment, as well as inevitable political backlash from any tolling introduced.
 \end{description}
+
+Although presented for a simple bridge toll, it can be easily expanded to other applications, such as corridor tolls, congestion pricing zones, transit fares, ride hailing, or applications beyond transportation. This could provide a basic framework for a broader more mode agnostic transportation system, which is of growing importance as ride sharing, hailing, and other future mobility platforms emerge.
+
+
+
+
+
 
 
 \subsection{Barriers to entry}
