@@ -279,43 +279,30 @@ The approximated demand resulting from dynamic pricing are calculated using simp
  \end{equation} 
  was used with a fairly inelastic elasticity $E$, of 0.4 and centered on zero, as shown in Figure~\ref{fig:toyelasticity}.
   
-  \begin{figure}[H]
- 	\centering
+\begin{figure}[H]
+    \centering
 %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
   	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
     plot.elasticity
     @
  	\caption{Price elasticity}
  	\label{fig:toyelasticity}
- \end{figure}
+\end{figure}
  
   
 The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
  
-  \begin{figure}[H]
-     \begin{subfigure}{\linewidth}
-     	\centering
-    %  	\includegraphics[width=0.66\textwidth]{figures/toydemand}
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
-        plot.revenue
-        @
-     	\caption{Revenue per hour}
-     	\label{fig:toyrevenue}
-     \end{subfigure}
-     \begin{subfigure}{\linewidth}
-     	\centering
-     	%\includegraphics[width=0.66\textwidth]{figures/toytoll}
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
-        plot.revsum
-        @
-     	\caption{Cumulative revenue by time of day}
-     	\label{fig:toyrevsum}
-     \end{subfigure}
-     \caption{Revenue by time of day}
-     \label{fig:toymodel}
- \end{figure}
- 
- 
+\begin{figure}[H]
+    \centering
+%  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
+    plot.revenue
+    @
+ 	\caption{Revenue collection by time of day}
+ 	\label{fig:toyrevenue}
+\end{figure}
+
+
 This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. This is especially true if overall demand does not decrease as could be the case with introducing flat tolls. Of course, an increase in revenue is not guaranteed and depends upon the parameters selected in the pricing function. An obvious solution to this is to calibrate the parameters to optimize for revenue and/or congestion, or alternatively the pricing function itself could be altered to suit a particular scenario (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to this optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
 
  \begin{figure}[H]
