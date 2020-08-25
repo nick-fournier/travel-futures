@@ -42,9 +42,12 @@ dat[ , "n2" := trips*k2/sum(k2) ]
 #Revenue
 dat[ , rev1 := n1*price1]
 dat[ , rev2 := n2*price2]
+#Revenue per house
+dat[ , rev1hr := rev1/inc]
+dat[ , rev2hr := rev2/inc]
 #Cumulative sum
-dat[ , sumrev1 := cumsum(rev1)]
-dat[ , sumrev2 := cumsum(rev2)]
+dat[ , sumrev1 := cumsum(n1*price1)]
+dat[ , sumrev2 := cumsum(n2*price2)]
 
 #Time
 dat[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*t)]
@@ -179,8 +182,11 @@ plot.toll <- ggplot(dat) +
 plot.revenue <- ggplot(dat) + 
   geom_line(aes(x=time,y=rev1, linetype="Flat")) +
   geom_line(aes(x=time,y=rev2, linetype="Dynamic")) +
-  scale_y_continuous("Total revenue [$]", labels = scales::dollar) +
+  scale_y_continuous(expression("Revenue per hour, $/hr"), labels = scales::dollar) +
   scale_linetype("Tolling scheme") +
+  annotate("text", x=as.POSIXct('2000-01-01 1:00:00 EST', tz='EST'), y=0.5*max(dat$rev2),
+           label = paste0(paste0("Fixed toll:", scales::dollar(sum(dat$rev1))),"\n",
+                          paste0("Dynamic toll:", scales::dollar(sum(dat$rev2)))), hjust = 0, size = 3) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
   theme_classic() +
@@ -188,6 +194,9 @@ plot.revenue <- ggplot(dat) +
         legend.background = element_blank())
         #text=element_text(family="Times New Roman"))
 # plot.revenue
+
+
+
 
 plot.revsum <- ggplot(dat) + 
   geom_line(aes(x=time,y=sumrev1, linetype="Flat")) +
