@@ -60,7 +60,7 @@ dat[ , lapply(.SD, sum),.SDcols = c("n1","n2")]
 
 #### Run with varying pmax and elasticity ####
 #Set up combination matrix
-datvar = as.data.table(expand.grid(tval = t, E = seq(0,1, by=0.05), surge = seq(1, 5, by = 0.1)))
+datvar = as.data.table(expand.grid(tval = t, E = seq(0,1, by=0.01), surge = seq(1, 3, by = 0.01)))
 #Assign fixed price & scaled price
 datvar[ , price1 := pfix]
 datvar[ , pmax := pfix*surge]
@@ -212,22 +212,26 @@ plot.revsum <- ggplot(dat) +
 # plot.revsum
 
 
-cuts = c(with(revmat, seq(100*min(revratio), 100, length.out = 6))[-6], 
-  with(revmat, seq(100, 100*max(revratio), length.out = 6)))
+cuts = with(revmat, 
+            c(seq(10*floor(10*min(revratio)), 100, length.out = 6)[-6],
+              seq(100, 10*ceiling(10*max(revratio)), length.out = 6)))
 
-plot.revmat <- ggplot(revmat, aes(x = E, y = surge, z = 100*revratio)) +
-  geom_contour_filled(breaks = cuts) +
-  scale_x_continuous(expression("Price Elasticity of Demand,"~E), limits = c(0,1), expand = c(0,0)) +
-  scale_y_continuous(expression("Scale of fixed price,"~P[max]), limits = c(1,5),
-                     labels = scales::percent_format(), expand = c(0,0)) +
+plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
+  #geom_contour_filled(breaks = cuts, aes(z = 100*revratio)) +
+  geom_raster(aes(fill = cut(100*revratio, cuts))) +
+  geom_contour(breaks = cuts, aes(z = 100*revratio), color = "black", size = 1) +
+  scale_x_continuous(expression("Price Elasticity of Demand,"~E), expand = c(0,0)) +
+  scale_y_continuous(expression("Scale of fixed price,"~P[max]), expand = c(0,0),
+                     labels = scales::percent_format()) +
   scale_fill_brewer(expression("Revenue Ratio\n(Dynamic vs Fixed)"),
                     palette = "RdBu", label = paste0(paste(round(cuts), round(cuts[-1]), sep = "-"),"%")) +
-  theme_classic()
+  coord_cartesian(xlim = c(0, 1), ylim = c(1,3)) +
+  theme_bw()
 # plot.revenue
 
 
 
-
+paste0(paste(round(cuts), round(cuts[-1]), sep = "-"),"%")
 
 
 # ggsave("../figures/toyprice.pdf", plot.price, device = cairo_pdf, width=4.25, height=2, units = "in")
