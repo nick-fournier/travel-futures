@@ -25,7 +25,7 @@
 \addbibresource{references.bib}
 
 %Load in the R scripts
-<<echo=TRUE, cache=TRUE>>==
+<<echo=FALSE, cache=TRUE>>==
     source("../analysis/toymodel.R")
  @
 
@@ -305,10 +305,14 @@ The net revenue resulting from the simple example actually yielded a slight incr
 
 This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. This is especially true if overall demand does not decrease as could be the case with introducing flat tolls. Of course, an increase in revenue is not guaranteed and depends upon the parameters selected in the pricing function. An obvious solution to this is to calibrate the parameters to optimize for revenue and/or congestion, or alternatively the pricing function itself could be altered to suit a particular scenario (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to this optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
 
+
+Depending on the price elasticity of demand, the upper limit of the toll pricing function, $P_{max}$
+
+
  \begin{figure}[H]
  	\centering
 %  	\includegraphics[width=0.66\linewidth]{figures/revmat}
-  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, out.width="0.75\\textwidth", warning=FALSE>>=
     plot.revmat
     @
  	\caption{Comparison of total revenue by elasticity $E$ and $P_{max}$}
