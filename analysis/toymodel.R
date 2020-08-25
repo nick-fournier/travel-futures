@@ -180,21 +180,22 @@ plot.toll <- ggplot(dat) +
 
 
 plot.revenue <- ggplot(dat) + 
-  geom_line(aes(x=time,y=rev1, linetype="Flat")) +
-  geom_line(aes(x=time,y=rev2, linetype="Dynamic")) +
+  geom_line(aes(x=time,y=rev1, linetype=paste0("Fixed toll, total revenue: ", scales::dollar(sum(dat$rev1))))) +
+  geom_line(aes(x=time,y=rev2, linetype=paste0("Dynamic toll, total revenue: ", scales::dollar(sum(dat$rev2))))) +
   scale_y_continuous(expression("Revenue per hour, $/hr"), labels = scales::dollar) +
+  scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour", expand = c(0,12),
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),
+                              as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
   scale_linetype("Tolling scheme") +
-  annotate("text", x=as.POSIXct('2000-01-01 1:00:00 EST', tz='EST'), y=0.5*max(dat$rev2),
-           label = paste0(paste0("Fixed toll:", scales::dollar(sum(dat$rev1))),"\n",
-                          paste0("Dynamic toll:", scales::dollar(sum(dat$rev2)))), hjust = 0, size = 3) +
-  scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
-                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+  # annotate("text", x=as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'), y=0.5*max(dat$rev2),
+  #          label = paste0(paste0("Fixed toll: ", scales::dollar(sum(dat$rev1))),"\n",
+  #                         paste0("Dynamic toll: ", scales::dollar(sum(dat$rev2)))), hjust = 0, size = 4) +
   theme_classic() +
-  theme(legend.position = c(0.2,0.7),
+  theme(plot.margin=margin(t = 0, r = 3, b = 0, l = 0, unit = "cm"),
+        legend.position = c(1,0.7),
         legend.background = element_blank())
         #text=element_text(family="Times New Roman"))
 # plot.revenue
-
 
 
 
