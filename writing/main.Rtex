@@ -25,7 +25,7 @@
 \addbibresource{references.bib}
 
 %Load in the R scripts
-<<echo=FALSE, cache=TRUE>>==
+<<echo=TRUE, cache=TRUE>>==
     source("../analysis/toymodel.R")
  @
 
@@ -295,7 +295,7 @@ The net revenue resulting from the simple example actually yielded a slight incr
 \begin{figure}[H]
     \centering
 %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.25, out.width="0.66\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.33, out.width="\\textwidth", warning=FALSE>>=
     plot.revenue
     @
  	\caption{Revenue collection by time of day}
