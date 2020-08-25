@@ -189,6 +189,19 @@ plot.revenue <- ggplot(dat) +
         #text=element_text(family="Times New Roman"))
 # plot.revenue
 
+plot.sumrev <- ggplot(dat) + 
+  geom_line(aes(x=time,y=sumrev1, linetype="Flat")) +
+  geom_line(aes(x=time,y=sumrev2, linetype="Dynamic")) +
+  scale_y_continuous("Total revenue [$]", labels = scales::dollar) +
+  scale_linetype("Tolling scheme") +
+  scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+  theme_classic() +
+  theme(legend.position = c(0.2,0.7),
+        legend.background = element_blank())
+#text=element_text(family="Times New Roman"))
+# plot.sumrev
+
 
 cuts = c(with(revmat, seq(100*min(revratio), 100, length.out = 6))[-6], 
   with(revmat, seq(100, 100*max(revratio), length.out = 6)))
