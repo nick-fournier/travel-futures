@@ -189,7 +189,7 @@ plot.revenue <- ggplot(dat) +
         #text=element_text(family="Times New Roman"))
 # plot.revenue
 
-plot.sumrev <- ggplot(dat) + 
+plot.revsum <- ggplot(dat) + 
   geom_line(aes(x=time,y=sumrev1, linetype="Flat")) +
   geom_line(aes(x=time,y=sumrev2, linetype="Dynamic")) +
   scale_y_continuous("Total revenue [$]", labels = scales::dollar) +
@@ -200,7 +200,7 @@ plot.sumrev <- ggplot(dat) +
   theme(legend.position = c(0.2,0.7),
         legend.background = element_blank())
 #text=element_text(family="Times New Roman"))
-# plot.sumrev
+# plot.revsum
 
 
 cuts = c(with(revmat, seq(100*min(revratio), 100, length.out = 6))[-6], 
