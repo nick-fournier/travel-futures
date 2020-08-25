@@ -24,20 +24,21 @@ inc = 5/60
 t = seq(0,24,by=inc)
 a = 7
 b = 0.3
-pfix = 8
+pfix = 7
 pmin = 0*pfix/2
 pmax = pfix*2
+nlanes = 6 #lanes
 
 #### Run for the constant parameters ####
 dat = data.table(t=t, k1 = fun.demanddist(85,t,1.5), price1 = pfix)
 #dat[ , k2 := fun.demanddist(t,2)]
-dat[ , "q1" := trips*k1/sum(k1)/inc/6 ]
+dat[ , "q1" := trips*k1/sum(k1)/inc/nlanes ]
 dat[ , "n1" := trips*k1/sum(k1) ]
 dat[ , price2 := fun.price(k1, pmin, pmax, a, b)]
 
 dat[ , k2 := fun.elasticdemand(k1,price1,price2,E)]
 dat[ , k2 := sum(k1)*k2/sum(k2)]
-dat[ , "q2" := trips*k2/sum(k2)/inc/6 ]
+dat[ , "q2" := trips*k2/sum(k2)/inc/nlanes ]
 dat[ , "n2" := trips*k2/sum(k2) ]
 
 #Revenue
@@ -53,7 +54,7 @@ dat[ , sumrev2 := cumsum(n2*price2)]
 #Time
 dat[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*t)]
 
-#Check sum
+#Check sum, make sure the same number of total trips happen
 dat[ , lapply(.SD, sum),.SDcols = c("k1","k2")]
 dat[ , lapply(.SD, sum),.SDcols = c("q1","q2")]
 dat[ , lapply(.SD, sum),.SDcols = c("n1","n2")]
@@ -61,22 +62,24 @@ dat[ , lapply(.SD, sum),.SDcols = c("n1","n2")]
 
 #### Run with varying pmax and elasticity ####
 #Set up combination matrix
-datvar = as.data.table(expand.grid(tval = t, E = seq(0,2, by=0.025), surge = seq(1, 3, by = 0.025)))
+datvar = as.data.table(expand.grid(tval = t,
+                                   E = seq(0,2, by=0.025),
+                                   surge = seq(0, 4, by = 0.05)))
 #Assign fixed price & scaled price
 datvar[ , price1 := pfix]
 datvar[ , pmax := pfix*surge]
 #Calculate demand dist for each combo
-datvar[ , k1 := fun.demanddist(85, tval, 1.5)]
+datvar[ , k1 := fun.demanddist(85, tval, 1.5), by = .(E,surge)]
 #Calculate flow and number of trips for fixed price
-datvar[ , "q1" := trips*k1/sum(k1)/inc/6 ]
-datvar[ , "n1" := trips*k1/sum(k1) ]
+datvar[ , "q1" := trips*k1/sum(k1)/inc/nlanes, by = .(E,surge)]
+datvar[ , "n1" := trips*k1/sum(k1), by = .(E,surge)]
 #Calculate new price the previous demand
 datvar[ , price2 := fun.price(k1, pmin, pmax, a, b)]
 #Calculate new density, flow, and number of trips from price
-datvar[ , k2 := fun.elasticdemand(k1,price1,price2,E)]
-datvar[ , k2 := sum(k1)*k2/sum(k2)]
-datvar[ , "q2" := trips*k2/sum(k2)/inc/6 ]
-datvar[ , "n2" := trips*k2/sum(k2) ]
+datvar[ , k2 := fun.elasticdemand(k1,price1,price2,E), by = .(E,surge)]
+datvar[ , k2 := sum(k1)*k2/sum(k2), by = .(E,surge)]
+datvar[ , "q2" := trips*k2/sum(k2)/inc/nlanes, by = .(E,surge)]
+datvar[ , "n2" := trips*k2/sum(k2), by = .(E,surge)]
 #Revenue
 datvar[ , rev1 := cumsum(n1*price1)]
 datvar[ , rev2 := cumsum(n2*price2)]
@@ -91,10 +94,10 @@ datvar[ , sumrev2 := cumsum(rev2)]
 #Time
 datvar[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*tval)]
 
-#Check sum
-datvar[ , lapply(.SD, sum),.SDcols = c("k1","k2")]
-datvar[ , lapply(.SD, sum),.SDcols = c("q1","q2")]
-datvar[ , lapply(.SD, sum),.SDcols = c("n1","n2")]
+#Check sum, make sure the same number of total trips happen
+datvar[ , lapply(.SD, sum),.SDcols = c("k1","k2"), by = .(E,surge)][, all.equal(k1,k2)]
+datvar[ , lapply(.SD, sum),.SDcols = c("q1","q2"), by = .(E,surge)][, all.equal(q1,q2)]
+datvar[ , lapply(.SD, sum),.SDcols = c("n1","n2"), by = .(E,surge)][, all.equal(n1,n2)]
 
 #Aggregate total revenue
 revmat <- datvar[ , list("revratio" = sum(rev2)/sum(rev1)), by = .(E,surge)]
@@ -227,22 +230,27 @@ plot.revsum <- ggplot(dat) +
 
 
 #### Total revenue by Elasticity vs Pmax
-cuts = with(revmat, 
-            c(seq(10*floor(10*min(revratio)), 100, length.out = 6)[-6],
-              seq(100, 10*ceiling(10*max(revratio)), length.out = 7)))
+# cuts = with(revmat, 
+#             c(seq(10*floor(10*min(revratio)), 100, length.out = 6)[-6],
+#               seq(100, 10*ceiling(10*max(revratio)), length.out = 6)))
+
+cuts = seq(0, 200, by = 20)
+cutlabs = c(paste0(paste(round(cuts)[-length(cuts)], round(cuts[-1]), sep = "-"),"%"),paste0(">",round(cuts)[length(cuts)],"%"))
 
 plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
   #geom_contour_filled(breaks = cuts, aes(z = 100*revratio)) +
-  geom_raster(aes(fill = cut(100*revratio, cuts))) +
+  geom_raster(aes(fill = cut(100*revratio, c(cuts,Inf), include.lowest = T))) +
   geom_contour(breaks = cuts, aes(z = 100*revratio), color = "black") +
   scale_x_continuous(expression("Price Elasticity of Demand,"~E), expand = c(0,0)) +
-  scale_y_continuous(expression("Scale of fixed price,"~P[max]), expand = c(0,0),
+  scale_y_continuous(expression("Maximum surge pricing,"~P[max]), expand = c(0,0),
                      labels = scales::percent_format()) +
   scale_fill_brewer(expression("Revenue Ratio\n(Dynamic vs Fixed)"),
-                    palette = "RdBu", label = paste0(paste(round(cuts), round(cuts[-1]), sep = "-"),"%")) +
-  coord_cartesian(xlim = c(0, 2), ylim = c(1,3)) +
+                    palette = "RdBu", label = cutlabs) +
+  coord_cartesian(xlim = c(0, max(revmat$E)), ylim = c(0,max(revmat$surge))) +
   theme_bw()
-# plot.revenue
+# plot.revmat
+
+
 
 
 
