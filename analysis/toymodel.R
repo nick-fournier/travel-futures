@@ -214,12 +214,12 @@ plot.revsum <- ggplot(dat) +
 
 cuts = with(revmat, 
             c(seq(10*floor(10*min(revratio)), 100, length.out = 6)[-6],
-              seq(100, 10*ceiling(10*max(revratio)), length.out = 6)))
+              seq(100, 10*ceiling(10*max(revratio)), length.out = 7)))
 
 plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
   #geom_contour_filled(breaks = cuts, aes(z = 100*revratio)) +
   geom_raster(aes(fill = cut(100*revratio, cuts))) +
-  geom_contour(breaks = cuts, aes(z = 100*revratio), color = "black", size = 1) +
+  geom_contour(breaks = cuts, aes(z = 100*revratio), color = "black") +
   scale_x_continuous(expression("Price Elasticity of Demand,"~E), expand = c(0,0)) +
   scale_y_continuous(expression("Scale of fixed price,"~P[max]), expand = c(0,0),
                      labels = scales::percent_format()) +
