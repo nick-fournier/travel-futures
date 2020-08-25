@@ -295,7 +295,7 @@ The net revenue resulting from the simple example actually yielded a slight incr
 \begin{figure}[H]
     \centering
 %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.25, out.width="0.66\\textwidth", warning=FALSE>>=
     plot.revenue
     @
  	\caption{Revenue collection by time of day}
