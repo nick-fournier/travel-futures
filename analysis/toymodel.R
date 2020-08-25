@@ -180,8 +180,8 @@ plot.toll <- ggplot(dat) +
 
 
 plot.revenue <- ggplot(dat) + 
-  geom_line(aes(x=time,y=rev1, linetype=paste0("Fixed toll, total revenue: ", scales::dollar(sum(dat$rev1))))) +
-  geom_line(aes(x=time,y=rev2, linetype=paste0("Dynamic toll, total revenue: ", scales::dollar(sum(dat$rev2))))) +
+  geom_line(aes(x=time,y=rev1, linetype=paste0("Fixed toll,\nTotal revenue: ", scales::dollar(sum(dat$rev1))))) +
+  geom_line(aes(x=time,y=rev2, linetype=paste0("Dynamic toll,\nTotal revenue: ", scales::dollar(sum(dat$rev2))))) +
   scale_y_continuous(expression("Revenue per hour, $/hr"), labels = scales::dollar) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),
