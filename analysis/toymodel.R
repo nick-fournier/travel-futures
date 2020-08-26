@@ -24,9 +24,9 @@ inc = 5/60
 t = seq(0,24,by=inc)
 a = 7
 b = 0.3
-pfix = 7
+pfix = 8
 pmin = 0*pfix/2
-pmax = pfix*2
+pmax = pfix*3
 nlanes = 6 #lanes
 
 #### Run for the constant parameters ####
@@ -146,8 +146,8 @@ plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) +
 #### Pricing funcition 
 plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) + 
   stat_function(fun = fun.price, args = list(pmin, pmax, a, b)) +
-  scale_y_continuous("Price [$/veh]", labels = scales::dollar, breaks = seq(0,15,by=2), limits = c(0,pmax)) +
-  scale_x_continuous("Traffic density [veh/km/lane]") +
+  scale_y_continuous("Price ($/veh)", labels = scales::dollar, limits = c(0,pmax)) +
+  scale_x_continuous("Traffic density (veh/km/lane)") +
   theme_classic()
 # theme(text=element_text(family="Times New Roman"))
 # plot.price
@@ -157,7 +157,7 @@ plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) +
 plot.demanddensity <- ggplot(dat) + 
   geom_line(aes(x=time,y=k1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=k2, linetype="Dynamic")) + 
-  scale_y_continuous("Traffic density [veh/km/ln]") +
+  scale_y_continuous("Traffic density (veh/km/ln)") +
   scale_linetype("Tolling scheme") +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
@@ -171,7 +171,7 @@ plot.demanddensity <- ggplot(dat) +
 plot.demandflow <- ggplot(dat) + 
   geom_line(aes(x=time,y=q1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=q2, linetype="Dynamic")) + 
-  scale_y_continuous("Traffic flow [veh/hr/lane]") +
+  scale_y_continuous("Traffic flow (veh/hr/lane)") +
   scale_linetype("Tolling scheme") +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
@@ -185,7 +185,7 @@ plot.demandflow <- ggplot(dat) +
 plot.toll <- ggplot(dat) +  
   geom_line(aes(x=time,y=price1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=price2, linetype="Dynamic")) + 
-  scale_y_continuous("Price [$/veh]", labels = scales::dollar, breaks = seq(0,pmax,by=2), limits = c(0,pmax)) +
+  scale_y_continuous("Price ($/veh)", labels = scales::dollar, breaks = seq(0,pmax,by=2), limits = c(0,pmax)) +
   scale_linetype("Tolling scheme") +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
@@ -199,7 +199,7 @@ plot.toll <- ggplot(dat) +
 plot.revenue <- ggplot(dat) + 
   geom_line(aes(x=time,y=rev1, linetype=paste0("Fixed toll,\nTotal revenue: ", scales::dollar(sum(dat$rev1))))) +
   geom_line(aes(x=time,y=rev2, linetype=paste0("Dynamic toll,\nTotal revenue: ", scales::dollar(sum(dat$rev2))))) +
-  scale_y_continuous(expression("Revenue per hour, $/hr"), labels = scales::dollar) +
+  scale_y_continuous(expression("Revenue per hour ($/hr)"), labels = scales::dollar) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),
                               as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
@@ -218,8 +218,8 @@ plot.revenue <- ggplot(dat) +
 plot.revsum <- ggplot(dat) + 
   geom_line(aes(x=time,y=sumrev1, linetype="Fixed")) +
   geom_line(aes(x=time,y=sumrev2, linetype="Dynamic")) +
-  scale_y_continuous("Total revenue [$]", labels = scales::dollar) +
-  scale_linetype("Tolling scheme") +
+  scale_y_continuous("Total revenue ($)", labels = scales::dollar) +
+  scale_linetype("") +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
   theme_classic() +
@@ -244,7 +244,7 @@ plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
   scale_x_continuous(expression("Price Elasticity of Demand,"~E), expand = c(0,0)) +
   scale_y_continuous(expression("Maximum surge pricing,"~P[max]), expand = c(0,0),
                      labels = scales::percent_format()) +
-  scale_fill_brewer(expression("Revenue Ratio\n(Dynamic vs Fixed)"),
+  scale_fill_brewer(expression("Revenue Ratio\n(Dynamic / Fixed)"),
                     palette = "RdBu", label = cutlabs) +
   coord_cartesian(xlim = c(0, max(revmat$E)), ylim = c(0,max(revmat$surge))) +
   theme_bw()
