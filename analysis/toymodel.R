@@ -185,7 +185,7 @@ plot.demandflow <- ggplot(dat) +
 plot.toll <- ggplot(dat) +  
   geom_line(aes(x=time,y=price1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=price2, linetype="Dynamic")) + 
-  scale_y_continuous("Price ($/veh)", labels = scales::dollar, breaks = seq(0,pmax,by=2), limits = c(0,pmax)) +
+  scale_y_continuous("Price ($/veh)", labels = scales::dollar, limits = c(0,pmax)) +
   scale_linetype("Tolling scheme") +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
@@ -203,7 +203,7 @@ plot.revenue <- ggplot(dat) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),
                               as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
-  scale_linetype("Tolling scheme:") +
+  scale_linetype(NULL) +
   # annotate("text", x=as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'), y=0.5*max(dat$rev2),
   #          label = paste0(paste0("Fixed toll: ", scales::dollar(sum(dat$rev1))),"\n",
   #                         paste0("Dynamic toll: ", scales::dollar(sum(dat$rev2)))), hjust = 0, size = 4) +
@@ -219,7 +219,7 @@ plot.revsum <- ggplot(dat) +
   geom_line(aes(x=time,y=sumrev1, linetype="Fixed")) +
   geom_line(aes(x=time,y=sumrev2, linetype="Dynamic")) +
   scale_y_continuous("Total revenue ($)", labels = scales::dollar) +
-  scale_linetype("") +
+  scale_linetype(NULL) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
   theme_classic() +
