@@ -33,7 +33,7 @@
 
 \graphicspath{ {figures/} }
 
-\title{Travel futures: A futures market mechanism for tradable demand responsive travel pricing}
+\title{Travel futures: A market mechanism for tradable demand responsive travel pricing}
 \author{Nicholas Fournier}
 \date{\usdate}
 
@@ -42,21 +42,16 @@
 \maketitle
 
 \begin{abstract}
-Congestion pricing and tolls are generally a politically unsavory means of revenue collection and congestion mitigation. However, localities are being forced to reconsider road pricing as gas taxes are being rendered insolvent after decades of inflation and increased fuel efficiency. This paper presents a simple ``futures'' market mechanism that can augment existing tolling technologies to not only collect revenue, but maximize congestion reducing effect with minimal political dissatisfaction through pre-purchased discounted travel. Users can pre-pay their future tolls at a lower rate based on their expected travel to lock in their price, with prices rising as road capacity fills up, thus encouraging good travel planning by users without extorting regular commuters. Unlike transit passes or airlines, users can minimize their financial loss for changing plans by selling their unused trips at the market rate. This fungibility simultaneously encourages adoption of the ``futures'' system while discouraging wasteful ``use it or lose it'' behavior without any loss to the operating agency. Furthermore, this simple mechanism not only provides revenue collection and congestion reduction, but offers a practical data collection feature of a future demand horizon, useful to both travelers and operators alike.
+While transportation funding can be collected in a variety of direct (e.g., tolls and gas taxes) or indirect ways (e.g., property and sales tax), demand dependent dynamic pricing not only collects revenue but provides congestion mitigating benefits. Dynamic pricing varies prices based on congestion, incentivizing travelers to avoid peak-demand periods, thus utilizing infrastructure capacity more efficiently. Unfortunately, dynamic pricing is generally a politically unsavory policy due to equity concerns and the fear of being price-gouged if unexpectedly caught in congestion. However, dynamic pricing is increasingly being proposed as congestion outpaces capacity growth and traditional gas tax-based revenue is rendered insolvent after decades of unadjusted inflation and increased fuel efficiency. This paper seeks to help remedy these concerns by proposing a simple ``futures'' market mechanism that can augment existing fare/toll collection technologies, providing travelers with sufficient pricing information and purchasing options to travel plan and avoid excessive prices. Users can pre-pay their future fares/tolls to lock in a lower price for expected trips, with prices rising as road capacity fills up, thus encouraging good travel planning without extorting regular commuters. As a potential extension, the mechanism enables re-selling of unused future trips at market rate, minimizing financial loss for changing plans and discouraging wasteful ``use it or lose it'' behavior that might otherwise be encouraged. Overall, this simple mechanism not only provides revenue collection and congestion reduction but offers a practical data collection feature of a future demand horizon, useful to both travelers and operators alike.
 \vfill
 \end{abstract}
 
 \newpage
 
 \section{Background}
+The cost of providing additional transportation capacity (e.g., more transit vehicles or road lanes) for only a very brief peak demand period leaves infrastructure largely underutilized for the remaining time and is often financially unjustifiable or impossible given current infrastructure. The challenge is then how to more efficiently utilize existing capacity, rather than building over-sized infrastructure solely for the peak periods. Tolls and increased fares are one tool used to raise revenue and mitigate congestion for decades, but conventional fixed prices fails to target the congested periods and merely apply a uniform downward disincentive on travel (see Figure~\ref{fig:flatprice}). This is especially true for when no travel alternative exists, such as with road tolls without a transit alternative. While it may reduce congestion by reducing overall travel demand, it does not necessarily encourage efficient use of infrastructure. Moreover, it is economically problematic by potentially slowing down overall economic activity, as well as posing serious equity concerns to those who cannot afford costly travel.
 
-\#\#\#\#\#\#\# REVISIONS? \\ %%%%%%%%%%%%
-The cost of providing additional transit capacity during the very brief peak demand period leaves costly infrastructure largely underutilized and is often unjustifiable or impossible given current infrastructure. Although the system is only congested during a very brief period, most passengers that travel at that time will perceive the system as overcrowded, possibly deterring them from future trips. The loss of ridership can result in further service reduction and further loss of riders in a vicious cycle. The challenge is then how to more efficiently utilize infrastructure, rather than providing over-sized capacity solely for the peak periods. Peak pricing is one conventional tool used to raise revenue and mitigate crowding, but the problem with conventional peak pricing is it does not efficiently adapt to demand. Furthermore, raising transit fare prices uniformly provides a uniform downward incentive on travel (see Figure 1) disincentivizing travel overall. This is economically problematic, potentially slowing down overall economic activity and not necessarily encouraging efficient use of infrastructure. 
-\#\#\#\#\#\#\# END REVISIONS \\ %%%%%%%%%%%
-
-
-
-Although the term ``gridlock'' was not coined until the 1970's [CITE], congestion is a problem cities have faced for centuries. A challenge, however, is that congestion generally only occurs during a relatively brief period, leaving costly infrastructure largely underutilized for a majority of the time. The challenge is then how to more efficiently utilize infrastructure, rather than building over-sized infrastructure solely for the peak periods. Tolls are one conventional tool used to raise revenue and mitigate congestion for many years. The problem with conventional fixed tolls is that it does not target the congested periods, merely providing a uniform downward incentive on travel (see Figure~\ref{fig:flatprice}), disincentivizing travel overall, especially if no travel alternative exists (e.g., public transit). This is economically problematic, potentially slowing down overall economic activity and not necessarily encouraging efficient use of infrastructure. 
+The obvious solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during targeted congested periods and shift it to periods of low demand (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive, as has been done for decades in other transportation sectors (e.g., inter-city bus, rail, and air travel), but have seldom been implemented due to negative political appeal [CITE]. Travelers generally do not want to pay for travel, let alone be subject to increased costs that they perceive as having little control over. Moreover, without any feasible alternative travel options, road pricing is little more than extortion. 
 
 \begin{figure}[H]
 \begin{subfigure}{\linewidth}
@@ -74,8 +69,6 @@ Although the term ``gridlock'' was not coined until the 1970's [CITE], congestio
 \label{fig:incentives}
 \caption{Incentive effect on demand}
 \end{figure}
-
-The obvious solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during congested periods and shift it to periods of low demand (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive, as has been done for decades in other non-automobile transportation sectors (e.g., bus, rail, and air travel), but have seldom been implemented due to negative political appeal [CITE]. Travelers generally do not want to pay for travel, let alone be subject to increased costs that they perceive as having little control over. Moreover, without any feasible alternative travel options, dynamic road pricing is little more than extortion. 
 
 An alternative approach that has been proposed is the concept of travel credits, exploiting the aspect of finite roadway capacity as the basis for a “cap and trade” type model for mitigating congestion by crediting travelers for not traveling during the peak \citep{Perrels2010}. Another more market-based evolution of the approach has also been proposed, enabling travelers to “sell” their trip rights to the highest bidder, achieving a similar goal without the need for governments to credit travelers \citep{Akamatsu2017,Fan2013,Wang2012,Yang2011}. Recently a great deal of hype has been drawn around the concept of Mobility as a Service (MaaS) where ``travel brokers'', like an automated travel agency, provide integrated multi-modal trip packages to users for travelers. However, few of these concepts other than dynamic pricing have had little traction outside of academia in recent years, but some technology companies have implemented conceptually similar trip routing and payment integration features in their platforms (e.g., mobile payment systems with transit and ride hailing services), laying the groundwork for such concepts. 
 
@@ -120,8 +113,8 @@ A basic booking interface could be a website or app where users can purchase the
 Although pricing could be determined by some free floating free market price as long as it is calibrated to match the limited ``supply'' of road capacity, such an uncontrollable system may be unstable and result in public dissatisfaction. Alternatively, an engineered market price could be determined using a parametric function designed to achieve the best possible results while remaining stable. An example pricing function shown in Figure~\ref{fig:costflow} uses an S-shaped sigmoid as a function of traffic density $k$. 
 
 \begin{figure}[H]
+    \centering
 	\includegraphics[width=0.75\linewidth]{figures/costdensity}
-	\centering
 	\caption{Pricing sigmoid function}
 	\label{fig:costflow}
 \end{figure}
@@ -148,8 +141,11 @@ Although a flexible travel time window can be specified (e.g., 8:12 $\pm$ 30 min
 \noindent where $\hat{k}(t)$ is the estimated density function for time $t$, $K$ is the non-negative kernel function (e.g., Gaussian normal curve), and $h$ is a smoothing bandwidth parameter that must be greater than 0. KDE essentially functions by cumulatively applying a continuous density function $K$ at each finite sample point, providing a smoothed probability distribution, such as shown in Figure~\ref{fig:kernal}. 
 
 \begin{figure}[H]
-	\includegraphics[width=0.66\linewidth]{figures/KDE.pdf}
-	\centering
+    \centering
+	%\includegraphics[width=0.66\linewidth]{figures/KDE.pdf}
+ 	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+    plot.kernel
+    @
 	\caption{Kernel Density Estimation using Gaussian function}
 	\label{fig:kernal}
 \end{figure}
@@ -306,9 +302,14 @@ The net revenue resulting from the simple example actually yielded a slight incr
 
 This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. This is especially true if overall demand does not decrease as could be the case with introducing flat tolls. Of course, an increase in revenue is not guaranteed and depends upon the parameters selected in the pricing function. An obvious solution to this is to calibrate the parameters to optimize for revenue and/or congestion, or alternatively the pricing function itself could be altered to suit a particular scenario (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to this optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
 
-The revenue of a dynamic scheme is not guaranteed to be greater than a fixed toll. The revenue from a dynamic toll scheme depends on the price elasticity of demand and the upper limit of the toll pricing function, $P_{max}$. As price elasticity of demand becomes more 
+
+
+
+An increase in revenue with a dynamic scheme is not guaranteed to be greater than a fixed toll. The revenue from a dynamic toll scheme depends on the price elasticity of demand and the upper limit of the toll pricing function, $P_{max}$. As price elasticity of demand becomes more 
 
 The $P_{max}$ required to maintain the same or higher 
+
+
 
 
  \begin{figure}[H]
@@ -320,6 +321,8 @@ The $P_{max}$ required to maintain the same or higher
  	\caption{Comparison of total revenue by elasticity $E$ and $P_{max}$}
  	\label{fig:toyrevmat}
  \end{figure}
+ 
+ However, this example is simplified to assume a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose not travel at all. This is an important reality to consider, particularly in regards to transportation equity when considering increasing tolls.
 
 
 \section{Discussion}
