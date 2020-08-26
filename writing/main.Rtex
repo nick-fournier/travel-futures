@@ -105,7 +105,7 @@ Time (i.e., travel arrival times) is broken down into arbitrarily small quantum 
 
 \begin{figure}[H]
 	\centering
-	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.7, out.width="0.6\\textwidth", warning=FALSE>>=
     plot.captime
     @
 	\caption{Capacity across descretized time}
@@ -114,7 +114,7 @@ Time (i.e., travel arrival times) is broken down into arbitrarily small quantum 
 
 There are two benefits to having users purchase small tokenized units of time, rather than fixed large chunks of time (e.g., where users can only buy between 8am-9am, not 8:15am-8:45am). First is that it offers users greater flexibility in deciding when and how narrow their travel window will be. Second it further encourages users be punctual and to shift their travel times away from congested periods. For example, 8:00am to 9:00am are congested and thus expensive, but users can still achieve a discount by shifting from 7:30am to 8:30am, which only overlaps halfway with the congested times.
 
-The discretized tokens also lends well to using blockchain technology for ownership data storage as an alternative to a centralized database. Deccentralized block-chain technology does not necessarily provide operational benefits, but enables easier integration with other modes and services in the future, such as tolls, parking, mobility companies, etc. 
+The discretized tokens also lends well to using blockchain technology for ownership data storage as an alternative to a centralized database. Decentralized block-chain technology does not necessarily provide operational benefits, but enables easier integration with other modes and services in the future, such as tolls, parking, mobility companies, etc. 
 
 \subsection{Trip density}
 Although a flexible travel time window can be specified (e.g., 8:12 $\pm$ 30 mins), in practice it is likely that users will simply pick rounded numbers (e.g. 8:00), resulting in unrealistically concentrated trip densities that will vary in actual arrival time. Converting from pre-booked trips and into expected travel density can be achieved by smoothing the finite trips using a Kernal Density Estimation (KDE) 
