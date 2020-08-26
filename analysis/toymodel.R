@@ -128,6 +128,8 @@ for(x in rand$rand) plot.kernel <- plot.kernel + stat_function(fun = dnorm, args
 #### Elasticity Plot
 elabs <- c(paste0("E = ",E), paste0("E = ",E/2), paste0("E = ",2*E))
 
+elabs <- c(bquote(epsilon ==~.(E)), bquote(E ==~.(E/2)), paste0("E = ",2*E))
+
 plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) + 
   stat_function(fun = function(x) exp(-0.5*E*x)-1, aes(linetype = "E/2", color = "E/2"), alpha = 0.5) +
   stat_function(fun = function(x) exp(-E*x)-1, aes(linetype = "E", color = "E")) +
@@ -141,7 +143,7 @@ plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) +
   scale_linetype("Elasticity", limits = c("E","E/2","2E"), labels = elabs) +
   theme_classic()
 # theme(text=element_text(family="Times New Roman"))
-# plot.elasticity
+plot.elasticity
 
 #### Pricing funcition 
 plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) + 
@@ -241,7 +243,7 @@ plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
   #geom_contour_filled(breaks = cuts, aes(z = 100*revratio)) +
   geom_raster(aes(fill = cut(100*revratio, c(cuts,Inf), include.lowest = T))) +
   geom_contour(breaks = cuts, aes(z = 100*revratio), color = "black") +
-  scale_x_continuous(expression("Price Elasticity of Demand,"~E), expand = c(0,0)) +
+  scale_x_continuous(expression("Price Elasticity of Demand, "~epsilon), expand = c(0,0)) +
   scale_y_continuous(expression("Maximum surge pricing,"~P[max]), expand = c(0,0),
                      labels = scales::percent_format()) +
   scale_fill_brewer(expression("Revenue Ratio\n(Dynamic / Fixed)"),
