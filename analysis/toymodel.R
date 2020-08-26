@@ -157,7 +157,7 @@ plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) +
 #### Discretized time Density Distributions
 captime = data.table(t = seq(0, 24, by = 0.5),
                      time = as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*seq(0, 24, by = 0.5)),
-                     k = fun.demanddist(85, seq(0, 24, by = 0.5), 2),
+                     k = fun.demanddist(55, seq(0, 24, by = 0.5), 1),
                      cap = 30)
 captime[ , diff := cap - k ]
 captime[diff < 0, diff := abs(diff) + cap]
@@ -171,7 +171,7 @@ plot.captime <- ggplot(captime) +
   scale_fill_manual(NULL, values = c(alpha("white",0),"gray30"), labels = c("Remaining capacity","Pre-pay demand density")) +
   geom_hline(yintercept = captime$cap[1], linetype = "dashed") +
   annotate("text", x = as.POSIXct('2000-01-01 06:00:00 EST', tz='EST'), y = 30, label = "Target Capacity", vjust = -0.5) +
-  scale_y_continuous("Traffic density (veh/km/ln)", expand = c(0,0), limits = c(0,40)) +
+  scale_y_continuous("Trip density", expand = c(0,0), limits = c(0,40)) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour", expand = c(0,0),
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
   theme_classic() +
