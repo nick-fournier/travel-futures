@@ -127,8 +127,7 @@ for(x in rand$rand) plot.kernel <- plot.kernel + stat_function(fun = dnorm, args
 
 #### Elasticity Plot
 elabs <- c(paste0("E = ",E), paste0("E = ",E/2), paste0("E = ",2*E))
-
-elabs <- c(bquote(epsilon ==~.(E)), bquote(E ==~.(E/2)), paste0("E = ",2*E))
+elabs <- c(bquote(epsilon ==~.(E)), bquote(epsilon ==~.(E/2)), bquote(epsilon ==~.(2*E)))
 
 plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) + 
   stat_function(fun = function(x) exp(-0.5*E*x)-1, aes(linetype = "E/2", color = "E/2"), alpha = 0.5) +
@@ -153,6 +152,34 @@ plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) +
   theme_classic()
 # theme(text=element_text(family="Times New Roman"))
 # plot.price
+
+
+#### Discretized time Density Distributions
+captime = data.table(t = seq(0, 24, by = 0.5),
+                     time = as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*seq(0, 24, by = 0.5)),
+                     k = fun.demanddist(85, seq(0, 24, by = 0.5), 2),
+                     cap = 30)
+captime[ , diff := cap - k ]
+captime[diff < 0, diff := abs(diff) + cap]
+captime <- melt(captime, id.vars = c("t","time","cap"))
+captime[ , variable := factor(variable, levels = c("diff","k"))]
+
+plot.captime <- ggplot(captime) + 
+  #geom_col(aes(x=time,y=k), color = alpha("white",0)) +
+  #geom_col(aes(x=time,y=cap, color = "Density of pre-purchased time slots"), width = 0, fill = alpha("white",0)) +
+  geom_col(aes(x=time, y = value, fill = variable), color = "gray90", width = 1800, position = "stack") +
+  scale_fill_manual(NULL, values = c(alpha("white",0),"gray30"), labels = c("Remaining capacity","Pre-pay demand density")) +
+  geom_hline(yintercept = captime$cap[1], linetype = "dashed") +
+  annotate("text", x = as.POSIXct('2000-01-01 06:00:00 EST', tz='EST'), y = 30, label = "Target Capacity", vjust = -0.5) +
+  scale_y_continuous("Traffic density (veh/km/ln)", expand = c(0,0), limits = c(0,40)) +
+  scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour", expand = c(0,0),
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+  theme_classic() +
+  theme(legend.position = "bottom", 
+        legend.background = element_blank())
+#text=element_text(family="Times New Roman"))
+plot.captime
+
 
 
 #### Demand Density Distributions (Same as flow, but with density)
