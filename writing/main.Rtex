@@ -178,7 +178,7 @@ A basic booking interface could be a website or app where users can purchase the
      	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.55, out.width="\\textwidth", warning=FALSE>>=
         plot.demanddensity
         @
-     	\caption{Demand density}
+     	\caption{Traffic demand density}
      	\label{fig:toydem}
      \end{subfigure}
      \begin{subfigure}{0.49\linewidth}
@@ -217,17 +217,17 @@ A basic booking interface could be a website or app where users can purchase the
  		Parameter   & Value  & Description                          \\ \hline
  		$P_{fixed}$ & \$8 & \small Fixed toll price                     \\
  		$P_{min}$   & \$0    & \small Minimum dynamic toll price           \\
- 		$P_{max}$   & \$16   & \small Maximum dynamic toll price			\\
+ 		$P_{max}$   & \$24   & \small Maximum dynamic toll price			\\
  		$\alpha$    & 7      & \small Price calibration parameter \\
  		$\beta$     & 0.3    & \small Price calibration parameter \\
- 		$E$         & 0.3    & \small Elasticity \\ \bottomrule
+ 		$\epsilon$  & 0.3    & \small Elasticity \\ \bottomrule
  	\end{tabular}
  	\label{tab:toyprice}
  \end{table}
 
 The approximated demand resulting from dynamic pricing are calculated using simple micro-economic principles of elasticity. For this, a typical isoelastic demand function of
   \begin{equation}
- \Delta\mu = e^{-E \cdot \Delta P} - 1
+ \Delta\mu = e^{-\epsion \cdot \Delta P} - 1
  \end{equation} 
  was used with a fairly inelastic elasticity $E$, of 0.4 and centered on zero, as shown in Figure~\ref{fig:toyelasticity}.
   
@@ -255,14 +255,7 @@ The net revenue resulting from the simple example actually yielded a slight incr
 \end{figure}
 
 
-This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. This is especially true if overall demand does not decrease as could be the case with introducing flat tolls. Of course, an increase in revenue is not guaranteed and depends upon the parameters selected in the pricing function. An obvious solution to this is to calibrate the parameters to optimize for revenue and/or congestion, or alternatively the pricing function itself could be altered to suit a particular scenario (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to this optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
-
-
-An increase in revenue with a dynamic scheme is not guaranteed to be greater than a fixed toll. The revenue from a dynamic toll scheme depends on the price elasticity of demand and the upper limit of the toll pricing function, $P_{max}$. As price elasticity of demand becomes more 
-
-The $P_{max}$ required to maintain the same or higher 
-
-
+This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. In fact, in this case it yields a substantial gain. This is especially true if overall demand does not decrease, as would be the case with introducing flat tolls. Of course, an increase in revenue is not guaranteed and depends upon the parameters selected in the pricing function. The revenue from a dynamic toll scheme depends on the price elasticity of demand and the upper limit of the toll pricing function, $P_{max}$. For the toy simulation example, a matrix of possible revenue outcomes for varying combinations of maximum price, $P_{max}$ and elasticity, $\epsilon$ is shown in Figure~\ref{fig:toyrevmat}. Recall that elasticities of $E<1$ are considered ``inelastic'', 
 
  \begin{figure}[H]
  	\centering
@@ -273,6 +266,13 @@ The $P_{max}$ required to maintain the same or higher
  	\caption{Comparison of total revenue by elasticity $E$ and $P_{max}$}
  	\label{fig:toyrevmat}
  \end{figure}
+ 
+Interestingly, as price elasticity of demand becomes more elastic (i.e., greater value of $E$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. High inelasticity is good from a revenue perspective, but bad for congestion mitigation, and vice versa. 
+ 
+An obvious solution to this is to calibrate the parameters to optimize for revenue and/or congestion, or alternatively, the pricing function itself could be altered to suit a particular scenario (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to this optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
+
+
+ 
  
  However, this example is simplified to assume a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose not travel at all. This is an important reality to consider, particularly in regards to transportation equity when considering increasing tolls.
 
