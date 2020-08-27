@@ -181,6 +181,19 @@ plot.captime <- ggplot(captime) +
 plot.captime
 
 
+#### Demand Distributions
+plot.demanddist <- ggplot(dat) + 
+  geom_area(aes(x=time,y=n1/inc), fill = "gray80", color = "black") + 
+  scale_y_continuous("Travel Demand (trips/hr)", labels = scales::comma) +
+  scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+  theme_classic() +
+  theme(legend.position = c(0.2,0.7), 
+        legend.background = element_blank())
+#text=element_text(family="Times New Roman"))
+# plot.demanddist
+
+
 
 #### Demand Density Distributions (Same as flow, but with density)
 plot.demanddensity <- ggplot(dat) + 
