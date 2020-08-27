@@ -99,8 +99,8 @@ datvar[ , lapply(.SD, sum),.SDcols = c("k1","k2"), by = .(E,surge)][, all.equal(
 datvar[ , lapply(.SD, sum),.SDcols = c("q1","q2"), by = .(E,surge)][, all.equal(q1,q2)]
 datvar[ , lapply(.SD, sum),.SDcols = c("n1","n2"), by = .(E,surge)][, all.equal(n1,n2)]
 
-#Aggregate total revenue
-revmat <- datvar[ , list("revratio" = sum(rev2)/sum(rev1)), by = .(E,surge)]
+#Percent difference between aggregate total revenue
+revmat <- datvar[ , list("revratio" = (sum(rev2)-sum(rev1))/sum(rev1)), by = .(E,surge)]
 
 
 
@@ -281,8 +281,8 @@ plot.revsum <- ggplot(dat) +
 #             c(seq(10*floor(10*min(revratio)), 100, length.out = 6)[-6],
 #               seq(100, 10*ceiling(10*max(revratio)), length.out = 6)))
 
-cuts = seq(0, 200, by = 20)
-cutlabs = c(paste0(paste(round(cuts)[-length(cuts)], round(cuts[-1]), sep = "-"),"%"),paste0(">",round(cuts)[length(cuts)],"%"))
+cuts = seq(-150, 150, by = 25)
+cutlabs = c(paste0(paste(round(cuts)[-length(cuts)], round(cuts[-1]), sep = " to "),"%"),paste0(">",round(cuts)[length(cuts)],"%"))
 
 plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
   #geom_contour_filled(breaks = cuts, aes(z = 100*revratio)) +
