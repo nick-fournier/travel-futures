@@ -63,23 +63,23 @@ dat[ , lapply(.SD, sum),.SDcols = c("n1","n2")]
 #### Run with varying pmax and elasticity ####
 #Set up combination matrix
 datvar = as.data.table(expand.grid(tval = t,
-                                   E = seq(0,2, by=0.025),
+                                   elas = seq(0,2, by=0.025),
                                    surge = seq(0, 4, by = 0.05)))
 #Assign fixed price & scaled price
 datvar[ , price1 := pfix]
 datvar[ , pmax := pfix*surge]
 #Calculate demand dist for each combo
-datvar[ , k1 := fun.demanddist(85, tval, 1.5), by = .(E,surge)]
+datvar[ , k1 := fun.demanddist(85, tval, 1.5), by = .(elas,surge)]
 #Calculate flow and number of trips for fixed price
-datvar[ , "q1" := trips*k1/sum(k1)/inc/nlanes, by = .(E,surge)]
-datvar[ , "n1" := trips*k1/sum(k1), by = .(E,surge)]
+datvar[ , "q1" := trips*k1/sum(k1)/inc/nlanes, by = .(elas,surge)]
+datvar[ , "n1" := trips*k1/sum(k1), by = .(elas,surge)]
 #Calculate new price the previous demand
 datvar[ , price2 := fun.price(k1, pmin, pmax, a, b)]
 #Calculate new density, flow, and number of trips from price
-datvar[ , k2 := fun.elasticdemand(k1,price1,price2,E), by = .(E,surge)]
-datvar[ , k2 := sum(k1)*k2/sum(k2), by = .(E,surge)]
-datvar[ , "q2" := trips*k2/sum(k2)/inc/nlanes, by = .(E,surge)]
-datvar[ , "n2" := trips*k2/sum(k2), by = .(E,surge)]
+datvar[ , k2 := fun.elasticdemand(k1,price1,price2,elas), by = .(elas,surge)]
+datvar[ , k2 := sum(k1)*k2/sum(k2), by = .(elas,surge)]
+datvar[ , "q2" := trips*k2/sum(k2)/inc/nlanes, by = .(elas,surge)]
+datvar[ , "n2" := trips*k2/sum(k2), by = .(elas,surge)]
 #Revenue
 datvar[ , rev1 := cumsum(n1*price1)]
 datvar[ , rev2 := cumsum(n2*price2)]
@@ -95,14 +95,15 @@ datvar[ , sumrev2 := cumsum(rev2)]
 datvar[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*tval)]
 
 #Check sum, make sure the same number of total trips happen
-datvar[ , lapply(.SD, sum),.SDcols = c("k1","k2"), by = .(E,surge)][, all.equal(k1,k2)]
-datvar[ , lapply(.SD, sum),.SDcols = c("q1","q2"), by = .(E,surge)][, all.equal(q1,q2)]
-datvar[ , lapply(.SD, sum),.SDcols = c("n1","n2"), by = .(E,surge)][, all.equal(n1,n2)]
+datvar[ , lapply(.SD, sum),.SDcols = c("k1","k2"), by = .(elas,surge)][, all.equal(k1,k2)]
+datvar[ , lapply(.SD, sum),.SDcols = c("q1","q2"), by = .(elas,surge)][, all.equal(q1,q2)]
+datvar[ , lapply(.SD, sum),.SDcols = c("n1","n2"), by = .(elas,surge)][, all.equal(n1,n2)]
 
 #Percent difference between aggregate total revenue
-revmat <- datvar[ , list("revratio" = (sum(rev2)-sum(rev1))/sum(rev1)), by = .(E,surge)]
+revmat <- datvar[ , list("revratio" = (sum(rev2)-sum(rev1))/sum(rev1)), by = .(elas,surge)]
 
-
+#Minimum pmax for revenue neutrality
+Pmax_rev <- revmat[round(elas,4) == E & revratio >= 0, ][which.min(revratio), surge]
 
 #### Ploting ####
 
@@ -296,7 +297,6 @@ plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
   coord_cartesian(xlim = c(0, max(revmat$E)), ylim = c(0,max(revmat$surge))) +
   theme_bw()
 # plot.revmat
-
 
 
 
