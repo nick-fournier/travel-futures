@@ -291,7 +291,7 @@ plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
   scale_x_continuous(expression("Price Elasticity of Demand, "~epsilon), expand = c(0,0)) +
   scale_y_continuous(expression("Maximum surge pricing,"~P[max]), expand = c(0,0),
                      labels = scales::percent_format()) +
-  scale_fill_brewer(expression("Revenue Ratio\n(Dynamic / Fixed)"),
+  scale_fill_brewer(expression("Revenue change\n(Dynamic vs Fixed)"),
                     palette = "RdBu", label = cutlabs) +
   coord_cartesian(xlim = c(0, max(revmat$E)), ylim = c(0,max(revmat$surge))) +
   theme_bw()
