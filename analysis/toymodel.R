@@ -126,8 +126,7 @@ for(x in rand$rand) plot.kernel <- plot.kernel + stat_function(fun = dnorm, args
 
 
 #### Elasticity Plot
-elabs <- c(paste0("E = ",E), paste0("E = ",E/2), paste0("E = ",2*E))
-elabs <- c(bquote(epsilon ==~.(E)), bquote(epsilon ==~.(E/2)), bquote(epsilon ==~.(2*E)))
+elabs <- c(bquote(epsilon ==~.(E/2)), bquote(epsilon ==~.(E)), bquote(epsilon ==~.(2*E)))
 
 plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) + 
   stat_function(fun = function(x) exp(-0.5*E*x)-1, aes(linetype = "E/2", color = "E/2"), alpha = 0.5) +
@@ -138,17 +137,23 @@ plot.elasticity <- ggplot(data.frame(x = c(0, 1)), aes(x)) +
   #annotate("text", x=-0.4, y=-.25, label = paste("Constant elasticity =",E)) + #, family = "Times New Roman") +
   scale_x_continuous(expression(Delta~"Price"), labels = scales::percent, limits = c(-1,1)) +
   scale_y_continuous(expression(Delta~"Demand"), labels = scales::percent, limits = c(-0.5,0.5)) +
-  scale_color_brewer("Elasticity", palette = "Set1", limits = c("E","E/2","2E"), labels = elabs) +
-  scale_linetype("Elasticity", limits = c("E","E/2","2E"), labels = elabs) +
+  scale_color_brewer("Elasticity", palette = "Set1", limits = c("E/2","E","2E"), labels = elabs) +
+  scale_linetype_manual("Elasticity", values = c(2,1,5), limits = c("E/2","E","2E"), labels = elabs) +
   theme_classic()
 # theme(text=element_text(family="Times New Roman"))
-plot.elasticity
+# plot.elasticity
 
-#### Pricing funcition 
+#### Pricing function
+plabs <- c(bquote(P[max] ==~"$"*.(pmax/2)), bquote(P[max] ==~"$"*.(pmax)), bquote(P[max] ==~"$"*.(2*pmax)))
+
 plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) + 
-  stat_function(fun = fun.price, args = list(pmin, pmax, a, b)) +
-  scale_y_continuous("Price ($/veh)", labels = scales::dollar, limits = c(0,pmax)) +
+  stat_function(fun = fun.price, args = list(pmin, 0.5*pmax, a, b), aes(linetype = "pmax/2", color = "pmax/2"), alpha = 0.5) +
+  stat_function(fun = fun.price, args = list(pmin, pmax, a, b), aes(linetype = "pmax", color = "pmax")) +
+  stat_function(fun = fun.price, args = list(pmin, 2*pmax, a, b), aes(linetype = "2pmax", color = "2pmax"), alpha = 0.5) +
+  scale_y_continuous("Price ($/veh)", labels = scales::dollar, limits = c(0,2*pmax)) +
   scale_x_continuous("Traffic density (veh/km/lane)") +
+  scale_color_brewer(expression("Upper price limit,"~P[max]), palette = "Set1", limits = c("pmax/2","pmax","2pmax"), labels = plabs) +
+  scale_linetype_manual(expression("Upper price limit,"~P[max]), values = c(2,1,5), limits = c("pmax/2","pmax","2pmax"), labels = plabs) +
   theme_classic()
 # theme(text=element_text(family="Times New Roman"))
 # plot.price
