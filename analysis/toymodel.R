@@ -285,16 +285,16 @@ plot.revsum <- ggplot(dat) +
 cuts = seq(-150, 150, by = 25)
 cutlabs = c(paste0(paste(round(cuts)[-length(cuts)], round(cuts[-1]), sep = " to "),"%"),paste0(">",round(cuts)[length(cuts)],"%"))
 
-plot.revmat <- ggplot(revmat, aes(x = E, y = surge)) +
+plot.revmat <- ggplot(revmat, aes(x = elas, y = surge)) +
   #geom_contour_filled(breaks = cuts, aes(z = 100*revratio)) +
   geom_raster(aes(fill = cut(100*revratio, c(cuts,Inf), include.lowest = T))) +
   geom_contour(breaks = cuts, aes(z = 100*revratio), color = "black") +
   scale_x_continuous(expression("Price Elasticity of Demand, "~epsilon), expand = c(0,0)) +
   scale_y_continuous(expression("Maximum surge pricing,"~P[max]), expand = c(0,0),
                      labels = scales::percent_format()) +
-  scale_fill_brewer(expression("Revenue change\n(Dynamic vs Fixed)"),
+  scale_fill_brewer(expression("Percent change in revenue\n(Dynamic vs Fixed)"),
                     palette = "RdBu", label = cutlabs) +
-  coord_cartesian(xlim = c(0, max(revmat$E)), ylim = c(0,max(revmat$surge))) +
+  coord_cartesian(xlim = c(0, max(revmat$elas)), ylim = c(0,max(revmat$surge))) +
   theme_bw()
 # plot.revmat
 
