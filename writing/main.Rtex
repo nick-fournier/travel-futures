@@ -185,7 +185,7 @@ While the objective in certain cases (i.e., roadways) is to maintain smooth traf
      \begin{subfigure}{0.49\linewidth}
      	\centering
      	%\includegraphics[width=0.66\textwidth]{figures/toytoll}
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.55, out.width="\\textwidth", warning=FALSE>>=
+     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
         plot.demanddist
         @
      	\caption{Toll pricing}
@@ -200,7 +200,7 @@ To simulate the resulting demand shift from pricing, the simple micro-economic p
 \begin{equation}
 \Delta\mu = e^{-\epsilon \cdot \Delta P} - 1
 \end{equation} 
-\noindent where $\Delta\mu$ is percent change in demand and $\Detla P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}.
+\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}.
   
 \begin{figure}[H]
     \centering
@@ -214,19 +214,20 @@ To simulate the resulting demand shift from pricing, the simple micro-economic p
 
 The elasticity will not only determine how sensitive travelers are to price changes, but also effect the aggregated total revenue collected. An increase in revenue from a dynamic pricing scheme compared to a fixed price is not guaranteed and depends upon the parameters selected in the pricing function. Ultimately, the revenue collected from a dynamic pricing scheme primarily depends on the elasticity, $\epsilon$, and the upper and lower limits of the pricing function, $P_{max}$ and $P_{min}$. 
 
-Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and 30 $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. For reference, optimal traffic flow is $\approx 20 \sfrac{veh}{km}$ and traffic flow begins to become unstable above $\approx 30 \sfrac{veh}{km}$, thus a pricing function in this case should align the upper price limit near values to incentivize demand to stay below these values.
+Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and 30 $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. For reference, optimal traffic flow is $\approx 20~\sfrac{veh}{km}$ and traffic flow begins to become unstable above $\approx 30~\sfrac{veh}{km}$, thus a pricing function in this case should align the upper price limit near values to incentivize demand to stay below these values.
 
  \begin{figure}[H]
  	\centering
  	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
-  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.3, out.width="0.75\\textwidth", warning=FALSE>>=
     plot.price
     @
  	\caption{Toy pricing sigmoid function}
  	\label{fig:toyprice}
  \end{figure}
  
- To demonstrate this for the toy simulation example, a matrix of possible revenue outcomes is calculated for a varying combination of maximum price, $P_{max}$ and elasticity, $\epsilon$, shown in Figure~\ref{fig:toyrevmat}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. A lower bound price is set at \$0. 
+ To demonstrate this for the toy simulation example, a matrix of possible percent change in revenue is calculated for a varying combination of maximum price, $P_{max}$ and elasticity, $\epsilon$, shown in Figure~\ref{fig:toyrevmat}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme, with a lower bound price is set at \$0 for the dynamic tolling scheme. 
+ 
  \begin{figure}[H]
  	\centering
 %  	\includegraphics[width=0.66\linewidth]{figures/revmat}
@@ -237,11 +238,14 @@ Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respec
  	\label{fig:toyrevmat}
  \end{figure}
  
-Interestingly, as price elasticity of demand becomes more elastic (i.e., large value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. High inelasticity is good from a revenue perspective, but bad for congestion mitigation, and vice versa. 
+Interestingly, as price elasticity of demand becomes more elastic (i.e., large value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. High inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but is for congestion mitigation and vice versa. In this case, the upper price limit $P_{max}$ must be at least \Sexpr{round(pfix*Pmax_rev,2)}
+ 
+However, this example is simplified to assume a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose not travel at all. This is an important reality to consider, particularly in regards to transportation equity when considering increasing tolls. Moreover, elasticity may also vary depending on a variety of factors, such as on time of day, purpose, and individual preferences and flexibility.  
+ 
  
 An obvious solution to this is to calibrate the parameters to optimize for revenue and/or congestion, or alternatively, the pricing function itself could be altered to suit a particular scenario (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to this optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
 
- However, this example is simplified to assume a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose not travel at all. This is an important reality to consider, particularly in regards to transportation equity when considering increasing tolls.
+
  
  
  
@@ -291,7 +295,7 @@ Note that the demand in Figure~\ref{fig:toydemcomp} shows demand as traffic dens
      	\label{fig:toytoll}
      \end{subfigure}
      \caption{Toy example toll pricing and demand density}
-     \label{fig:toymodel}
+     \label{fig:toyresults}
  \end{figure}
  
  There are two demand distributions, one distribution results from a flat toll which is constructed from the sum of four Gaussian functions characterized by means at 9:00, 12:00, 14:00 and 17:00, each with a standard deviation of 2. The other distribution is a result of demand shift incentivized by the dynamic toll price in Figure~\ref{fig:toytoll}, which was calculated using the sigmoid function in Figure~\ref{fig:toyprice}.
