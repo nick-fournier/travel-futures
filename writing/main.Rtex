@@ -226,7 +226,12 @@ Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respec
  	\label{fig:toyprice}
  \end{figure}
  
- To demonstrate this for the toy simulation example, a matrix of possible revenue outcomes for a dynamic tolling scheme compared to the fixed tolling scheme with varying combinations of maximum price, $P_{max}$ and elasticity, $\epsilon$ is shown in Figure~\ref{fig:toyrevmat}. The pricing function is given 
+ To demonstrate this for the toy simulation example, a matrix of possible revenue outcomes is calculated for a varying combination of maximum price, $P_{max}$ and elasticity, $\epsilon$. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the 
+ 
+ 
+ 
+ 
+ for a dynamic tolling scheme compared to the fixed tolling scheme with varying combinations of maximum price, $P_{max}$ and elasticity, $\epsilon$ is shown in Figure~\ref{fig:toyrevmat}. The pricing function is given 
 
 
  The sigmoid function uses the parameters in Table~\ref{tab:toyprice} with values for Equation~\eqref{eq:price} set arbitrarily to have a base $P_{min}$ lower and a $P_{max}$ higher than the fixed toll.  
