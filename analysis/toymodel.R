@@ -181,7 +181,7 @@ deltarevenue <- dat[ , (sum(rev2) - sum(rev1))/sum(rev1)]
 
 #### Plotting
 
-#### Function Plots ####
+#### Plots: Function Plots ####
 
 #### Kernal Density 
 #rand = data.table(rand = c(rlnorm(50, sd=0.5), rnorm(50, mean=3, sd=0.5)))
@@ -248,7 +248,7 @@ plot.flowdensity <- ggplot(data.frame(k = c(0, 40)), aes(k)) +
   scale_linetype_manual("Traffic Flow Model", values = c(1,2,5), limits = c("para","dag","green"), labels = flabs) +
   coord_cartesian(xlim = c(0,155), ylim = c(0,1550)) +
   theme_classic() +
-  theme(legend.position = c(0.85,0.5), 
+  theme(legend.position = "none", 
         legend.background = element_blank())
   #text=element_text(family="Times New Roman"))
 # plot.flowdensity
@@ -265,7 +265,7 @@ plot.speeddensity <- ggplot(data.frame(k = c(0, 40)), aes(k)) +
   scale_linetype_manual("Traffic Flow Model", values = c(1,2,5), limits = c("para","dag","green"), labels = flabs) +
   coord_cartesian(xlim = c(0,155), ylim = c(0,120)) +
   theme_classic() +
-  theme(legend.position = c(0.85,0.5), 
+  theme(legend.position = c(0.75,0.5), 
         legend.background = element_blank())
 #text=element_text(family="Times New Roman"))
 # plot.flowdensity
@@ -313,7 +313,7 @@ plot.demanddist <- ggplot(dat) +
 
 
 
-#### Heatmap matrix comparisons ####
+#### Plots: Heatmap matrix comparisons ####
 
 #### Total revenue by Elasticity vs Pmax
 revcuts = seq(-125, 125, by = 25)
@@ -356,7 +356,7 @@ plot.delaymat <- ggplot(varmat, aes(x = elas, y = surge)) +
 # plot.delaymat
 
 
-#### Time series distribution results plots ####
+#### Plots: Time series distribution results plots ####
 
 #### Demand Density Distributions (Same as flow, but with density)
 plot.demanddensity <- ggplot(dat) + 
