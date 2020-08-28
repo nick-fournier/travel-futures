@@ -340,9 +340,6 @@ delaylabs = paste0(paste(round(delaycuts)[-length(delaycuts)],
 # delaylabs <- gsub("-Inf to ", "\u2264", delaylabs)
 # delaylabs[grepl(" to Inf", delaylabs)] <- paste0(">", gsub(" to Inf", "", delaylabs[grepl(" to Inf", delaylabs)]))
 
-ggplot(varmat, aes(x = elas, y = surge)) +
-  geom_contour_filled(aes(z = 100*delaydiff))
-
 plot.delaymat <- ggplot(varmat, aes(x = elas, y = surge)) +
   geom_raster(aes(fill = cut(100*delaydiff, delaycuts))) +
   geom_contour(breaks = delaycuts, aes(z = 100*delaydiff), color = "black") +
@@ -482,6 +479,7 @@ plot.revsum <- ggplot(dat) +
 # ggsave("../figures/toytoll.pdf", plot.toll, device = cairo_pdf, width=4.25, height=2, units = "in")
 # ggsave("../figures/toyrevenue.pdf", plot.revenue, device = cairo_pdf, width=4.25, height=2, units = "in")
 # ggsave("../figures/KDE.pdf", plot.kernel, device = cairo_pdf, width=4.25, height=2, units = "in")
+
 
 
 
