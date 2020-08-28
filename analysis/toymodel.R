@@ -16,8 +16,23 @@ fun.elasticdemand <- function(k,p1,p2,E) k+k*(exp(-E*(p2-p1)/(p2+p1))-1)
 #Demand distribution (Manually constructed for this example)
 fun.demanddist <- function(scale, t,sd) scale*(dnorm(t,mean=9,sd) + dnorm(t,mean=17,sd) + dnorm(t,mean=12,sd=4) + dnorm(t,mean=14,sd=4))
 
+#Flow-density function
+fun.flowdensity <- function(k) {
+  sapply(k, function(k)
+    if(k <= k_c) 
+      k*v_f*(1 - (k/(2*k_c)))
+    else
+      (k_c*v_f/2)*(1 - ((k - k_c)^2)/((k_j - k_c)^2))
+  )
+}
+
+
 
 #### Parameters ####
+L = 7
+v_f = 100 #Free flow speed
+k_j = 130 #Jam density
+k_c = 30 #Critical density
 E = 0.3
 trips = 100000
 inc = 5/60
@@ -31,20 +46,29 @@ nlanes = 6 #lanes
 
 #### Run for the constant parameters ####
 dat = data.table(t=t, k1 = fun.demanddist(85,t,1.5), price1 = pfix)
-#dat[ , k2 := fun.demanddist(t,2)]
-dat[ , "q1" := trips*k1/sum(k1)/inc/nlanes ]
-dat[ , "n1" := trips*k1/sum(k1) ]
+dat[ , mu1 := trips*k1/sum(k1)/inc/nlanes ]
+dat[ , q1 := fun.flowdensity(k1) ]
+dat[ , n1 := trips*k1/sum(k1) ]
+dat[ , v1 := q1/k1]
 dat[ , price2 := fun.price(k1, pmin, pmax, a, b)]
 
 dat[ , k2 := fun.elasticdemand(k1,price1,price2,E)]
 dat[ , k2 := sum(k1)*k2/sum(k2)]
-dat[ , "q2" := trips*k2/sum(k2)/inc/nlanes ]
-dat[ , "n2" := trips*k2/sum(k2) ]
+dat[ , mu2 := trips*k2/sum(k2)/inc/nlanes ]
+dat[ , q2 := fun.flowdensity(k2) ]
+dat[ , n2 := trips*k2/sum(k2) ]
+dat[ , v2 := q2/k2]
+
+#Delay difference
+#dat[ , delaydiff := (n2*v1*(v_f - v2))/(n1*v2*(v_f - v1)) - 1 ]
+dat[ , d1 := n1*L*((1/v1) - (1/v_f))]
+dat[ , d2 := n2*L*((1/v2) - (1/v_f))]
+dat[ , delaydiff := (d2 - d1)/d1 ]
 
 #Revenue
 dat[ , rev1 := n1*price1]
 dat[ , rev2 := n2*price2]
-#Revenue per house
+#Revenue per hour
 dat[ , rev1hr := rev1/inc]
 dat[ , rev2hr := rev2/inc]
 #Cumulative sum
@@ -54,11 +78,14 @@ dat[ , sumrev2 := cumsum(n2*price2)]
 #Time
 dat[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*t)]
 
+#Average travel time savings
+dat[ , sum(delaydiff*(n1+n2)/2)/trips]
+
 #Check sum, make sure the same number of total trips happen
 dat[ , lapply(.SD, sum),.SDcols = c("k1","k2")]
-dat[ , lapply(.SD, sum),.SDcols = c("q1","q2")]
 dat[ , lapply(.SD, sum),.SDcols = c("n1","n2")]
-
+dat[ , lapply(.SD, sum),.SDcols = c("mu1","mu2")]
+dat[ , lapply(.SD, sum),.SDcols = c("q1","q2")]
 
 #### Run with varying pmax and elasticity ####
 #Set up combination matrix
@@ -71,18 +98,19 @@ datvar[ , pmax := pfix*surge]
 #Calculate demand dist for each combo
 datvar[ , k1 := fun.demanddist(85, tval, 1.5), by = .(elas,surge)]
 #Calculate flow and number of trips for fixed price
-datvar[ , "q1" := trips*k1/sum(k1)/inc/nlanes, by = .(elas,surge)]
-datvar[ , "n1" := trips*k1/sum(k1), by = .(elas,surge)]
+datvar[ , mu1 := trips*k1/sum(k1)/inc/nlanes, by = .(elas,surge)]
+datvar[ , q1 := fun.flowdensity(k1), by = .(elas,surge)]
+datvar[ , n1 := trips*k1/sum(k1), by = .(elas,surge)]
+datvar[ , v1 := q1/k1, by = .(elas,surge)]
 #Calculate new price the previous demand
 datvar[ , price2 := fun.price(k1, pmin, pmax, a, b)]
 #Calculate new density, flow, and number of trips from price
 datvar[ , k2 := fun.elasticdemand(k1,price1,price2,elas), by = .(elas,surge)]
 datvar[ , k2 := sum(k1)*k2/sum(k2), by = .(elas,surge)]
-datvar[ , "q2" := trips*k2/sum(k2)/inc/nlanes, by = .(elas,surge)]
-datvar[ , "n2" := trips*k2/sum(k2), by = .(elas,surge)]
-#Revenue
-datvar[ , rev1 := cumsum(n1*price1)]
-datvar[ , rev2 := cumsum(n2*price2)]
+datvar[ , mu2 := trips*k2/sum(k2)/inc/nlanes, by = .(elas,surge)]
+datvar[ , q2 := fun.flowdensity(k2), by = .(elas,surge)]
+datvar[ , n2 := trips*k2/sum(k2), by = .(elas,surge)]
+datvar[ , v2 := q2/k2, by = .(elas,surge)]
 
 #Revenue
 datvar[ , rev1 := n1*price1]
@@ -90,23 +118,32 @@ datvar[ , rev2 := n2*price2]
 #Cumulative sum
 datvar[ , sumrev1 := cumsum(rev1)]
 datvar[ , sumrev2 := cumsum(rev2)]
+#Travel time difference
+#datvar[ , delaydiff := (n2*v1*(v_f - v2))/(n1*v2*(v_f - v1)) - 1]
+datvar[ , d1 := n1*L*((1/v1) - (1/v_f)), by = .(elas,surge)]
+datvar[ , d2 := n2*L*((1/v2) - (1/v_f)), by = .(elas,surge)]
+datvar[ , delaydiff := (d2 - d1)/d1, by = .(elas,surge)]
 
 #Time
 datvar[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*tval)]
 
 #Check sum, make sure the same number of total trips happen
 datvar[ , lapply(.SD, sum),.SDcols = c("k1","k2"), by = .(elas,surge)][, all.equal(k1,k2)]
-datvar[ , lapply(.SD, sum),.SDcols = c("q1","q2"), by = .(elas,surge)][, all.equal(q1,q2)]
+datvar[ , lapply(.SD, sum),.SDcols = c("mu1","mu2"), by = .(elas,surge)][, all.equal(mu1,mu2)]
 datvar[ , lapply(.SD, sum),.SDcols = c("n1","n2"), by = .(elas,surge)][, all.equal(n1,n2)]
+datvar[ , lapply(.SD, sum),.SDcols = c("q1","q2"), by = .(elas,surge)][, all.equal(q1,q2)]
 
-#Percent difference between aggregate total revenue
-revmat <- datvar[ , list("revratio" = (sum(rev2)-sum(rev1))/sum(rev1)), by = .(elas,surge)]
+#Export the percent difference between aggregate total revenue and travel time
+revmat <- datvar[ , list("revdiff" = (sum(rev2)-sum(rev1))/sum(rev1),
+                         "delaydiff" = sum(delaydiff/trips) ), by = .(elas,surge)]
 
 #Minimum pmax for revenue neutrality
-Pmax_rev <- revmat[round(elas,4) == E & revratio >= 0, ][which.min(revratio), surge]
+Pmax_rev <- revmat[round(elas,4) == E & revdiff >= 0, ][which.min(revdiff), surge]
 
-#### Ploting ####
 
+#### Plotting
+
+#### Function Plots ####
 
 #### Kernal Density 
 #rand = data.table(rand = c(rlnorm(50, sd=0.5), rnorm(50, mean=3, sd=0.5)))
@@ -160,6 +197,21 @@ plot.price <- ggplot(data.frame(x = c(0, 40)), aes(x)) +
 # plot.price
 
 
+#### Flow-density function
+plot.flowdensity <- ggplot(data.frame(k = c(0, 40)), aes(k)) + 
+  stat_function(fun = fun.flowdensity) +
+  scale_y_continuous("Traffic flow (veh/hr/lane)", labels = scales::comma, expand = c(0,0)) +
+  scale_x_continuous("Traffic density (veh/km/lane)", limits = c(0, 150), expand = c(0,0)) +
+  coord_cartesian(xlim = c(0,155), ylim = c(0,1550)) +
+  theme_classic()
+# theme(text=element_text(family="Times New Roman"))
+# plot.flowdensity
+
+
+
+
+#### Time series distribution plots ####
+
 #### Discretized time Density Distributions
 captime = data.table(t = seq(0, 24, by = 0.5),
                      time = as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*seq(0, 24, by = 0.5)),
@@ -179,12 +231,12 @@ plot.captime <- ggplot(captime) +
   annotate("text", x = as.POSIXct('2000-01-01 06:00:00 EST', tz='EST'), y = 30, label = "Target Capacity", vjust = -0.5) +
   scale_y_continuous("Trip density", expand = c(0,0), limits = c(0,40)) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour", expand = c(0,0),
-                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
   theme_classic() +
   theme(legend.position = "bottom", 
         legend.background = element_blank())
 #text=element_text(family="Times New Roman"))
-plot.captime
+# plot.captime
 
 
 #### Demand Distributions
@@ -192,13 +244,12 @@ plot.demanddist <- ggplot(dat) +
   geom_area(aes(x=time,y=n1/inc), fill = "gray80", color = "black") + 
   scale_y_continuous("Travel Demand (trips/hr)", labels = scales::comma) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
-                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
   theme_classic() +
   theme(legend.position = c(0.2,0.7), 
         legend.background = element_blank())
 #text=element_text(family="Times New Roman"))
 # plot.demanddist
-
 
 
 #### Demand Density Distributions (Same as flow, but with density)
@@ -208,7 +259,7 @@ plot.demanddensity <- ggplot(dat) +
   scale_y_continuous("Traffic density (veh/km/ln)") +
   scale_linetype("Tolling scheme") +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
-                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
   theme_classic() +
   theme(legend.position = c(0.2,0.7), 
         legend.background = element_blank())
@@ -218,15 +269,43 @@ plot.demanddensity <- ggplot(dat) +
 #### Demand flow distributions (Same as density, but with flow)
 plot.demandflow <- ggplot(dat) + 
   geom_line(aes(x=time,y=q1, linetype="Fixed")) + 
-  geom_line(aes(x=time,y=q2, linetype="Dynamic")) + 
+  geom_line(aes(x=time,y=q2, linetype="Dynamic")) +
+  # geom_line(aes(x=time,y=mu1, linetype="Fixed", color = "Fixed")) + 
+  # geom_line(aes(x=time,y=mu2, linetype="Dynamic", color = "Dynamic")) + 
   scale_y_continuous("Traffic flow (veh/hr/lane)") +
   scale_linetype("Tolling scheme") +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
-                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
   theme_classic() +
   theme(legend.position = c(0.15,0.6))
         #text=element_text(family="Times New Roman"))
 # plot.demandflow
+
+#### Demand speed distributions
+plot.demandspeed <- ggplot(dat) + 
+  geom_line(aes(x=time,y=v1, linetype="Fixed")) + 
+  geom_line(aes(x=time,y=v2, linetype="Dynamic")) + 
+  scale_y_continuous("Speed (km/hr)", limits = c(0,100)) +
+  scale_linetype("Tolling scheme") +
+  scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
+  theme_classic() +
+  theme(legend.position = c(0.15,0.6))
+#text=element_text(family="Times New Roman"))
+# plot.demandspeed
+
+
+#### Demand time difference
+plot.demandtime <- ggplot(dat) + 
+  geom_line(aes(x=time,y=delaydiff)) +
+  scale_y_continuous("Travel time difference", labels = scales::percent_format()) +
+  scale_linetype("Tolling scheme") +
+  scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
+  theme_classic() +
+  theme(legend.position = c(0.15,0.6))
+#text=element_text(family="Times New Roman"))
+# plot.demandtime
 
 
 #### Toll price distribution
@@ -269,7 +348,7 @@ plot.revsum <- ggplot(dat) +
   scale_y_continuous("Total revenue ($)", labels = scales::dollar) +
   scale_linetype(NULL) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
-                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:00:00 EST', tz='EST'))) +
+                   limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
   theme_classic() +
   theme(legend.position = c(0.2,0.7),
         legend.background = element_blank())
@@ -277,27 +356,50 @@ plot.revsum <- ggplot(dat) +
 # plot.revsum
 
 
-#### Total revenue by Elasticity vs Pmax
-# cuts = with(revmat, 
-#             c(seq(10*floor(10*min(revratio)), 100, length.out = 6)[-6],
-#               seq(100, 10*ceiling(10*max(revratio)), length.out = 6)))
+#### Heatmap matrix comparisons ####
 
-cuts = seq(-150, 150, by = 25)
-cutlabs = c(paste0(paste(round(cuts)[-length(cuts)], round(cuts[-1]), sep = " to "),"%"),paste0(">",round(cuts)[length(cuts)],"%"))
+#### Total revenue by Elasticity vs Pmax
+revcuts = seq(-150, 150, by = 25)
+revlabs = c(paste0(paste(round(revcuts)[-length(revcuts)], 
+                         round(revcuts[-1]), sep = " to "),"%"),
+            paste0(">",round(revcuts)[length(revcuts)],"%"))
 
 plot.revmat <- ggplot(revmat, aes(x = elas, y = surge)) +
-  #geom_contour_filled(breaks = cuts, aes(z = 100*revratio)) +
-  geom_raster(aes(fill = cut(100*revratio, c(cuts,Inf), include.lowest = T))) +
-  geom_contour(breaks = cuts, aes(z = 100*revratio), color = "black") +
+  #geom_contour_filled(breaks = revcuts, aes(z = 100*revdiff)) +
+  geom_raster(aes(fill = cut(100*revdiff, c(revcuts,Inf), include.lowest = T))) +
+  geom_contour(breaks = revcuts, aes(z = 100*revdiff), color = "black") +
   scale_x_continuous(expression("Price Elasticity of Demand, "~epsilon), expand = c(0,0)) +
-  scale_y_continuous(expression("Maximum surge pricing,"~P[max]), expand = c(0,0),
+  scale_y_continuous(expression("Upper price limit,"~P[max]), expand = c(0,0),
                      labels = scales::percent_format()) +
   scale_fill_brewer(expression("Percent change in revenue\n(Dynamic vs Fixed)"),
-                    palette = "RdBu", label = cutlabs) +
+                    palette = "RdBu", label = revlabs) +
   coord_cartesian(xlim = c(0, max(revmat$elas)), ylim = c(0,max(revmat$surge))) +
   theme_bw()
 # plot.revmat
 
+
+#### Travel time by Elasticity vs Pmax
+timecuts = c(-Inf, 2^(1:9))/100
+#timecuts = seq(0,500, by = 100)
+# timelabs = c(paste0(paste(scales::comma(timecuts,1)[-length(timecuts)],
+#                          scales::comma(timecuts[-1],1), sep = " to "),"%"),
+#             paste0(">",scales::comma(timecuts,1)[length(timecuts)],"%"))
+timelabs = c(paste0(paste(round(timecuts,2)[-length(timecuts)],
+                         round(timecuts[-1],2), sep = " to "),"%"),
+            paste0(">",round(timecuts,2)[length(timecuts)],"%"))
+
+plot.timemat <- ggplot(revmat, aes(x = elas, y = surge)) +
+  # geom_contour_filled(aes(z = 100*delaydiff/trips)) +
+  geom_raster(aes(fill = cut(100*delaydiff, c(timecuts,Inf), include.lowest = T))) +
+  geom_contour(breaks = timecuts, aes(z = 100*delaydiff), color = "black") +
+  scale_x_continuous(expression("Price Elasticity of Demand, "~epsilon), expand = c(0,0)) +
+  scale_y_continuous(expression("Upper price limit,"~P[max]), expand = c(0,0),
+                     labels = scales::percent_format()) +
+  scale_fill_brewer(expression("Percent change in travel time\n(Dynamic vs Fixed)"),
+                    palette = "RdBu", label = timelabs) +
+  coord_cartesian(xlim = c(0, max(revmat$elas)), ylim = c(0,max(revmat$surge))) +
+  theme_bw()
+plot.timemat
 
 
 
