@@ -173,7 +173,7 @@ While the objective in certain cases (i.e., roadways) is to maintain smooth traf
 %--------------------------------------------------------
 
 \section{A toy simulation example}
- As an example application, suppose there are two adjacent cities as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a six lane bridge, three lanes in each direction, that carries 100,000 trips per day with an existing fixed toll of \$8. For simplicity, assume the traffic flow is balanced in each direction but possess a demand distribution with two peaks as shown in Figure~\ref{fig:toydemdist}. 
+As an example application, suppose there are two adjacent cities as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a six lane bridge, three lanes in each direction, that carries 100,000 trips per day with an existing fixed toll of \$8. For simplicity, assume the traffic flow is balanced in each direction but possess a demand distribution with two peaks as shown in Figure~\ref{fig:toydemdist}. 
  
   \begin{figure}[H]
      \begin{subfigure}{0.49\linewidth}
@@ -194,32 +194,34 @@ While the objective in certain cases (i.e., roadways) is to maintain smooth traf
      \caption{Toy example toll pricing and demand density}
      \label{fig:toymodel}
  \end{figure}
- 
- The traffic flow across the bridge can be characterized by the macroscopic fundamental diagram
- 
- 
- A modified piecewise asymmetric parabolic function 
- 
- 
- \begin{equation}\
+
+\subsection{Traffic flow}
+The traffic flow across the bridge can be characterized by the macroscopic fundamental diagram using the following modified piece-wise flow-density function
+
+\begin{equation}\
  q(k) = 
       \begin{cases} 
       k < k_c :     &  v_{f} k \left(1 - \frac{k}{2k_{c}} \right)\\
       k \geq k_c :  & \frac{k_{c}v_{f}}{2} \left(1 - \frac{\left(k - k_{c}\right)^{2}}{\left(k_{j} - k_{c} \right)^{2}} \right)
    \end{cases}
+   \label{eq:flowdensity}
  \end{equation}
  
+ \noindent where $k_c$ is the critical density when traffic flow is optimal, $k_j$ is the jam density when traffic flow completely stops, and $v_f$ is the free-flow traffic speed. For reference, an optimal traffic flow is often $\approx 20-40~\sfrac{veh}{km}$, with traffic flow beginning to become unstable above this point until reaching the jam density at $\approx 100-150~\sfrac{veh}{km}$. The modified piece-wise function is composed of two different parabolic functions in order to provide the more realistic asymmetric form often observed with a longer right-tail, as shown in Figure~\ref{fig:flowdensity}. The first piece when $k < k_c$ centers the curve peak at the critical density $k_c$, which in this case is set to $30~\sfrac{veh}{km}$, and the other when $k \geq k_c$ sets the end of the right-tail at the jam density $k_j$, which is set to $120~\sfrac{veh}{km}$. 
  
- \begin{figure}[H]
+  \begin{figure}[H]
     \centering
 %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.6\\textwidth", warning=FALSE>>=
-    plot.elasticity
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.4, out.width="0.6\\textwidth", warning=FALSE>>=
+    plot.flowdensity
     @
- 	\caption{Price elasticity}
- 	\label{fig:toyelasticity}
+ 	\caption{Flow-density function}
+ 	\label{fig:flowdensity}
 \end{figure}
- 
+
+Although a variety of highly refined flow-density modeling function exist, they are often very sophisticated and require many calibration parameters. This simple parsimonious function satisfies the needs for this simple demonstration, while avoiding the most egregious pitfalls of Greenshields' basic parabola. 
+
+\subsection{Demand}
 To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. For this simulation, a constant isoelastic price-demand function was used,
 
 \begin{equation}
@@ -239,12 +241,10 @@ To simulate the resulting demand shift from pricing, the simple micro-economic p
 
 The elasticity will not only determine how sensitive travelers are to price changes, but also effect the aggregated total revenue collected. An increase in revenue from a dynamic pricing scheme compared to a fixed price is not guaranteed and depends upon the parameters selected in the pricing function. Ultimately, the revenue collected from a dynamic pricing scheme primarily depends on the elasticity, $\epsilon$, and the upper and lower limits of the pricing function, $P_{max}$ and $P_{min}$. 
 
+
 \subsection{Varying effect of upper price limits}
 
-Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and 30 $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. For reference, an optimal traffic flow is often $\approx 30~\sfrac{veh}{km}$, with traffic flow beginning to become unstable above this point until reaching total jam density at $\approx 115-150~\sfrac{veh}{km}$.
-
-
-, thus a pricing function in this case should align the upper price limit near these values to incentivize demand to stay below these values.
+Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and 30 $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below.
 
  \begin{figure}[H]
  	\centering
@@ -258,14 +258,6 @@ Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respec
  
  To demonstrate this for the toy simulation example, a matrix of percent change in revenue possibilities are calculated for a varying combination of maximum price, $P_{max}$ and elasticity, $\epsilon$, shown in Figure~\ref{fig:toyrevmat}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. A lower bound of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, this extremely theoretical scenario is not explored for simplicity.
  
- 
- 
- Percent travel time improvement as proportional to speed improvement
- 
- 
- 
- 
- 
  \begin{figure}[H]
  	\centering
 %  	\includegraphics[width=0.66\linewidth]{figures/revmat}
@@ -277,6 +269,23 @@ Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respec
  \end{figure}
  
 As expected, when price elasticity of demand becomes more elastic (i.e., large value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E,1)} in this case, $P_{max}$ must be at least \$\Sexpr{round(pfix*Pmax_rev,2)} to be at least revenue neutral. 
+
+The above only looks at revenue however, and not operational improvement. 
+
+Percent travel time improvement as proportional to speed improvement
+
+\begin{figure}[H]
+ 	\centering
+%  	\includegraphics[width=0.66\linewidth]{figures/revmat}
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.6, out.width="0.75\\textwidth", warning=FALSE>>=
+    plot.timemat
+    @
+ 	\caption{Comparison of travel time improvement by elasticity $\epsilon$ and $P_{max}$}
+ 	\label{fig:toyrevmat}
+ \end{figure}
+ 
+ 
+ 
  
 However, it is important to point out that this example is a very simplified case. It assumes a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose not travel entirely. Moreover, elasticity may also vary depending on a variety of factors, such as on time, purpose, and individual preferences and flexibility. This is an important reality to consider, particularly in regards to transportation equity when considering increasing transportation costs for individuals. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
  
