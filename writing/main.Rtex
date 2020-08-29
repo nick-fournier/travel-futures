@@ -51,23 +51,20 @@ While transportation funding can be collected in a variety of direct (e.g., fare
 \section{Background}
 The cost of providing additional transportation capacity (e.g., more transit vehicles or road lanes) for only a very brief peak demand period leaves infrastructure largely underutilized for the remaining time and is often financially unjustifiable or impossible given current infrastructure. The challenge is then how to more efficiently utilize existing capacity, rather than building over-sized infrastructure solely for the peak periods. Tolls and increased fares are one tool used to raise revenue and mitigate congestion for decades, but conventional fixed prices fails to target the congested periods and merely apply a uniform downward disincentive on travel (see Figure~\ref{fig:flatprice}). This is especially true for when no travel alternative exists, such as with road tolls without a transit alternative. While it may reduce congestion by reducing overall travel demand, it does not necessarily encourage efficient use of infrastructure. Moreover, it is economically problematic by potentially slowing down overall economic activity, as well as posing serious equity concerns to those who cannot afford costly travel.
 
-The obvious solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during targeted congested periods and shift it to periods of low demand (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive, as has been done for decades in other transportation sectors (e.g., inter-city bus, rail, and air travel), but have seldom been implemented due to negative political appeal [CITE]. Travelers generally do not want to pay for travel, let alone be subject to increased costs that they perceive as having little control over. Moreover, without any feasible alternative travel options, road pricing is little more than extortion. 
-
 \begin{figure}[H]
-\begin{subfigure}{\linewidth}
 	\includegraphics[width=0.6\textwidth]{figures/flatprice}
 	\centering
 	\caption{Fixed toll pricing incentive}
 	\label{fig:flatprice}
-\end{subfigure}
-\begin{subfigure}{\linewidth}
+\end{figure}
+
+The obvious solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during targeted congested periods and shift it to periods of low demand (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive, as has been done for decades in other transportation sectors (e.g., inter-city bus, rail, and air travel), but have seldom been implemented due to negative political appeal [CITE]. Travelers generally do not want to pay for travel, let alone be subject to increased costs that they perceive as having little control over. Moreover, without any feasible alternative travel options, road pricing is little more than extortion. 
+
+\begin{figure}[H]
 	\includegraphics[width=0.6\textwidth]{figures/dynamicprice}
 	\centering
 	\caption{Dynamic toll pricing incentive}
 	\label{fig:dynamicprice}
-\end{subfigure}
-\label{fig:incentives}
-\caption{Incentive effect on demand}
 \end{figure}
 
 More recently, there has been some discussion surrounding the concept of travel credits, exploiting the aspect of finite roadway capacity as the basis for a ``cap and trade'' type model for mitigating congestion by crediting travelers for not traveling during the peak \citep{Perrels2010}. Another more market-based evolution of the approach has also been proposed, enabling travelers to ``sell'' their trip rights to the highest bidder, achieving a similar goal without the need for governments to credit travelers \citep{Akamatsu2017,Fan2013,Wang2012,Yang2011}. There has also been a great deal of hype around the concept of Mobility as a Service (MaaS) or Transportation as a Service (TaaS) where ``travel brokers'', acting almost as an automated travel agency, provide integrated multi-modal trip packages to users for travelers. However, few of these concepts other than dynamic pricing have had little traction outside of academia in recent years, but some technology companies have implemented conceptually similar trip routing and payment integration features in their platforms (e.g., mobile payment systems with transit and ride hailing services), laying the groundwork for such concepts. 
@@ -179,7 +176,7 @@ As an example application, suppose there are two adjacent cities as shown in Fig
     \begin{subfigure}{0.49\linewidth}
         \centering
      	\includegraphics[width=\linewidth]{figures/silvergate}
-     	\caption{Toy example scenario}
+     	\caption{Toy scenario}
      	\label{fig:toymap}
     \end{subfigure}
     \begin{subfigure}{0.49\linewidth}
@@ -187,7 +184,7 @@ As an example application, suppose there are two adjacent cities as shown in Fig
      	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
         plot.demanddist
         @
-     	\caption{Toll pricing}
+     	\caption{Demand distribution}
      	\label{fig:toydemdist}
      \end{subfigure}
      \caption{Toy example toll pricing and demand density}
@@ -233,12 +230,13 @@ Although a variety of more refined macroscopic models have been developed, many 
 
 
 \subsection{Demand}
-To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. For this simulation, a constant isoelastic price-demand function was used,
+To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. For this simulation, a constant isoelastic price-demand function was used,
 
 \begin{equation}
 \Delta\mu = e^{-\epsilon \cdot \Delta P} - 1
 \end{equation} 
-\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}.
+\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values. For this demonstration, a modest elasticity value of \Sexpr{round(E,2)} is used.
+
   
 \begin{figure}[H]
     \centering
@@ -255,7 +253,7 @@ The elasticity will not only determine how sensitive travelers are to price chan
 
 \subsection{Varying effect of upper price limits}
 
-Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and 30 $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below.
+Using calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below.
 
  \begin{figure}[H]
  	\centering
@@ -267,7 +265,7 @@ Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respec
  	\label{fig:toyprice}
  \end{figure}
  
- To demonstrate this for the toy simulation example, a matrix of percent change in revenue possibilities are calculated for a varying combination of maximum price, $P_{max}$ and elasticity, $\epsilon$, shown in Figure~\ref{fig:toyrevmat}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. A lower bound of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, this extremely theoretical scenario is not explored for simplicity.
+To demonstrate this with the toy simulation example, a matrix of the resulting percent change in revenue possibilities are calculated for a varying combination of maximum price, $P_{max}$ and elasticity, $\epsilon$, shown in Figure~\ref{fig:toyrevmat}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. A lower bound of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, this extremely theoretical scenario is not explored for simplicity.
  
  \begin{figure}[H]
  	\centering
@@ -278,7 +276,7 @@ Using calibration parameter values of 7 and 0.3 for $\alpha$ and $\beta$, respec
  	\label{fig:toyrevmat}
  \end{figure}
  
-As expected, when price elasticity of demand becomes more elastic (i.e., large value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E,1)} in this case, $P_{max}$ must be at least \$\Sexpr{round(pfix*pmax_rev,2)} to be at least revenue neutral. 
+As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E,1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsurge_rev)}\% of the fixed price, or \$\Sexpr{round(pfix*minsurge_rev,2)}, to be at least revenue neutral.
 
 The above only looks at revenue however, and not operational improvement. 
 
