@@ -278,9 +278,14 @@ To demonstrate this with the toy simulation example, a matrix of the resulting p
  
 As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E,1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsurge_rev)}\% of the fixed price, or \$\Sexpr{round(pfix*minsurge_rev,2)}, to be at least revenue neutral.
 
-The above only looks at revenue however, and not operational improvement. 
+Revenue is only one perspective, and does not yet consider operational performance, which is arguably the purpose of dynamic pricing. Making the same comparison by varying elasticity, $\epsilon$, and maximum price, $P_{max}$, it can be performed for the percent change in total delay. The percent change in total delay can be calculated as
 
-Percent travel time improvement as proportional to speed improvement
+\begin{equation}
+    \% \Delta d = \frac{n_2 \Sigma \frac{v_f - v_2}{v_2 v_f} }{n_1 \Sigma \frac{v_f - v_1}{v_1 v_f} } 
+\end{equation}
+
+\noindent where 
+
 
 \begin{figure}[H]
  	\centering
