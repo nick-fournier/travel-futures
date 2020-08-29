@@ -328,7 +328,7 @@ plot.revmat <- ggplot(varmat, aes(x = elas, y = surge)) +
                      labels = scales::percent_format()) +
   scale_fill_brewer(expression("Percent change in revenue\n(Dynamic vs Fixed)"),
                     palette = "RdBu", label = revlabs) +
-  coord_cartesian(xlim = c(0, max(varmat$elas)), ylim = c(0,max(varmat$surge))) +
+  coord_fixed(ratio = max(varmat$elas)/max(varmat$surge), xlim = c(0, max(varmat$elas)), ylim = c(0,max(varmat$surge))) +
   theme_bw()
 # plot.revmat
 
@@ -348,7 +348,7 @@ plot.delaymat <- ggplot(varmat, aes(x = elas, y = surge)) +
                      labels = scales::percent_format()) +
   scale_fill_brewer(expression("Percent change\nin total delay"),
                     palette = "RdBu", label = delaylabs, direction = -1) +
-  coord_cartesian(xlim = c(0, max(varmat$elas)), ylim = c(0,max(varmat$surge))) +
+  coord_fixed(ratio = max(varmat$elas)/max(varmat$surge), xlim = c(0, max(varmat$elas)), ylim = c(0,max(varmat$surge))) +
   theme_bw()
 # plot.delaymat
 
