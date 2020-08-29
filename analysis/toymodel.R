@@ -124,10 +124,10 @@ varmat <- datvar[ , list("revdiff" = (sum(rev2) - sum(rev1))/sum(rev1),
 
 
 #Minimum pmax for revenue neutrality
-pmax_rev <- varmat[round(elas,4) == E & revdiff >= 0, ][which.min(revdiff), surge]
+minsurge_rev <- varmat[round(elas,4) == E & revdiff >= 0, ][which.min(revdiff), surge]
 
 #Use this Pmax?
-pmax = pmax_rev
+pmax = pfix*minsurge_rev
 
 
 #### Run for the constant parameters ####
