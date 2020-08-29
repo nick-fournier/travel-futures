@@ -100,7 +100,7 @@ datvar[ , v2 := q2/k2, by = .(elas,surge)]
 #Delay
 datvar[ , d1 := n1*L*((1/v1) - (1/v_f)), by = .(elas,surge)]
 datvar[ , d2 := n2*L*((1/v2) - (1/v_f)), by = .(elas,surge)]
-datvar[ , delaydiff := (n2*v1*(v_f - v2))/(n1*v2*(v_f - v1)) - 1, by = .(elas,surge)]
+# datvar[ , delaydiff_i := (n2*v1*(v_f - v2))/(n1*v2*(v_f - v1)) - 1, by = .(elas,surge)]
 
 #Revenue
 datvar[ , rev1 := n1*price1]
@@ -119,9 +119,8 @@ datvar[ , lapply(.SD, sum),.SDcols = c("n1","n2"), by = .(elas,surge)][, all.equ
 datvar[ , lapply(.SD, sum),.SDcols = c("q1","q2"), by = .(elas,surge)][, all.equal(q1,q2)]
 
 #Export the percent difference between aggregate total revenue and travel time
-varmat <- datvar[ , list("revdiff" = (sum(rev2) - sum(rev1))/sum(rev1),
-                         "delaydiff" = (sum(d2*n2) - sum(d1*n1))/sum(d1*n1) ), by = .(elas,surge)]
-
+varmat <- datvar[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1),
+                         "delaydiff" = (sum((n2/v2)*(v_f - v2)) / sum((n1/v1)*(v_f - v1))) - 1 ), by = .(elas,surge)]
 
 #Minimum pmax for revenue neutrality
 minsurge_rev <- varmat[round(elas,4) == E & revdiff >= 0, ][which.min(revdiff), surge]
@@ -148,11 +147,11 @@ dat[ , v2 := q2/k2]
 #Delay
 dat[ , d1 := n1*L*((1/v1) - (1/v_f))]
 dat[ , d2 := n2*L*((1/v2) - (1/v_f))]
-dat[ , delaydiff := (n2*v1*(v_f - v2))/(n1*v2*(v_f - v1)) - 1 ]
+#dat[ , delaydiff := (n2*v1*(v_f - v2))/(n1*v2*(v_f - v1)) - 1 ]
 
 #Check to make sure they're the same
-# all.equal(dat[ , (d2 - d1)/d1 ],
-#           dat[ , (n2*v1*(v_f - v2))/(n1*v2*(v_f - v1)) - 1 ])
+all.equal(dat[ , (d2 - d1)/d1 ],
+          dat[ , (n2*v1*(v_f - v2))/(n1*v2*(v_f - v1)) - 1 ])
 
 
 #Revenue
@@ -175,9 +174,11 @@ dat[ , lapply(.SD, sum),.SDcols = c("mu1","mu2")]
 dat[ , lapply(.SD, sum),.SDcols = c("q1","q2")]
 
 #Percent change in delay
-deltadelay <- dat[ , (sum(d2*n2) - sum(d1*n1))/sum(d1*n1)]
+#deltadelay <- dat[ , (sum(d2 - d1))/sum(d1)]
+deltadelay <- dat[ , (sum((n2/v2)*(v_f - v2)) / sum((n1/v1)*(v_f - v1))) - 1 ]
+
 #Percent change in revenue
-deltarevenue <- dat[ , (sum(rev2) - sum(rev1))/sum(rev1)]
+deltarevenue <- dat[ , (sum(rev2 - rev1))/sum(rev1)]
 
 #### Plotting
 
@@ -316,7 +317,7 @@ plot.demanddist <- ggplot(dat) +
 #### Plots: Heatmap matrix comparisons ####
 
 #### Total revenue by Elasticity vs Pmax
-revcuts = seq(-125, 125, by = 25)
+revcuts <- seq(-125, 125, by = 25)
 revlabs <- paste0(paste(round(revcuts)[-length(revcuts)],
                         round(revcuts[-1]), sep = " to "),"%")
 
@@ -334,23 +335,28 @@ plot.revmat <- ggplot(varmat, aes(x = elas, y = surge)) +
 
 
 #### Travel time by Elasticity vs Pmax
-delaycuts = seq(-50, 50, by = 10)
-delaylabs = paste0(paste(round(delaycuts)[-length(delaycuts)], 
-                        round(delaycuts[-1]), sep = " to "),"%")
+delaycuts <- seq(-30, 10, by = 5)
+delaylabs <- paste0(paste(round(delaycuts)[-length(delaycuts)],
+                          round(delaycuts[-1]), sep = " to "),"%")
 # delaylabs <- gsub("-Inf to ", "\u2264", delaylabs)
 # delaylabs[grepl(" to Inf", delaylabs)] <- paste0(">", gsub(" to Inf", "", delaylabs[grepl(" to Inf", delaylabs)]))
 
+delaycolors <- c(brewer_pal(palette = "Blues", direction = -1)(length(delaycuts[delaycuts<0])),
+                 brewer_pal(palette = "Reds")(length(delaycuts[delaycuts>=0])))
+
+# ggplot(varmat, aes(x = elas, y = surge, z = 100*delaydiff)) + geom_contour_filled()
 plot.delaymat <- ggplot(varmat, aes(x = elas, y = surge)) +
   geom_raster(aes(fill = cut(100*delaydiff, delaycuts))) +
   geom_contour(breaks = delaycuts, aes(z = 100*delaydiff), color = "black") +
   scale_x_continuous(expression("Price Elasticity of Demand, "~epsilon), expand = c(0,0)) +
   scale_y_continuous(expression("Upper price limit,"~P[max]), expand = c(0,0),
                      labels = scales::percent_format()) +
-  scale_fill_brewer(expression("Percent change\nin total delay"),
-                    palette = "RdBu", label = delaylabs, direction = -1) +
+  scale_fill_manual(expression("Percent change\nin total delay"), label = delaylabs, values = delaycolors) +
+  # scale_fill_brewer(expression("Percent change\nin total delay"),
+  #                   palette = "RdBu", label = delaylabs, direction = -1) +
   coord_fixed(ratio = max(varmat$elas)/max(varmat$surge), xlim = c(0, max(varmat$elas)), ylim = c(0,max(varmat$surge))) +
   theme_bw()
-# plot.delaymat
+plot.delaymat
 
 
 #### Plots: Time series distribution results plots ####
@@ -400,8 +406,8 @@ plot.demandspeed <- ggplot(dat) +
 
 #### Demand delay
 plot.demanddelay <- ggplot(dat) + 
-  geom_line(aes(x=time,y=n1*d1, linetype="Fixed")) + 
-  geom_line(aes(x=time,y=n2*d2, linetype="Dynamic")) +
+  geom_line(aes(x=time,y=d1, linetype="Fixed")) + 
+  geom_line(aes(x=time,y=d2, linetype="Dynamic")) +
   scale_y_continuous("Total delay time (hr)") +
   scale_linetype("Tolling scheme") +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
