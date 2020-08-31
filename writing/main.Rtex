@@ -170,243 +170,241 @@ While the objective in certain cases (i.e., roadways) is to maintain smooth traf
 %--------------------------------------------------------
 
 \section{A simulation example}
-As an example application, suppose there are two adjacent cities as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a six lane bridge, three lanes in each direction, that carries 100,000 trips per day with an existing fixed toll of \$8. For simplicity, assume the traffic flow is balanced in each direction but possess a demand distribution with two peaks as shown in Figure~\ref{fig:toydemdist}. 
- 
-\begin{figure}[H]
-    \begin{subfigure}{0.49\linewidth}
-        \centering
-     	\includegraphics[width=\linewidth]{figures/silvergate}
-     	\caption{Toy scenario}
-     	\label{fig:toymap}
-    \end{subfigure}
-    \begin{subfigure}{0.49\linewidth}
-     	\centering
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
-        plot.demanddist
-        @
-     	\caption{Demand distribution}
-     	\label{fig:toydemdist}
-     \end{subfigure}
-     \caption{Toy example toll pricing and demand density}
-     \label{fig:toymodel}
- \end{figure}
+As an example application, suppose there are two adjacent urban centers in a metropolitan region as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a six lane bridge, three lanes in each direction, that carries 100,000 trips per day with an existing fixed toll of \$8.
 
-\subsection{Traffic flow}
-The traffic flow across the bridge can be characterized by the macroscopic fundamental diagram using the following modified piece-wise flow-density function
-
-\begin{equation}\
- q(k) = 
-      \begin{cases} 
-      k < k_c :     &  v_{f} k \left(1 - \frac{k}{2k_{c}} \right)\\
-      k \geq k_c :  & \frac{k_{c}v_{f}}{2} \left(1 - \frac{\left(k - k_{c}\right)^{2}}{\left(k_{j} - k_{c} \right)^{2}} \right)
-  \end{cases}
-  \label{eq:flowdensity}
- \end{equation}
- 
- \noindent where $k_c$ is the critical density when traffic flow is optimal, $k_j$ is the jam density when traffic flow completely stops, and $v_f$ is the free-flow traffic speed. For reference, an optimal traffic flow is often $\approx 20-40~\sfrac{veh}{km}$, with traffic flow beginning to become unstable above this point until reaching the jam density at $\approx 100-150~\sfrac{veh}{km}$. The modified piece-wise function is composed of two different parabolic functions in order to provide the more realistic asymmetric form often observed with a longer right-tail, as shown in Figure~\ref{fig:mfd}. The first piece when $k < k_c$ provides a steep curve that peaks at the critical density $k_c$, and the other case when $k \geq k_c$ sets the right-tail of the elongated parabola at jam density $k_j$. The critical and jam densities, $k_c$ and $k_j$, are set to  $30~\sfrac{veh}{km}$, and $120~\sfrac{veh}{km}$, respectively.
- 
-\begin{figure}[H]
-     \begin{subfigure}{0.49\linewidth}
-        \centering
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
-            plot.flowdensity
-        @
- 	    \caption{Flow-density functions}
-     	\label{fig:flowdensity}
-     \end{subfigure}
-     \begin{subfigure}{0.49\linewidth}
-     	\centering
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
-        plot.speeddensity
-        @
-     	\caption{Speed-density functions}
-     	\label{fig:speeddensity}
-     \end{subfigure}
-     \caption{Toy example toll pricing and demand density}
-     \label{fig:mfd}
- \end{figure}
-
-Although a variety of more refined macroscopic models have been developed, many models are often very sophisticated requiring additional calibration parameters, or possess abrupt transitions that can create anomalies in analytical results. Two common classical models that require no additional calibration parameters are \citeyear{Greenshields1935} parabolic function and Daganzo's (\citeyear{Daganzo1997}) simple bi-linear model. Greenshields' seminal function is elegantly simple, but symmetric parabolic shape has since been proven a poor fit in reality, particularly when critical density, $k_c$, is exceeded. Daganzo's model in contrast provides a very simple parsimonious model with an asymmetric form, but its linearity assumes a constant free-flow speed until it abruptly transitions at critical density. The constant free-flow speed not only ignores minor delay caused by gradual slowing of traffic as density increases, but causes an abrupt transition that can cause erroneous results when results suddenly jump. The bi-parabolic function proposed is both parsimonious, requiring no additional calibration parameters, and contains no abrupt transitions. It is not the most advanced model, but satisfies the needs for this simple simulation.
-
-
-\subsection{Demand}
-To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. For this simulation, a constant isoelastic price-demand function was used,
-
-\begin{equation}
-\Delta\mu = e^{-\epsilon \cdot \Delta P} - 1
-\end{equation} 
-\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values. For this demonstration, a modest elasticity value of \Sexpr{round(E,2)} is used.
-
-  
 \begin{figure}[H]
     \centering
-%  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.6\\textwidth", warning=FALSE>>=
-    plot.elasticity
-    @
- 	\caption{Price elasticity}
- 	\label{fig:toyelasticity}
+ 	\includegraphics[width=0.5\linewidth]{figures/silvergate}
+ 	\caption{Toy scenario}
+ 	\label{fig:toymap}
 \end{figure}
 
-The elasticity will not only determine how sensitive travelers are to price changes, but also effect the aggregated total revenue collected. An increase in revenue from a dynamic pricing scheme compared to a fixed price is not guaranteed and depends upon the parameters selected in the pricing function. Ultimately, the revenue collected from a dynamic pricing scheme primarily depends on the elasticity, $\epsilon$, and the upper and lower limits of the pricing function, $P_{max}$ and $P_{min}$. 
+The daily travel demand possess a demand distribution with two severe peaks as shown in Figure~\ref{fig:toydemdist}. For simplicity, assume the traffic flow is balanced in each direction. 
 
-
-\subsection{Market penetration}
+\begin{figure}[H]
+ 	\centering
+ 	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+    plot.demanddist
+    @
+ 	\caption{Demand distribution}
+ 	\label{fig:toydemdist}
+ \end{figure}
  
-\begin{table}[H]
+ The metropolitan transportation planning commission wishes alleviate congestion in the peaks with a dynamic tolling system.  The commission has determined the pricing parameters in Table~\ref{tab:toyprice}. They determined that voters are willing to approve a pre-purchase toll system that offers a \Sexpr{round(disc*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surg*100)}\% surcharge above existing prices in the peak.
+ 
+ \begin{table}[H]
     \centering
- 	\caption{Toy example pricing parameters}
+ 	\caption{Desired pricing parameters}
  	\begin{tabular}{ c c l}
  		\toprule
  		Parameter   & Value  & Description                          \\ \hline
- 		$P_{fixed}$ & \$8 & \small Fixed toll price                     \\
- 		$P_{min}$   & \$0    & \small Minimum dynamic toll price           \\
- 		$P_{max}$   & \$18   & \small Maximum dynamic toll price			\\
- 		$\alpha$    & 7      & \small Price calibration parameter \\
- 		$\beta$     & 0.3    & \small Price calibration parameter \\
- 		$\epsilon$  & 0.3    & \small Elasticity \\ \bottomrule
+ 		$P_{fixed}$ & \$\Sexpr{round(pfix)} & \small Previous fixed toll price                     \\
+ 		$P_{min}$   & \$\Sexpr{round(pmin)}    & \small Minimum dynamic toll price           \\
+ 		$P_{max}$   & \$\Sexpr{round(pmax)}   & \small Maximum dynamic toll price			\\
+ 		$\alpha$    & \Sexpr{round(a)}      & \small Price calibration parameter \\
+ 		$\beta$     & \Sexpr{round(b)}    & \small Price calibration parameter \\
+ 		$\epsilon$  & \Sexpr{round(E)}    & \small Elasticity \\ \bottomrule
  	\end{tabular}
  	\label{tab:toyprice}
  \end{table}
+
+% \subsection{Traffic flow}
+% The traffic flow across the bridge can be characterized by the macroscopic fundamental diagram using the following modified piece-wise flow-density function
+
+% \begin{equation}\
+%  q(k) = 
+%       \begin{cases} 
+%       k < k_c :     &  v_{f} k \left(1 - \frac{k}{2k_{c}} \right)\\
+%       k \geq k_c :  & \frac{k_{c}v_{f}}{2} \left(1 - \frac{\left(k - k_{c}\right)^{2}}{\left(k_{j} - k_{c} \right)^{2}} \right)
+%   \end{cases}
+%   \label{eq:flowdensity}
+%  \end{equation}
  
- Note that the demand in Figure~\ref{fig:toydemcomp} shows demand as traffic density, not volume. 
+% \noindent where $k_c$ is the critical density when traffic flow is optimal, $k_j$ is the jam density when traffic flow completely stops, and $v_f$ is the free-flow traffic speed. For reference, an optimal traffic flow is often $\approx 20-40~\sfrac{veh}{km}$, with traffic flow beginning to become unstable above this point until reaching the jam density at $\approx 100-150~\sfrac{veh}{km}$. The modified piece-wise function is composed of two different parabolic functions in order to provide the more realistic asymmetric form often observed with a longer right-tail, as shown in Figure~\ref{fig:flowdensity}. 
+
+% Although a variety of more refined macroscopic models have been developed, many models are often very sophisticated requiring additional calibration parameters, or possess abrupt transitions that can create anomalies in analytical results. Two common classical models that require no additional calibration parameters are Greenshields' (\citeyear{Greenshields1935}) parabolic function and Daganzo's (\citeyear{Daganzo1997}) simple bi-linear model. Greenshields' seminal function is elegantly simple, but symmetric parabolic shape has since been proven a poor fit in reality, particularly when critical density, $k_c$, is exceeded. Daganzo's model in contrast provides a very simple parsimonious model with an asymmetric form, but its linearity assumes a constant free-flow speed until it abruptly transitions at critical density. The constant free-flow speed not only ignores minor delay caused by gradual slowing of traffic as density increases, but causes an abrupt transition that can cause erroneous results when results suddenly jump. The bi-parabolic function proposed is both parsimonious, requiring no additional calibration parameters, and contains no abrupt transitions. It is not the most advanced model, but satisfies the needs for this simple simulation.
  
- \begin{figure}[H]
-     \begin{subfigure}{0.49\linewidth}
-     	\centering
-        %\includegraphics[width=0.66\textwidth]{figures/toydemand}
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.55, out.width="\\textwidth", warning=FALSE>>=
-        plot.density
-        @
-     	\caption{Traffic demand density}
-     	\label{fig:toydemcomp}
-     \end{subfigure}
-     \begin{subfigure}{0.49\linewidth}
-     	\centering
-     	%\includegraphics[width=0.66\textwidth]{figures/toytoll}
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.55, out.width="\\textwidth", warning=FALSE>>=
-        plot.toll
-        @
-     	\caption{Toll pricing}
-     	\label{fig:toytoll}
-     \end{subfigure}
-     \caption{Toy example toll pricing and demand density}
-     \label{fig:toyresults}
- \end{figure}
+% \begin{figure}[H]
+%     \centering
+%  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+%         plot.flowdensity
+%     @
+%      \caption{Flow-density functions}
+%  	\label{fig:flowdensity}
+% \end{figure}
+
+% The first piece when $k < k_c$ provides a steep curve that peaks at the critical density $k_c$, and the other case when $k \geq k_c$ sets the right-tail of the elongated parabola at jam density $k_j$. The critical and jam densities, $k_c$ and $k_j$, are set to  $30~\sfrac{veh}{km}$, and $120~\sfrac{veh}{km}$, respectively. This asymmetric shape also yields a more gradual decline in speed that is more similar to the bi-linear model, but without the abrupt speed transition.
+
+%  \begin{figure}[H]
+%  	\centering
+%  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
+%     plot.speeddensity
+%     @
+%  	\caption{Speed-density functions}
+%  	\label{fig:speeddensity}
+%  \end{figure}
+
+% \subsection{Demand}
+% To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. For this simulation, a constant isoelastic price-demand function was used,
+
+% \begin{equation}
+% \Delta\mu = e^{-\epsilon \cdot \Delta P} - 1
+% \end{equation} 
+% \noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values. For this demonstration, a modest elasticity value of \Sexpr{round(E,2)} is used.
+
+  
+% \begin{figure}[H]
+%     \centering
+% %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
+%   	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.6\\textwidth", warning=FALSE>>=
+%     plot.elasticity
+%     @
+%  	\caption{Price elasticity}
+%  	\label{fig:toyelasticity}
+% \end{figure}
+
+% The elasticity will not only determine how sensitive travelers are to price changes, but also effect the aggregated total revenue collected. An increase in revenue from a dynamic pricing scheme compared to a fixed price is not guaranteed and depends upon the parameters selected in the pricing function. Ultimately, the revenue collected from a dynamic pricing scheme primarily depends on the elasticity, $\epsilon$, and the upper and lower limits of the pricing function, $P_{max}$ and $P_{min}$. 
+
+
+% \subsection{Market penetration}
  
-There are two demand distributions, one distribution results from a flat toll which is constructed from the sum of four Gaussian functions characterized by means at 9:00, 12:00, 14:00 and 17:00, each with a standard deviation of 2. The other distribution is a result of demand shift incentivized by the dynamic toll price in Figure~\ref{fig:toytoll}, which was calculated using the sigmoid function in Figure~\ref{fig:toyprice}.
+%  Note that the demand in Figure~\ref{fig:toydemcomp} shows demand as traffic density, not volume. 
  
-The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
+
+%  \begin{figure}[H]
+%  	\centering
+%     %\includegraphics[width=0.66\textwidth]{figures/toydemand}
+%  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.55, out.width="\\textwidth", warning=FALSE>>=
+%     plot.density
+%     @
+%  	\caption{Traffic demand density}
+%  	\label{fig:toydemcomp}
+%  \end{figure}
  
-\begin{figure}[H]
-    \centering
-%  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-  	<<echo=FALSE, cache=TRUE, fig.width=5, fig.asp = 0.6, out.width="0.66\\textwidth", warning=FALSE>>=
-    plot.revenue
-    @
- 	\caption{Revenue collection by time of day}
- 	\label{fig:toyrevenue}
-\end{figure}
+%  \begin{figure}[H]
+%  	\centering
+%  	%\includegraphics[width=0.66\textwidth]{figures/toytoll}
+%  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.55, out.width="\\textwidth", warning=FALSE>>=
+%     plot.toll
+%     @
+%  	\caption{Toll pricing}
+%  	\label{fig:toytoll}
+%  \end{figure}
 
-\begin{figure}[H]
-    \centering
-%  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-  	<<echo=FALSE, cache=TRUE, fig.width=5, fig.asp = 0.6, out.width="0.66\\textwidth", warning=FALSE>>=
-    plot.speed
-    @
- 	\caption{Revenue collection by time of day}
- 	\label{fig:toyrevenue}
-\end{figure}
-
-
-
-This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. In fact, in this case it yields a substantial gain. This is especially true if overall demand does not decrease, as would be the case with introducing flat tolls. 
-
-
-\subsection{Optimizing revenue and delay}
-
-Using calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below.
-
- \begin{figure}[H]
- 	\centering
- 	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.3, out.width="0.75\\textwidth", warning=FALSE>>=
-    plot.price
-    @
- 	\caption{Toy pricing sigmoid function}
- 	\label{fig:toyprice}
- \end{figure}
  
-To demonstrate this with the toy simulation example, a matrix of the resulting percent change in revenue possibilities are calculated for a varying combination of maximum price, $P_{max}$ and elasticity, $\epsilon$, shown in Figure~\ref{fig:toyrevmat}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. A lower bound of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, this extremely theoretical scenario is not explored for simplicity.
+% There are two demand distributions, one distribution results from a flat toll which is constructed from the sum of four Gaussian functions characterized by means at 9:00, 12:00, 14:00 and 17:00, each with a standard deviation of 2. The other distribution is a result of demand shift incentivized by the dynamic toll price in Figure~\ref{fig:toytoll}, which was calculated using the sigmoid function in Figure~\ref{fig:toyprice}.
  
- \begin{figure}[H]
- 	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.6, out.width="0.75\\textwidth", warning=FALSE>>=
-    plot.revmat
-    @
- 	\caption{Comparison of total revenue by elasticity $\epsilon$ and $P_{max}$}
- 	\label{fig:toyrevmat}
- \end{figure}
+% The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
  
-As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E,1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsurge_rev)}\% of the fixed price, or \$\Sexpr{round(pfix*minsurge_rev,2)}, to be at least revenue neutral.
+% \begin{figure}[H]
+%     \centering
+% %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
+%   	<<echo=FALSE, cache=TRUE, fig.width=5, fig.asp = 0.6, out.width="0.66\\textwidth", warning=FALSE>>=
+%     plot.revenue
+%     @
+%  	\caption{Revenue collection by time of day}
+%  	\label{fig:toyrevenue}
+% \end{figure}
 
-Revenue is only one perspective, and alone does not yet consider operational performance, which is arguably the purpose of dynamic pricing. To evaluate performance, the total delay in each scheme can be compared as the percent change in aggregated total delay. The percent change in total delay can be calculated as
+% \begin{figure}[H]
+%     \centering
+% %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
+%   	<<echo=FALSE, cache=TRUE, fig.width=5, fig.asp = 0.5, out.width="0.66\\textwidth", warning=FALSE>>=
+%     plot.speed
+%     @
+%  	\caption{Revenue collection by time of day}
+%  	\label{fig:toyrevenue}
+% \end{figure}
 
-\begin{equation}
-    \Delta\%~Delay = \frac{\sum\limits_i Delay_{2i} - \sum\limits_i Delay_{1i}}{\sum\limits_i Delay_{1i}} = \frac{ \sum\limits_i \frac{n_{2i}}{v_{2i}} \left( v_{f} - v_{2i} \right) }{ \sum\limits_i \frac{n_{1i}}{v_{fi}} \left( v_{f} - v_{1i} \right)}
-    \label{eq:delay}
-\end{equation}
 
-\noindent where for each time increment $i$, $n_{1i}$ and $n_{2i}$ are the demand in number of trips and $v_{1i}$ and $v_{2i}$ are the calculated traffic speeds for the fixed and dynamic tolls, respectively. Equation~\eqref{eq:delay} effectively sums up the total delay experienced across the entire 24-hour period, and calculates the percentage change between the fixed and dynamic tolling schemes. Similar to revenue, the range of possible percent change in delay can be compared by varying elasticity, $\epsilon$, and maximum price, $P_{max}$, shown in Figure~\ref{fig:toydelaymat}.
 
-\begin{figure}[H]
- 	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.6, out.width="0.75\\textwidth", warning=FALSE>>=
-    plot.delaymat
-    @
- 	\caption{Comparison of total revenue by elasticity $\epsilon$ and $P_{max}$}
- 	\label{fig:toydelaymat}
-\end{figure}
+% This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. In fact, in this case it yields a substantial gain. This is especially true if overall demand does not decrease, as would be the case with introducing flat tolls. 
+
+
+% \subsection{Optimizing revenue and delay}
+
+% Using calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below.
+
+%  \begin{figure}[H]
+%  	\centering
+%  	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
+%   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.3, out.width="0.75\\textwidth", warning=FALSE>>=
+%     plot.price
+%     @
+%  	\caption{Toy pricing sigmoid function}
+%  	\label{fig:toyprice}
+%  \end{figure}
  
-Unlike with revenue in Figure~\ref{fig:toyrevmat}, the maximum performance benefits appear to be saddled around an elasticity of 1.0 and a maximum price above 100\%. The saddle shaped region is an interesting outcome, showing that there is diminishing returns as elasticity moves away from unit elasticity. However, there appears to be strong performance gains from 0\% to 30\% reduction in delay across the entire region explored, with the exception of the extreme upper right corner (i.e., high $\epsilon$ and high $P_{max}$). It would seem that in the elastic region where $\epsilon > 1$ and $P_{max} > 100\%$ causes travelers to shift departure such that overall conditions can worse. However, this is a very unrealistic scenario since transportation demand is generally very inelastic, especially to short term changes. 
+% To demonstrate this with the toy simulation example, a matrix of the resulting percent change in revenue possibilities are calculated for a varying combination of maximum price, $P_{max}$ and elasticity, $\epsilon$, shown in Figure~\ref{fig:toyrevmat}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. A lower bound of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, this extremely theoretical scenario is not explored for simplicity.
  
-While this toy example yielded interesting results, showing potential improvements in both revenue and performance, it is important to point out that this is a very simplified case. It assumes a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose not travel entirely. Moreover, elasticity may also vary depending on a variety of factors, such as on time, purpose, and individual preferences and flexibility. This is an important reality to consider, particularly in regards to transportation equity when considering increasing transportation costs for individuals. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
+%  \begin{figure}[H]
+%  	\centering
+%   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.6, out.width="0.75\\textwidth", warning=FALSE>>=
+%     plot.revmat
+%     @
+%  	\caption{Comparison of total revenue by elasticity $\epsilon$ and $P_{max}$}
+%  	\label{fig:toyrevmat}
+%  \end{figure}
  
-While simple micro-economic elasticities may often be too theoretical for practical use, they do offer general insight for approximate optimization. A more refined approach might be to calibrate the parameters with the objective to optimize for revenue and/or congestion. Alternatively, the pricing function itself could be modified to instead rely on empirical data (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to such an optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. 
+% As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E,1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsurge_rev)}\% of the fixed price, or \$\Sexpr{round(pfix*minsurge_rev,2)}, to be at least revenue neutral.
+
+% Revenue is only one perspective, and alone does not yet consider operational performance, which is arguably the purpose of dynamic pricing. To evaluate performance, the total delay in each scheme can be compared as the percent change in aggregated total delay. The percent change in total delay can be calculated as
+
+% \begin{equation}
+%     \Delta\%~Delay = \frac{\sum\limits_i Delay_{2i} - \sum\limits_i Delay_{1i}}{\sum\limits_i Delay_{1i}} = \frac{ \sum\limits_i \frac{n_{2i}}{v_{2i}} \left( v_{f} - v_{2i} \right) }{ \sum\limits_i \frac{n_{1i}}{v_{fi}} \left( v_{f} - v_{1i} \right)}
+%     \label{eq:delay}
+% \end{equation}
+
+% \noindent where for each time increment $i$, $n_{1i}$ and $n_{2i}$ are the demand in number of trips and $v_{1i}$ and $v_{2i}$ are the calculated traffic speeds for the fixed and dynamic tolls, respectively. Equation~\eqref{eq:delay} effectively sums up the total delay experienced across the entire 24-hour period, and calculates the percentage change between the fixed and dynamic tolling schemes. Similar to revenue, the range of possible percent change in delay can be compared by varying elasticity, $\epsilon$, and maximum price, $P_{max}$, shown in Figure~\ref{fig:toydelaymat}.
+
+% \begin{figure}[H]
+%  	\centering
+%   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.6, out.width="0.75\\textwidth", warning=FALSE>>=
+%     plot.delaymat
+%     @
+%  	\caption{Comparison of total revenue by elasticity $\epsilon$ and $P_{max}$}
+%  	\label{fig:toydelaymat}
+% \end{figure}
+ 
+% Unlike with revenue in Figure~\ref{fig:toyrevmat}, the maximum performance benefits appear to be saddled around an elasticity of 1.0 and a maximum price above 100\%. The saddle shaped region is an interesting outcome, showing that there is diminishing returns as elasticity moves away from unit elasticity. However, there appears to be strong performance gains from 0\% to 30\% reduction in delay across the entire region explored, with the exception of the extreme upper right corner (i.e., high $\epsilon$ and high $P_{max}$). It would seem that in the elastic region where $\epsilon > 1$ and $P_{max} > 100\%$ causes travelers to shift departure such that overall conditions can worse. However, this is a very unrealistic scenario since transportation demand is generally very inelastic, especially to short term changes. 
+ 
+% While this toy example yielded interesting results, showing potential improvements in both revenue and performance, it is important to point out that this is a very simplified case. It assumes a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose not travel entirely. Moreover, elasticity may also vary depending on a variety of factors, such as on time, purpose, and individual preferences and flexibility. This is an important reality to consider, particularly in regards to transportation equity when considering increasing transportation costs for individuals. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
+ 
+% While simple micro-economic elasticities may often be too theoretical for practical use, they do offer general insight for approximate optimization. A more refined approach might be to calibrate the parameters with the objective to optimize for revenue and/or congestion. Alternatively, the pricing function itself could be modified to instead rely on empirical data (e.g., use artificial intelligence to set prices to maximize an objective). The booking apparatus lends itself to such an optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. 
 
 
 
-\section{Discussion}
+% \section{Discussion}
 
-\subsection{Implementation}
-The proposed “futures market” offers tech-to-market startup potential, which can grow into a self-sustaining enterprise. Implementation will require a combination academic research required to develop and calibrate models and other practical constraints, but also to work alongside industry partners to implement the necessary but non-research aspects, such as the web/mobile interface, market database, and fare collection integration. Major barriers to implementation are largely institutional, requiring a volunteer transit agency to participate in testing and development, as well as approval from governing budgetary agencies.
+% \subsection{Implementation}
+% The proposed “futures market” offers tech-to-market startup potential, which can grow into a self-sustaining enterprise. Implementation will require a combination academic research required to develop and calibrate models and other practical constraints, but also to work alongside industry partners to implement the necessary but non-research aspects, such as the web/mobile interface, market database, and fare collection integration. Major barriers to implementation are largely institutional, requiring a volunteer transit agency to participate in testing and development, as well as approval from governing budgetary agencies.
 
-There are essentially three basic implementations of a futures market:
-\begin{description}
-    \item[An existing dynamic toll system] can be easily augmented with a futures market to further improve demand optimization with only software changes necessary. In this case, the futures market would have no negative impact revenue collection. 
+% There are essentially three basic implementations of a futures market:
+% \begin{description}
+%     \item[An existing dynamic toll system] can be easily augmented with a futures market to further improve demand optimization with only software changes necessary. In this case, the futures market would have no negative impact revenue collection. 
     
-    \item[A fixed toll system] can use a futures market to introduce dynamic pricing as an ``opt in'' program, incentivizing users with discounts for booking travel during periods of low demand. Infrastructure investment would be minimal, especially if electronic tolling is already in place. A futures market in this case would be a soft way to introduce dynamic pricing in an otherwise politically hostile environment. In this case the futures market may impact revenue collection if the fixed toll is not sufficiently high enough. Since it is impossible/unreasonable for the futures price to exceed the fixed price, thus the fixed fare becomes $P_{max}$ and care must be taken to ensure it is set sufficiently high enough to achieve desired revenue. However, it may be possible that with improved traffic flow there may be a net revenue benefit in collection that would have otherwise been reduced at jam density.
+%     \item[A fixed toll system] can use a futures market to introduce dynamic pricing as an ``opt in'' program, incentivizing users with discounts for booking travel during periods of low demand. Infrastructure investment would be minimal, especially if electronic tolling is already in place. A futures market in this case would be a soft way to introduce dynamic pricing in an otherwise politically hostile environment. In this case the futures market may impact revenue collection if the fixed toll is not sufficiently high enough. Since it is impossible/unreasonable for the futures price to exceed the fixed price, thus the fixed fare becomes $P_{max}$ and care must be taken to ensure it is set sufficiently high enough to achieve desired revenue. However, it may be possible that with improved traffic flow there may be a net revenue benefit in collection that would have otherwise been reduced at jam density.
     
-    \item[No existing toll system] is naturally the most difficult case to implement, requiring both hardware and software investment, as well as inevitable political backlash from any tolling introduced.
-\end{description}
+%     \item[No existing toll system] is naturally the most difficult case to implement, requiring both hardware and software investment, as well as inevitable political backlash from any tolling introduced.
+% \end{description}
 
-Although presented for a simple bridge toll, it can be easily expanded to other applications, such as corridor tolls, congestion pricing zones, transit fares, ride hailing, or applications beyond transportation. This could provide a basic framework for a broader more mode agnostic transportation system, which is of growing importance as ride sharing, hailing, and other future mobility platforms emerge.
+% Although presented for a simple bridge toll, it can be easily expanded to other applications, such as corridor tolls, congestion pricing zones, transit fares, ride hailing, or applications beyond transportation. This could provide a basic framework for a broader more mode agnostic transportation system, which is of growing importance as ride sharing, hailing, and other future mobility platforms emerge.
 
 
-\subsection{Safeguards and practical constraints}
-When creating a new market, care must be taken to ensure operation is smooth and stable. The following subsections discuss several basic market constraint recommendations.
+% \subsection{Safeguards and practical constraints}
+% When creating a new market, care must be taken to ensure operation is smooth and stable. The following subsections discuss several basic market constraint recommendations.
 
-\subsubsection{Market manipulators and exploitation}
-When profit is to be made by selling unused trips, there will be those that seek to maximize profit by exploiting the system.  Thus to prevent users from inappropriately exploiting the system, restrictions should be set. For example, to prevent users from manipulating the market price, a practical restriction could limit users to only purchasing one trip per time slot (otherwise it would be a travel impossibility), or to limit the number of sales a user can make to ensure a net profit cannot be made. Ensuring zero profit would also help avoid any user tax complexities. Although restrictions may seem market prohibitive, the intent of the system to promote efficient travel and revenue collection, not market capitalization. 
+% \subsubsection{Market manipulators and exploitation}
+% When profit is to be made by selling unused trips, there will be those that seek to maximize profit by exploiting the system.  Thus to prevent users from inappropriately exploiting the system, restrictions should be set. For example, to prevent users from manipulating the market price, a practical restriction could limit users to only purchasing one trip per time slot (otherwise it would be a travel impossibility), or to limit the number of sales a user can make to ensure a net profit cannot be made. Ensuring zero profit would also help avoid any user tax complexities. Although restrictions may seem market prohibitive, the intent of the system to promote efficient travel and revenue collection, not market capitalization. 
 
-\subsubsection{Price limits}
-To avoid reaching outrageous prices and the public backlash that follows [cite Virginia example and uber surge pricing], reasonable upper limits on price should be set to avoid public backlash. Similarly, a lower price limit could also be set to provide a baseline revenue collection and travel disincentive.
+% \subsubsection{Price limits}
+% To avoid reaching outrageous prices and the public backlash that follows [cite Virginia example and uber surge pricing], reasonable upper limits on price should be set to avoid public backlash. Similarly, a lower price limit could also be set to provide a baseline revenue collection and travel disincentive.
 
-\subsubsection{Pricing calibration}
-The pricing function will need to be calibrated to match demand sensitivity as well as meet revenue obligations, while remaining politically palatable. Ideally the upper bound will be kept as low as possible to avoid public dissatisfaction, but high enough to achieve the desired shift in travel behavior. The lower bound must also be kept low enough to encourage a shift in travel behavior, but high enough to collect sufficient revenue. Research will be needed to measure user arrival time demand elasticity, that is how sensitive are travelers to increases in price. From this, the function can be optimized to balance operations with revenue, and will likely need regular tuning to adjust for current conditions. 
+% \subsubsection{Pricing calibration}
+% The pricing function will need to be calibrated to match demand sensitivity as well as meet revenue obligations, while remaining politically palatable. Ideally the upper bound will be kept as low as possible to avoid public dissatisfaction, but high enough to achieve the desired shift in travel behavior. The lower bound must also be kept low enough to encourage a shift in travel behavior, but high enough to collect sufficient revenue. Research will be needed to measure user arrival time demand elasticity, that is how sensitive are travelers to increases in price. From this, the function can be optimized to balance operations with revenue, and will likely need regular tuning to adjust for current conditions. 
 
-\subsubsection{Time scale}
-Although theoretically possible to operate with narrow time intervals, such as $<$1-second, the computational limitations of accounting for that many tokens and transferring every second is likely intractable. Moreover, travelers probably will not bother with such detail nor be held to such precision. It's likely that users will pick a target time $\pm$ some buffer time (e.g., $\pm$ 30 minutes from expected arrival). However, it is uncertain whether travelers will be equally as likely to arrive early as late, which can be modeled with a Guassian normal curve; or perhaps travelers trend on being late but not early, which can be modeled with a log-normal curve. Research is needed in this area to determine feasible parameters and the relative reliability of travelers. Alternatively, the system could be designed in such a way to allow for users to specify their desired travel window, offering greater discount to more punctual travelers and a penalty to those that fail to meet their target.
+% \subsubsection{Time scale}
+% Although theoretically possible to operate with narrow time intervals, such as $<$1-second, the computational limitations of accounting for that many tokens and transferring every second is likely intractable. Moreover, travelers probably will not bother with such detail nor be held to such precision. It's likely that users will pick a target time $\pm$ some buffer time (e.g., $\pm$ 30 minutes from expected arrival). However, it is uncertain whether travelers will be equally as likely to arrive early as late, which can be modeled with a Guassian normal curve; or perhaps travelers trend on being late but not early, which can be modeled with a log-normal curve. Research is needed in this area to determine feasible parameters and the relative reliability of travelers. Alternatively, the system could be designed in such a way to allow for users to specify their desired travel window, offering greater discount to more punctual travelers and a penalty to those that fail to meet their target.
 
 
 
