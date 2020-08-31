@@ -57,6 +57,8 @@ fun.flowdensity_green <- function(k) {
 }
 
 #### Parameters ####
+disc = 0.75
+surg = 1.5
 L = 7
 v_f = 100 #Free flow speed
 k_j = 120 #Jam density
@@ -67,9 +69,9 @@ inc = 5/60
 t = seq(0,24,by=inc)
 a = 7
 b = 0.3
-pfix = 8
-pmin = 0*pfix/2
-pmax = pfix*2.25
+pfix = 10
+pmin = pfix*disc
+pmax = pfix*surg
 nlanes = 6 #lanes
 
 #### Run with varying pmax and elasticity ####
@@ -400,7 +402,8 @@ plot.speed <- ggplot(dat) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
                    limits = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 24:00:00 EST', tz='EST'))) +
   theme_classic() +
-  theme(legend.position = c(0.15,0.6))
+  theme(legend.position = c(0.15,0.6),
+        legend.background = element_blank())
 #text=element_text(family="Times New Roman"))
 # plot.demandspeed
 
