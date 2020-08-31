@@ -69,7 +69,7 @@ a = 7
 b = 0.3
 pfix = 8
 pmin = 0*pfix/2
-pmax = pfix*4
+pmax = pfix*2.25
 nlanes = 6 #lanes
 
 #### Run with varying pmax and elasticity ####
@@ -126,7 +126,7 @@ varmat <- datvar[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1),
 minsurge_rev <- varmat[round(elas,4) == E & revdiff >= 0, ][which.min(revdiff), surge]
 
 #Use this Pmax?
-pmax = pfix*minsurge_rev
+#pmax = pfix*minsurge_rev
 
 
 #### Run for the constant parameters ####
@@ -362,7 +362,7 @@ plot.delaymat
 #### Plots: Time series distribution results plots ####
 
 #### Demand Density Distributions (Same as flow, but with density)
-plot.demanddensity <- ggplot(dat) + 
+plot.density <- ggplot(dat) + 
   geom_line(aes(x=time,y=k1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=k2, linetype="Dynamic")) + 
   scale_y_continuous("Traffic density (veh/km/ln)") +
@@ -376,7 +376,7 @@ plot.demanddensity <- ggplot(dat) +
 # plot.demanddensity
 
 #### Demand flow distributions (Same as density, but with flow)
-plot.demandflow <- ggplot(dat) + 
+plot.flow <- ggplot(dat) + 
   geom_line(aes(x=time,y=q1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=q2, linetype="Dynamic")) +
   # geom_line(aes(x=time,y=mu1, linetype="Fixed", color = "Fixed")) + 
@@ -392,7 +392,7 @@ plot.demandflow <- ggplot(dat) +
 # plot.demandflow
 
 #### Demand speed distributions
-plot.demandspeed <- ggplot(dat) + 
+plot.speed <- ggplot(dat) + 
   geom_line(aes(x=time,y=v1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=v2, linetype="Dynamic")) + 
   scale_y_continuous("Speed (km/hr)", limits = c(0,100)) +
@@ -405,7 +405,7 @@ plot.demandspeed <- ggplot(dat) +
 # plot.demandspeed
 
 #### Demand delay
-plot.demanddelay <- ggplot(dat) + 
+plot.delay <- ggplot(dat) + 
   geom_line(aes(x=time,y=d1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=d2, linetype="Dynamic")) +
   scale_y_continuous("Total delay time (hr)") +
@@ -419,7 +419,7 @@ plot.demanddelay <- ggplot(dat) +
 
 
 #### Demand delay difference
-plot.demanddelaydiff <- ggplot(dat) + 
+plot.delaydiff <- ggplot(dat) + 
   geom_line(aes(x=time,y=delaydiff)) +
   scale_y_continuous("Travel time difference", labels = scales::percent_format()) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour",
