@@ -8,7 +8,7 @@ library(scales)
 
 if(file.exists("../analysis/toydata.RData")) load("../analysis/toydata.RData") else load("toydata.RData")
 
-#Plot list
+name#Plot list
 plot <- list()
 
 #### Plots: Function Plots ####
@@ -179,7 +179,8 @@ plot[['speed']] <- ggplot(dat.elas) +
   coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
                   ylim = c(40, 100)) +
   theme_classic() +
-  theme(legend.position = c(0.15,0.6),
+  theme(legend.position = "none",
+        legend.direction = "vertical",
         legend.background = element_blank())
 # plot[['speed']]
 
@@ -217,8 +218,6 @@ drlabs = c("Fixed toll, Revenue: 100%", apply(dat.elas[ , sum(rev2)/sum(rev1), b
 plot[['revenue']] <- ggplot(dat.elas) + 
   geom_line(aes(x=time,y=rev1/rev1, color="Fixed toll")) + 
   geom_line(aes(x=time,y=rev2/rev1, color = factor(elas)), linetype = "dashed") + 
-  #geom_line(aes(x=time,y=rev1, linetype=paste0("Fixed toll,\nTotal revenue: ", scales::dollar(sum(dat$rev1))))) +
-  #geom_line(aes(x=time,y=rev2, linetype=paste0("Dynamic toll,\nTotal revenue: ", scales::dollar(sum(dat$rev2))))) +
   scale_y_continuous("Revenue per hour (Dynamic / Fixed)", labels = scales::percent_format()) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour") +
   scale_color_brewer("Tolling scheme", palette = "Set1", labels = drlabs, limits = c("Fixed toll", unique(dat.elas$elas))) +
@@ -240,7 +239,8 @@ plot[['revsum']] <- ggplot(dat.elas) +
                   ylim = c(0, 1.25)) +
   scale_color_brewer("Tolling scheme", palette = "Set1", labels = drlabs, limits = c("Fixed toll", unique(dat.elas$elas))) +
   theme_classic() +
-  theme(legend.position = c(0.2,0.7),
+  theme(legend.position = "right",
+        legend.direction = "vertical",
         legend.background = element_blank())
 # plot[['revsum']]
 

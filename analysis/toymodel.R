@@ -313,10 +313,11 @@ mat.maxminelas <- dat.maxminelas[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1
 # #Constant elasticity
 # mat.maxmin <- mat.maxminelas[elas == as.character(E), ]
 
+minsur <- as.matrix(mat.maxelas[elas == as.character(E) & delaydiff<0 & revdiff>0, ][which.min(revdiff), ])[1,]
 
 #### Saving data ####
 pars = c("a","b","surcharge","discount","E","pfix","inc","k_c","k_j","L","v_f","trips","nlanes")
-dats = c("dat.elas", "mat.maxelas","mat.maxmin","mat.maxminelas")
+dats = c("dat.elas", "mat.maxelas","mat.maxmin","mat.maxminelas","minsurcharge")
 funs = ls()[grepl("fun",ls())]
 
 save(list = c(pars,dats,funs), file = "toydata.RData", version = 2)
