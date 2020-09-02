@@ -276,15 +276,13 @@ The first piece when $k < k_c$ provides a steep curve that peaks at the critical
  
  
   
-There are two demand distributions, one distribution results from a flat toll which is constructed from the sum of four Gaussian functions characterized by means at 9:00, 12:00, 14:00 and 17:00, each with a standard deviation of 2. The other distribution is a result of demand shift incentivized by the dynamic toll price, which was calculated using the sigmoid function in Figure~\ref{fig:toyprice}.
- 
-The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
+There are two demand distributions, one distribution results from a flat toll which is constructed from the sum of four Gaussian functions characterized by means at 9:00, 12:00, 14:00 and 17:00, each with a standard deviation of 2. The other distribution is a result of demand shift incentivized by the dynamic toll price, which was calculated using the sigmoid function in Figure~\ref{fig:toyprice}. The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
  
  
 
  \begin{figure}[H]
     \centering
- 	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.3, out.width="0.8\\textwidth", warning=FALSE>>=
+ 	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.4, out.width="0.8\\textwidth", warning=FALSE>>=
         plot[["speed"]]
     @
  	\caption{Average traffic speed by time of day}
@@ -293,7 +291,7 @@ The net revenue resulting from the simple example actually yielded a slight incr
  
  \begin{figure}[H]
      \centering
- 	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.3, out.width="0.8\\textwidth", warning=FALSE>>=
+ 	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.4, out.width="0.8\\textwidth", warning=FALSE>>=
     plot[["revsum"]]
     @
  	\caption{Cumulative revenue collection by time of day}
