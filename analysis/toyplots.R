@@ -215,10 +215,11 @@ drlabs = c("Fixed toll, Revenue: 100%", apply(dat.elas[ , sum(rev2)/sum(rev1), b
   bquote("Dynamic toll,"~epsilon == .(x[1])*", Revenue: "~.(round(100*x[2]))*"%")
 }))
 
+
 plot[['revenue']] <- ggplot(dat.elas) + 
   geom_line(aes(x=time,y=rev1/rev1, color="Fixed toll")) + 
   geom_line(aes(x=time,y=rev2/rev1, color = factor(elas)), linetype = "dashed") + 
-  scale_y_continuous("Revenue per hour (Dynamic / Fixed)", labels = scales::percent_format()) +
+  scale_y_continuous(expression("Revenue"~frac(Dynamic, Fixed)), labels = scales::percent_format()) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour") +
   scale_color_brewer("Tolling scheme", palette = "Set1", labels = drlabs, limits = c("Fixed toll", unique(dat.elas$elas))) +
   coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
@@ -228,16 +229,15 @@ plot[['revenue']] <- ggplot(dat.elas) +
         legend.background = element_blank())
 # plot[['revenue']]
 
-
 #### Cumulative revenue
 plot[['revsum']] <- ggplot(dat.elas) + 
   geom_line(aes(x=time,y=sumrev1/max(sumrev1), color="Fixed toll")) + 
   geom_line(aes(x=time,y=sumrev2/max(sumrev1), color = factor(elas)), linetype = "dashed") + 
-  scale_y_continuous("Cumulative revenue (Dynamic / Fixed)", labels = scales::percent_format(), breaks = seq(0,1.25, by = 0.25)) +
+  scale_y_continuous(expression("Cumulative Revenue"~frac(Dynamic, Fixed)), labels = scales::percent_format()) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour") +
-  coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
+  coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'), as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
                   ylim = c(0, 1.25)) +
-  scale_color_brewer("Tolling scheme", palette = "Set1", labels = drlabs, limits = c("Fixed toll", unique(dat.elas$elas))) +
+  scale_color_brewer("Tolling scheme", palette = "Set1", labels = dlabs, limits = c("Fixed toll", unique(dat.elas$elas))) +
   theme_classic() +
   theme(legend.position = "right",#c(0.75,0.2),
         legend.direction = "vertical",
