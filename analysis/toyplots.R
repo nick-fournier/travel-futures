@@ -233,7 +233,7 @@ plot[['revenue']] <- ggplot(dat.elas) +
 plot[['revsum']] <- ggplot(dat.elas) + 
   geom_line(aes(x=time,y=sumrev1/max(sumrev1), color="Fixed toll")) + 
   geom_line(aes(x=time,y=sumrev2/max(sumrev1), color = factor(elas)), linetype = "dashed") + 
-  scale_y_continuous(expression("Cumulative Revenue"~frac(Dynamic, Fixed)), labels = scales::percent_format()) +
+  scale_y_continuous("Cumulative Revenue (% of fixed)", labels = scales::percent_format()) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour") +
   coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'), as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
                   ylim = c(0, 1.25)) +
