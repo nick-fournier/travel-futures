@@ -201,8 +201,8 @@ mat.maxmin <- dat.maxmin[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1),
 #### Run with varying elasticity and pmax ####
 #Set up combination matrix
 dat.maxelas = as.data.table(expand.grid(tval = t,
-                                           elas = seq(0, 2, by = 0.025),
-                                           sur = seq(0, 4, by = 0.025)))
+                                        elas = seq(0, 2, by = 0.025),
+                                        sur = seq(0, 4, by = 0.025)))
 #Assign fixed price & scaled price
 dat.maxelas[ , price1 := pfix]
 dat.maxelas[ , Pmin := pfix*0]
@@ -256,7 +256,8 @@ mat.maxelas <- dat.maxelas[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1),
 #### Run with varying elasticity and pmax and pmin ####
 #Set up combination matrix
 dat.maxminelas = as.data.table(expand.grid(tval = t,
-                                           elas = c(0, seq(0.1, 1.5, by = 0.2)),
+                                           #elas = c(0, seq(0.1, 1.5,by = 0.2)),
+                                           elas = c(E-0.2, E, E+0.2),
                                            dis = seq(0, 1, by = 0.05),
                                            sur = seq(0, 4, by = 0.05)))
 #Assign fixed price & scaled price

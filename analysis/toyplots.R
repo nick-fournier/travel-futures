@@ -179,7 +179,7 @@ plot[['speed']] <- ggplot(dat.elas) +
   coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
                   ylim = c(40, 100)) +
   theme_classic() +
-  theme(legend.position = "none",
+  theme(legend.position = c(0.8,0.5),
         legend.direction = "vertical",
         legend.background = element_blank())
 # plot[['speed']]
@@ -239,7 +239,7 @@ plot[['revsum']] <- ggplot(dat.elas) +
                   ylim = c(0, 1.25)) +
   scale_color_brewer("Tolling scheme", palette = "Set1", labels = drlabs, limits = c("Fixed toll", unique(dat.elas$elas))) +
   theme_classic() +
-  theme(legend.position = "right",
+  theme(legend.position = c(0.75,0.2),
         legend.direction = "vertical",
         legend.background = element_blank())
 # plot[['revsum']]
@@ -289,21 +289,26 @@ plot[['maxmin.delay']] <- ggplot(mat.maxmin, aes(x = dis, y = sur)) +
 
 # # # # # # # # # Break even points # # # # # #
 #### Total revenue by Elasticity vs break even point
-plot[['breakeven.rev']] <- ggplot() +
-  geom_smooth(data = mat.maxminelas[ , .SD[which.min(abs(revdiff))], by = .(dis,elas)],
-              aes(x = dis, y = sur, color = factor(elas)),
-              formula = 'y~x', method = "loess", se=F, fullrange = T, span = 1) +
+plot[['breakeven']] <- ggplot(data = mat.maxminelas[ , .SD[which.min(abs(revdiff))], by = .(dis,elas)]) +
+  #Revenue lines
+  geom_smooth(aes(x = dis, y = sur, linetype = factor(elas)), color = "black", formula = 'y~x', method = "loess", se=F, fullrange = T, span = 1) +
+  geom_ribbon(aes(x = dis, y = sur, ymin = 0, ymax = predict(loess(sur ~ dis)), fill = "Revenue negative and delay reducing"), alpha = 0.5) +
+  geom_ribbon(aes(x = dis, y = sur, ymin = predict(loess(sur ~ dis)), ymax = 5, fill = "Revenue positive and delay reducing"), alpha = 0.5) +
+  #Delay lines
   geom_smooth(data = mat.maxminelas[ , .SD[which.min(abs(delaydiff))], by = .(dis,elas)],
-              aes(x = dis, y = sur, linetype = "Delay improvement"), color = "black",
-              formula = 'y~x', method = "loess", se=F, fullrange = T, span = 1) +
+              aes(x = dis, y = sur, color = "Delay breakeven point"), color = "black",
+              formula = 'y~x', method = "loess", se=F, fullrange = T, span = 1, fill = "green") +
+  geom_ribbon(data = mat.maxminelas[ , .SD[which.min(abs(delaydiff))], by = .(dis,elas)],
+              aes(x = dis, y = sur, ymin = 0, ymax = predict(loess(sur ~ dis)), fill = "Revenue negative and delay increasing"), alpha = 0.5) +
   scale_x_continuous(expression("Lower price limit,"~P[max]), expand = c(0,0), labels = scales::percent_format()) +
   scale_y_continuous(expression("Upper price limit,"~P[max]), expand = c(0,0), labels = scales::percent_format()) +
-  scale_color_brewer(expression("Elasticity,"~epsilon), palette = "RdYlBu") +
+  scale_fill_brewer("Outcome region", palette = "RdYlBu") +
+  scale_linetype(expression("Elasticity,"~epsilon)) +
   coord_fixed(ratio = max(mat.maxminelas$dis)/max(mat.maxminelas$sur),
               xlim = c(0, max(mat.maxminelas$dis)),
               ylim = c(0, 4)) +
   theme_bw()
-# plot[['breakeven.rev']]
+# plot[['breakeven']]
 
 
 
