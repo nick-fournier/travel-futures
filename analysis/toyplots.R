@@ -173,7 +173,7 @@ plot[['flow']] <- ggplot(dat.elas) +
 plot[['speed']] <- ggplot(dat.elas) + 
   geom_line(aes(x=time,y=v1, color="Fixed toll")) + 
   geom_line(aes(x=time,y=v2, color = factor(elas)), linetype = "dashed", alpha = 0.8) + 
-  scale_y_continuous("Speed (km/hr)") +
+  scale_y_continuous("Speed\n(km/hr)") +
   scale_color_brewer("Tolling scheme", palette = "Set1", labels = dlabs, limits = c("Fixed toll", unique(dat.elas$elas))) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour") +
   coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
@@ -201,7 +201,7 @@ plot[['toll']] <- ggplot(dat.elas) +
   geom_line(aes(x=time,y=price1, linetype="Fixed")) + 
   geom_line(aes(x=time,y=price2, linetype="Dynamic")) + 
   scale_linetype("Tolling scheme") +
-  scale_y_continuous("Price ratio (Dynamic / Fixed)", labels = scales::percent_format(), breaks = seq(0,2,by = 0.25)) +
+  scale_y_continuous("Price ratio\n(Dynamic / Fixed)", labels = scales::percent_format(), breaks = seq(0,2,by = 0.25)) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour") +
   coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'),as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
                   ylim = c(discount, surcharge)) +
@@ -233,7 +233,7 @@ plot[['revenue']] <- ggplot(dat.elas) +
 plot[['revsum']] <- ggplot(dat.elas) + 
   geom_line(aes(x=time,y=sumrev1/max(sumrev1), color="Fixed toll")) + 
   geom_line(aes(x=time,y=sumrev2/max(sumrev1), color = factor(elas)), linetype = "dashed") + 
-  scale_y_continuous("Cumulative Revenue (% of fixed)", labels = scales::percent_format()) +
+  scale_y_continuous("Cumulative Revenue\n(Dynamic / fixed)", labels = scales::percent_format()) +
   scale_x_datetime("Time of day", labels = date_format("%l%p", tz='EST'), date_breaks = "3 hour") +
   coord_cartesian(xlim = c(as.POSIXct('2000-01-01 00:00:00 EST', tz='EST'), as.POSIXct('2000-01-01 23:30:00 EST', tz='EST')),
                   ylim = c(0, 1.25)) +
