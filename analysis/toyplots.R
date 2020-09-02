@@ -6,7 +6,7 @@ library(ggplot2)
 library(scales)
 # library(extrafont)
 
-load("toydata.RData")
+if(file.exists("../analysis/toydata.RData")) load("../analysis/toydata.RData") else load("toydata.RData")
 
 #Plot list
 plot <- list()
