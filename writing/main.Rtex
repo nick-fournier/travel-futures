@@ -301,6 +301,8 @@ There are two demand distributions, one distribution results from a flat toll wh
 This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. In fact, in this case it yields a substantial gain. This is especially true if overall demand does not decrease, as would be the case with introducing flat tolls. 
 
 
+what would it look like with a different set of pricing and elasticity parameters?
+
 \subsection{Optimizing revenue and delay}
 
 Using calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below.
