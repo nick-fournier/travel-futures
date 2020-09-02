@@ -325,7 +325,7 @@ To demonstrate this with the toy simulation example, a matrix of the resulting p
  \begin{figure}[H]
  	\centering
   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
-    plot[["maxmin.delay"]]
+    plot[["maxmin.rev"]]
     @
  	\caption{Comparison of total revenue by elasticity $\epsilon$ and $P_{max}$}
  	\label{fig:toyrevmat}
@@ -373,7 +373,7 @@ Revenue is only one perspective, and alone does not yet consider operational per
 
 \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.6, out.width="0.75\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
     plot[["emax.delay"]]
     @
  	\caption{Comparison of total revenue by elasticity $\epsilon$ and $P_{max}$}
