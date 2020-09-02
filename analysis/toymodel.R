@@ -319,7 +319,8 @@ pars = c("a","b","surcharge","discount","E","pfix","inc","k_c","k_j","L","v_f","
 dats = c("dat.elas", "mat.maxelas","mat.maxmin","mat.maxminelas")
 funs = ls()[grepl("fun",ls())]
 
-save(list = c(pars,dats,funs), file = "toydata.RData")
+save(list = c(pars,dats,funs), file = "toydata.RData", version = 2)
+
 
 
 
