@@ -317,7 +317,7 @@ minsur <- as.matrix(mat.maxelas[elas == as.character(E) & delaydiff<0 & revdiff>
 
 #### Saving data ####
 pars = c("a","b","surcharge","discount","E","pfix","inc","k_c","k_j","L","v_f","trips","nlanes")
-dats = c("dat.elas", "mat.maxelas","mat.maxmin","mat.maxminelas","minsurcharge")
+dats = c("dat.elas", "mat.maxelas","mat.maxmin","mat.maxminelas","minsur")
 funs = ls()[grepl("fun",ls())]
 
 save(list = c(pars,dats,funs), file = "toydata.RData", version = 2)

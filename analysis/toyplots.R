@@ -8,7 +8,7 @@ library(scales)
 
 if(file.exists("../analysis/toydata.RData")) load("../analysis/toydata.RData") else load("toydata.RData")
 
-name#Plot list
+#Plot list
 plot <- list()
 
 #### Plots: Function Plots ####
