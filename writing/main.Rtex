@@ -26,7 +26,6 @@
 
 %Load in the R scripts
 <<echo=TRUE, cache=TRUE>>==
-    load("../analysis/toydata.RData")
     source("../analysis/toyplots.R")
  @
 
