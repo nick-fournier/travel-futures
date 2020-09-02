@@ -107,7 +107,7 @@ captime[diff < 0, diff := 0]
 captime <- melt(captime, id.vars = c("t","time","cap"))
 captime[ , variable := factor(variable, levels = c("diff","k"))]
 
-plot.captime <- ggplot(captime) + 
+plot[['captime']] <- ggplot(captime) + 
   #geom_col(aes(x=time,y=k), color = alpha("white",0)) +
   #geom_col(aes(x=time,y=cap, color = "Density of pre-purchased time slots"), width = 0, fill = alpha("white",0)) +
   geom_col(aes(x=time, y = value, fill = variable), color = "gray90", width = 1800, position = "stack") +
