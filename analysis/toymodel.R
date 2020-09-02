@@ -142,8 +142,8 @@ dat.elas[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*tval
 #### Run with varying pmax and pmin ####
 #Set up combination matrix
 dat.maxmin = as.data.table(expand.grid(tval = t,
-                                   dis = seq(0, 1, by = 0.025),
-                                   sur = seq(0, 4, by = 0.025)))
+                                   dis = seq(0, 1, by = 0.01),
+                                   sur = seq(0, 4, by = 0.01)))
 #Assign fixed price & scaled price
 dat.maxmin[ , price1 := pfix]
 dat.maxmin[ , Pmin := pfix*dis]
