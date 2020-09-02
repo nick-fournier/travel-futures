@@ -307,9 +307,9 @@ plot[['breakeven']] <- ggplot(data = mat.maxminelas[elas == as.character(E), .SD
   coord_fixed(ratio = max(mat.maxminelas$dis)/max(mat.maxminelas$sur),
               xlim = c(0, max(mat.maxminelas$dis)),
               ylim = c(0, 4)) +
-  theme_bw()
+  theme_bw() +
+  theme(legend.key.size = unit(1, "cm"))
 # plot[['breakeven']]
-
 
 
 # # # # # # # # # Elasticity vs Pmax while Pmin = 0 # # # # # # # #
@@ -321,7 +321,7 @@ plot[['emax.rev']] <- ggplot(mat.maxelas, aes(x = elas, y = sur)) +
   geom_contour(breaks = Erevcodes$cuts, aes(z = 100*revdiff), color = "black") +
   scale_x_continuous(expression("Price Elasticity of Demand, "~epsilon), expand = c(0,0)) +
   scale_y_continuous(expression("Upper price limit,"~P[max]), expand = c(0,0), labels = scales::percent_format()) +
-  scale_fill_manual(expression("Percent change\nin total delay"), label = Erevcodes$labs, values = Erevcodes$colors) +
+  scale_fill_manual(expression("Percent change\nin revenue"), label = Erevcodes$labs, values = Erevcodes$colors) +
   coord_fixed(ratio = max(mat.maxelas$elas) / max(mat.maxelas$sur),
               xlim = c(0, max(mat.maxelas$elas)),
               ylim = c(0, max(mat.maxelas$sur))) +
