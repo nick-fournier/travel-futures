@@ -50,9 +50,10 @@ plot[['elasticity']] <- ggplot(data.frame(x = c(0, 1)), aes(x)) +
 plabs <- c(bquote("\u00B1 75%"*P[fix]), bquote("\u00B1 50%"*P[fix]), bquote("\u00B1 25%"*P[fix]))
 
 plot[['price']] <- ggplot(data.frame(x = c(0, 40)), aes(x)) + 
-  stat_function(fun = fun.price, args = list(0.25*pfix, 1.75*pfix, a, b), aes(linetype = "75", color = "75"), alpha = 0.5) +
-  stat_function(fun = fun.price, args = list(0.50*pfix, 1.50*pfix, a, b), aes(linetype = "50", color = "50")) +
-  stat_function(fun = fun.price, args = list(0.75*pfix, 1.25*pfix, a, b), aes(linetype = "25", color = "25"), alpha = 0.5) +
+  # stat_function(fun = fun.price, args = list(0.25*pfix, 1.75*pfix, a, b), aes(linetype = "75", color = "75"), alpha = 0.5) +
+  # stat_function(fun = fun.price, args = list(0.50*pfix, 1.50*pfix, a, b), aes(linetype = "50", color = "50")) +
+  # stat_function(fun = fun.price, args = list(0.75*pfix, 1.25*pfix, a, b), aes(linetype = "25", color = "25"), alpha = 0.5) +
+  stat_function(fun = fun.price, args = list(discount*pfix, surcharge*pfix, a, b), color = "#377eb8") +
   scale_y_continuous(expression("Price"), labels = scales::percent_format(), limits = c(0,surcharge)) +
   scale_x_continuous("Traffic density (veh/km/lane)") +
   scale_color_brewer(expression("Price limits,"~P[max]~"&"~P[min]), palette = "Set1", limits = c("75","50","25"), labels = plabs) +
