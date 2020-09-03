@@ -193,7 +193,7 @@ As an example application, suppose there are two adjacent urban centers in a met
         \label{fig:toy}
 \end{figure}
 
-Suppose that the regional metropolitan transportation planning commission wishes alleviate congestion in the peaks with a dynamic tolling system. A study determines that the price elasticity of demand for a conventional dynamic tolling system without a pre-pay futures market is $\epsilon_0 = \Sexpr{round(E['dnull'],1)}$, and that a futures market mechanism would boost elasticity to somewhere between $\epsilon_{low} = \Sexpr{round(E['dlow'],1)}$ on the low end, and $\epsilon_{high} = \Sexpr{round(E['dhi'],1)}$ on the high end. They determined that voters are willing to approve a dynamic toll system that is limited to between a \Sexpr{round((1-discount)*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surcharge*100)}\% surcharge above existing fixed prices in the peak (See Table~\ref{tab:toyprice}).
+Suppose that the regional metropolitan transportation planning commission wishes alleviate congestion in the peaks with a dynamic tolling system. A study determines that the price elasticity of demand for a conventional dynamic tolling system without a pre-pay futures market is $\epsilon_0 = \Sexpr{round(E['0'],1)}$, and that a futures market mechanism would boost elasticity to somewhere between $\epsilon_{low} = \Sexpr{round(E['low'],1)}$ on the low end, and $\epsilon_{high} = \Sexpr{round(E['high'],1)}$ on the high end. They determined that voters are willing to approve a dynamic toll system that is limited to between a \Sexpr{round((1-discount)*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surcharge*100)}\% surcharge above existing fixed prices in the peak (See Table~\ref{tab:toyprice}).
  
  \begin{table}[H]
     \centering
@@ -205,9 +205,9 @@ Suppose that the regional metropolitan transportation planning commission wishes
  		$P_{max}$   & \Sexpr{round(100*surcharge)}\%   & \small Maximum dynamic price ratio ($\sfrac{P_{max}}{P_{fixed}}$)  \\
  		$\alpha$    & \Sexpr{round(a,2)}      & \small Price calibration parameter \\
  		$\beta$     & \Sexpr{round(b,2)}    & \small Price calibration parameter \\
- 		$\epsilon_0$  & \Sexpr{round(E['dnull'],2)}    & \small Elasticity \\
- 		$\epsilon_{low}$  & \Sexpr{round(E['dlow'],2)}    & \small Elasticity \\
- 		$\epsilon_{high}$  & \Sexpr{round(E['dhi'],2)}    & \small Elasticity \\ \bottomrule
+ 		$\epsilon_0$  & \Sexpr{round(E['0'],2)}    & \small Elasticity \\
+ 		$\epsilon_{low}$  & \Sexpr{round(E['low'],2)}    & \small Elasticity \\
+ 		$\epsilon_{high}$  & \Sexpr{round(E['high'],2)}    & \small Elasticity \\ \bottomrule
  	\end{tabular}
  	\label{tab:toyprice}
  \end{table}
@@ -286,9 +286,7 @@ Although a variety of more refined macroscopic models have been developed, many 
 The first piece when $k < k_c$ provides a steep curve that peaks at the critical density $k_c$, and the other case when $k \geq k_c$ sets the right-tail of the elongated parabola at jam density $k_j$. The critical and jam densities, $k_c$ and $k_j$, are set to  $30~\sfrac{veh}{km}$, and $120~\sfrac{veh}{km}$, respectively. This asymmetric shape also yields a more gradual decline in speed that is more similar to the bi-linear model (see Figure~\ref{fig:speeddensity}, but without the abrupt speed transition.
 
 \subsection{Simple case}
-In a simple case, using the parameters in Table~\ref{tab:toyprice}, the macroscopic traffic conditions can be simulated to compare results between a dynamic pricing scheme against a fixed toll. The price changes causes demand to shift from the peak to the off-peak, resulting in a decrease in congestion and an improvement in average travel speed as shown in Figure~\ref{fig:toyspeed}. Although there is an improvement in all cases
-
-The magnitude of travel speed improvement depends u
+In a simple case, using the parameters in Table~\ref{tab:toyprice}, the macroscopic traffic conditions can be simulated to compare results between a dynamic pricing scheme against a fixed toll. The price changes causes demand to shift from the peak to the off-peak, resulting in a decrease in congestion and an improvement in average travel speed as shown in Figure~\ref{fig:toyspeed}. Although there is a travel speed improvement in all cases, the magnitude of travel speed improvement depends upon the elasticity.
 
  \begin{figure}[H]
     \centering
@@ -299,65 +297,65 @@ The magnitude of travel speed improvement depends u
  	\label{fig:toyspeed}
  \end{figure}
  
-The elasticity will not only determine how sensitive travelers are to price changes, but also effect the aggregated total revenue collected. An increase in revenue from a dynamic pricing scheme compared to a fixed price is not guaranteed and depends upon the parameters selected in the pricing function. Ultimately, the revenue collected from a dynamic pricing scheme primarily depends on the elasticity, $\epsilon$, and the upper and lower limits of the pricing function, $P_{max}$ and $P_{min}$. The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
+The elasticity will not only determine how sensitive travelers are to price changes, but also effect the aggregated total revenue collected. A revenue increase from a dynamic pricing scheme compared to a fixed price is not guaranteed and depends upon the parameters selected in the pricing function. Ultimately, the revenue collected from a dynamic pricing scheme primarily depends on the elasticity, $\epsilon$, and the upper and lower limits of the pricing function, $P_{max}$ and $P_{min}$. The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
  
  \begin{figure}[H]
      \centering
  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.35, out.width="0.8\\textwidth", warning=FALSE>>=
+ 	simprev <- dat.elas[ , sum(rev2)/sum(rev1), by=elas][['V1']]
     plot[["revsum"]]
     @
  	\caption{Cumulative revenue collection by time of day}
  	\label{fig:toyrevenue}
  \end{figure}
 
-This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. In fact, in this case it yields a substantial gain. This is especially true if overall demand does not decrease, as would be the case with introducing flat tolls. 
-
-
+This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. In fact, in this case it yields a substantial revenue increase of \Sexpr{round(100*simprev[1])}\% for the conventional dynamic pricing, and \Sexpr{round(100*simprev[2])}\%, and \Sexpr{round(100*simprev[3])}\% for the futures market dynamic pricing with low and high elasticity, respectively. This is especially true if overall demand does not decrease, as would be the case with introducing flat tolls.
 
 \subsection{Optimizing revenue and delay}
-what would it look like with a different set of pricing and elasticity parameters?
-
-
-To demonstrate this with the toy simulation example, a matrix of the resulting percent change in revenue possibilities are calculated for a varying combination of minimum and maximum prices, $P_{min}$ and $P_{max}$, shown in Figure~\ref{fig:maxminrev}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. For this demonstration, a constant elasticity of $\epsilon = \Sexpr{round(E['dlow'],1)}$ is used to form the surfaces.
+To explore the price and elasticity parameters effects, a matrix of simulation results can be computed and plotted. Figure~\ref{fig:maxminrev} shows the percent change in revenue achievable by varying the combination of $P_{min}$ and $P_{max}$ simultaneously with a fixed elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$ used to form the surfaces.
 
  \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
     plot[["maxmin.rev"]]
     @
-    \caption{Comparison of total revenue by price range $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E['dlow'],1)}$}
+    \caption{Revenue comparison between dynamic and fixed pricing varying $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$}
     \label{fig:maxminrev}
  \end{figure}
- 
-Revenue is only one perspective, and alone does not yet consider operational performance, which is arguably the purpose of dynamic pricing. To evaluate performance, the total delay in each scheme can be compared as the percent change in aggregated total delay. The percent change in total delay can be calculated as
+
+Similar to revenue, operational performance can be evaluated in terms of delay. The total delay in each scheme can be compared as the percent change in aggregated total delay, calculated as
 
 \begin{equation}
     \Delta\%~Delay = \frac{\sum\limits_i Delay_{2i} - \sum\limits_i Delay_{1i}}{\sum\limits_i Delay_{1i}} = \frac{ \sum\limits_i \frac{n_{2i}}{v_{2i}} \left( v_{f} - v_{2i} \right) }{ \sum\limits_i \frac{n_{1i}}{v_{fi}} \left( v_{f} - v_{1i} \right)}
     \label{eq:delay}
 \end{equation}
 
-\noindent where for each time increment $i$, $n_{1i}$ and $n_{2i}$ are the demand in number of trips and $v_{1i}$ and $v_{2i}$ are the calculated traffic speeds for the fixed and dynamic tolls, respectively. Equation~\eqref{eq:delay} effectively sums up the total delay experienced across the entire 24-hour period, and calculates the percentage change between the fixed and dynamic tolling schemes.
+\noindent where delay is $d = n_i L \left(\sfrac{1}{v_i} - \sfrac{1}{v_f}\right)$ for each time increment $i$. $L$ is the distance traveled, which cancels out in percent change; $n_{1i}$ and $n_{2i}$ are the demand in number of trips, and $v_{1i}$ and $v_{2i}$ are the calculated traffic speeds for the fixed and dynamic tolls, respectively. Equation~\eqref{eq:delay} effectively sums up the total delay experienced across the entire 24-hour period, and calculates the percentage change between the fixed and dynamic tolling schemes.
 
  \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
     plot[["maxmin.delay"]]
     @
-    \caption{Comparison of total delay by price range $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E['dlow'],1)}$}
+    \caption{Delay comparison between dynamic and fixed pricing varying $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$}
     \label{fig:maxmindelay}
  \end{figure}
 
-
-Extracting the breakeven lines and combining the two, the regions of comparative gains can be illustrated in Figure~\ref{fig:breakeven}.
+In Figures~\ref{fig:maxminrev} and~\ref{fig:maxmindelay}, the break even point are points, which form a line, are when the parameters balance out, resulting in 0\% change in revenue or delay. Extracting the break even lines and combining the two, the general regions comparative gains can be illustrated in Figure~\ref{fig:breakeven}.
 
  \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.85\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.8\\textwidth", warning=FALSE>>=
     plot[["breakeven"]]
     @
-    \caption{Breakeven points by total revenue and delay with constant elasticity of $\epsilon = \Sexpr{round(E['dlow'],1)}$}
+    \caption{Break even points between dynamic and fixed pricing with constant elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$}
  	\label{fig:breakeven}
  \end{figure}
+ 
+What is apparent in Figure~\ref{fig:breakeven} is that congestion can be mitigated as long the upper price limit $P_{max}$ is greater than the lower price limit $P_{min}$. This makes intuitive sense, any amount of dynamic pricing where $P_{max} > P_{min}$ will yield delay improvement, but may come at the cost of revenue loss. To avoid revenue loss, the upper pricing limit must be approximately double the amount lost from $P_{min}$ compared to the fixed toll, or $\approx 1 + \right( 1 - P_{min} \right) \%$. 
+
+
+
 
 
 To evaluate how elasticity effects the revenue and delay outcomes, a set of plots can be similarly created by varying the maximum price and elasticity, $P_{max}$ and $\epsilon$. For simplicity, a lower bound, $P_{min}$ of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, this extremely theoretical scenario is not explored for simplicity. The 
@@ -367,21 +365,18 @@ To evaluate how elasticity effects the revenue and delay outcomes, a set of plot
   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
     plot[["emax.rev"]]
     @
- 	\caption{Comparison of total revenue by elasticity $\epsilon$ and $P_{max}$}
+    \caption{Revenue comparison between dynamic and fixed pricing varying elasticity $\epsilon$ and $P_{max}$ with constant $P_{min}=0$}
  	\label{fig:elasrev}
  \end{figure}
 
-As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E['dlow'],1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsur["sur"])}\% of the fixed price to be at least revenue neutral and congestion improving. This would result in $<$\Sexpr{round(100*minsur["revdiff"])}\% change in revenue and a \Sexpr{round(100*minsur["delaydiff"])}\% in delay.
-
-Similar to revenue, the range of possible percent change in delay can be compared by varying elasticity, $\epsilon$, and maximum price, $P_{max}$, shown in Figure~\ref{fig:elasdelay}.
+As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E['low'],1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsur["sur"])}\% of the fixed price to be at least revenue neutral and congestion improving. This would result in $<$\Sexpr{round(100*minsur["revdiff"])}\% change in revenue and a \Sexpr{round(100*minsur["delaydiff"])}\% in delay.
  
 \begin{figure}[H]
  	\centering
   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
     plot[["emax.delay"]]
     @
- 	\caption{Comparison of total delay by elasticity $\epsilon$ and $P_{max}$}
- 	\label{fig:elasdelay}
+    \caption{Delay comparison between dynamic and fixed pricing varying elasticity $\epsilon$ and $P_{max}$ with constant $P_{min}=0$} 	\label{fig:elasdelay}
 \end{figure}
 
  
