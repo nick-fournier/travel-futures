@@ -34,15 +34,15 @@ for(x in rand$rand) plot[['kernel']] <- plot[['kernel']] + stat_function(fun = d
 elabs <- c(bquote(epsilon ==~.(E/2)), bquote(epsilon ==~.(E)), bquote(epsilon ==~.(2*E)))
 
 plot[['elasticity']] <- ggplot(data.frame(x = c(0, 1)), aes(x)) + 
-  stat_function(fun = function(x) exp(-(E-0.2)*x)-1, aes(linetype = "E/2", color = "E/2"), alpha = 0.5) +
-  stat_function(fun = function(x) exp(-E*x)-1, aes(linetype = "E", color = "E")) +
-  stat_function(fun = function(x) exp(-(E+0.2)*x)-1, aes(linetype = "2E", color = "2E"), alpha = 0.5) +
+  stat_function(fun = function(x) exp(-(E0)*x)-1, aes(linetype = "E0", color = "E0"), alpha = 0.5) +
+  stat_function(fun = function(x) exp(-E1*x)-1, aes(linetype = "E1", color = "E1")) +
+  stat_function(fun = function(x) exp(-(E2)*x)-1, aes(linetype = "E2", color = "E2"), alpha = 0.5) +
   geom_vline(xintercept = 0, linetype="dotted") +
   geom_hline(yintercept = 0, linetype="dotted") +
   scale_x_continuous(expression(Delta~"Price"), labels = scales::percent, limits = c(-1,1)) +
   scale_y_continuous(expression(Delta~"Demand"), labels = scales::percent, limits = c(-0.5,0.5)) +
-  scale_color_brewer("Elasticity", palette = "Set1", limits = c("E/2","E","2E"), labels = elabs) +
-  scale_linetype_manual("Elasticity", values = c(2,1,5), limits = c("E/2","E","2E"), labels = elabs) +
+  scale_color_brewer("Elasticity", palette = "Set1", limits = c("E0","E1","E2"), labels = elabs) +
+  scale_linetype_manual("Elasticity", values = c(2,1,5), limits = c("E0","E1","E2"), labels = elabs) +
   theme_classic()
 # plot[['elasticity']]
 
