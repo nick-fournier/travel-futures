@@ -80,9 +80,7 @@ L = 7
 v_f = 100 #Free flow speed
 k_j = 120 #Jam density
 k_c = 30 #Critical density
-E0 = 0.1
-E1 = 0.3
-E2 = 0.5
+E = c("dnull" = 0.1, "dlow" = 0.3, "dhi" = 0.5)
 trips = 100000
 inc = 5/60
 t = seq(0,24,by=inc)
@@ -96,7 +94,7 @@ nlanes = 6 #lanes
 #### Run with constant prices and varying elasticity ####
 #Set up combination matrix
 dat.elas = as.data.table(expand.grid(tval = t,
-                                     elas = c(E0, E1, E2)))
+                                     elas = E))
 
 #Assign fixed price & scaled price
 dat.elas[ , price1 := pfix]
@@ -132,7 +130,7 @@ dat.elas[ , sumrev1 := cumsum(rev1), by = .(elas)]
 dat.elas[ , sumrev2 := cumsum(rev2), by = .(elas)]
 
 #Time
-dat.elas[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*tval)]
+dat.elas[ , time := as.POSIXct('2000-01-01 00:00:00 EST', tz='EST') + (3600*tval), by = .(elas)]
 
 # #Check sum, make sure the same number of total trips happen
 # dat.elas[ , lapply(.SD, sum),.SDcols = c("k1","k2"), by = .(elas)][, all.equal(k1,k2)]
@@ -160,7 +158,7 @@ dat.maxmin[ , v1 := q1/k1, by = .(dis,sur)]
 #Calculate new price the previous demand
 dat.maxmin[ , price2 := fun.price(k1, Pmin, Pmax, a, b)]
 #Calculate new density, flow, and number of trips from price
-dat.maxmin[ , k2 := fun.elasticdemand(k1,price1,price2,E1), by = .(dis,sur)]
+dat.maxmin[ , k2 := fun.elasticdemand(k1,price1,price2,E['dlow']), by = .(dis,sur)]
 dat.maxmin[ , k2 := sum(k1)*k2/sum(k2), by = .(dis,sur)]
 dat.maxmin[ , mu2 := trips*k2/sum(k2)/inc/nlanes, by = .(dis,sur)]
 dat.maxmin[ , q2 := fun.flowdensity(k2), by = .(dis,sur)]
@@ -259,7 +257,7 @@ mat.maxelas <- dat.maxelas[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1),
 #Set up combination matrix
 dat.maxminelas = as.data.table(expand.grid(tval = t,
                                            #elas = c(0, seq(0.1, 1.5,by = 0.2)),
-                                           elas = c(E0, E1, E2),
+                                           elas = E,
                                            dis = seq(0, 1, by = 0.05),
                                            sur = seq(0, 4, by = 0.05)))
 #Assign fixed price & scaled price
@@ -311,15 +309,15 @@ mat.maxminelas <- dat.maxminelas[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1
                                   by = .(dis,sur,elas)]
 
 # #Constant prices, simple plots
-# dat.elas <- dat.maxminelas[dis == discount & sur == surcharge & elas %in% as.character(c(E0, E1, E2)), ]
+# dat.elas <- dat.maxminelas[dis == discount & sur == surcharge & elas %in% as.character(c(E['dnull'], E['dlow'], E['dhi'])), ]
 
 # #Constant elasticity
-# mat.maxmin <- mat.maxminelas[elas == as.character(E1), ]
+# mat.maxmin <- mat.maxminelas[elas == as.character(E['dlow']), ]
 
-minsur <- as.matrix(mat.maxelas[elas == as.character(E1) & delaydiff<0 & revdiff>0, ][which.min(revdiff), ])[1,]
+minsur <- as.matrix(mat.maxelas[elas == as.character(E['dlow']) & delaydiff<0 & revdiff>0, ][which.min(revdiff), ])[1,]
 
 #### Saving data ####
-pars = c("a","b","surcharge","discount","E0","E1","E2","pfix","inc","k_c","k_j","L","v_f","trips","nlanes")
+pars = c("a","b","surcharge","discount","E","pfix","inc","k_c","k_j","L","v_f","trips","nlanes")
 dats = c("dat.elas", "mat.maxelas","mat.maxmin","mat.maxminelas","minsur")
 funs = ls()[grepl("fun",ls())]
 
