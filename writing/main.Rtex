@@ -204,7 +204,7 @@ Suppose that the regional metropolitan transportation planning commission wishes
  		$P_{min}$   & \Sexpr{round(100*discount)}\%    & \small Minimum dynamic price ratio ($\sfrac{P_{min}}{P_{fixed}}$)          \\
  		$P_{max}$   & \Sexpr{round(100*surcharge)}\%   & \small Maximum dynamic price ratio ($\sfrac{P_{max}}{P_{fixed}}$)  \\
  		$\alpha$    & \Sexpr{round(a,2)}      & \small Price calibration parameter \\
- 		$\beta$     & \Sexpr{round(b,2)}    & \small Price calibration parameter \\ \hdashline
+ 		$\beta$     & \Sexpr{round(b,2)}    & \small Price calibration parameter \\
  		$\epsilon_0$  & \Sexpr{round(E['dnull'],2)}    & \small Elasticity \\
  		$\epsilon_{low}$  & \Sexpr{round(E['dlow'],2)}    & \small Elasticity \\
  		$\epsilon_{high}$  & \Sexpr{round(E['dhi'],2)}    & \small Elasticity \\ \bottomrule
@@ -212,12 +212,12 @@ Suppose that the regional metropolitan transportation planning commission wishes
  	\label{tab:toyprice}
  \end{table}
 
-Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are set for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below.
+Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are set for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below those levels.
 
  \begin{figure}[H]
  	\centering
  	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.45, out.width="0.75\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
     plot[["price"]]
     @
  	\caption{Pricing sigmoid function}
@@ -227,14 +227,14 @@ Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are se
  
 \subsection{Price elasticity of demand}
 
-To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. For this simulation, a constant isoelastic price-demand function was used,
+To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. For this simulation, a constant isoelastic price-demand function was used, which can be expressed as
 
 \begin{equation}
 \Delta\mu = e^{-\epsilon \cdot \Delta P} - 1
 \end{equation} 
-\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values. For this demonstration, a modest elasticity value of \Sexpr{round(E['dlow'],2)} is used.
 
-  
+\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values.
+
 \begin{figure}[H]
     \centering
 %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
@@ -244,9 +244,6 @@ To simulate the resulting demand shift from pricing, the simple micro-economic p
  	\caption{Price elasticity}
  	\label{fig:toyelasticity}
 \end{figure}
-
-The elasticity will not only determine how sensitive travelers are to price changes, but also effect the aggregated total revenue collected. An increase in revenue from a dynamic pricing scheme compared to a fixed price is not guaranteed and depends upon the parameters selected in the pricing function. Ultimately, the revenue collected from a dynamic pricing scheme primarily depends on the elasticity, $\epsilon$, and the upper and lower limits of the pricing function, $P_{max}$ and $P_{min}$. 
-
 
 \subsection{Traffic flow}
 The traffic flow across the bridge can be characterized by the macroscopic fundamental diagram using the following modified piece-wise flow-density function
@@ -289,11 +286,9 @@ Although a variety of more refined macroscopic models have been developed, many 
 The first piece when $k < k_c$ provides a steep curve that peaks at the critical density $k_c$, and the other case when $k \geq k_c$ sets the right-tail of the elongated parabola at jam density $k_j$. The critical and jam densities, $k_c$ and $k_j$, are set to  $30~\sfrac{veh}{km}$, and $120~\sfrac{veh}{km}$, respectively. This asymmetric shape also yields a more gradual decline in speed that is more similar to the bi-linear model (see Figure~\ref{fig:speeddensity}, but without the abrupt speed transition.
 
 \subsection{Simple case}
- 
-  
-There are two demand distributions, one distribution results from a flat toll which is constructed from the sum of four Gaussian functions characterized by means at 9:00, 12:00, 14:00 and 17:00, each with a standard deviation of 2. The other distribution is a result of demand shift incentivized by the dynamic toll price, which was calculated using the sigmoid function in Figure~\ref{fig:toyprice}. The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
- 
- 
+In a simple case, using the parameters in Table~\ref{tab:toyprice}, the macroscopic traffic conditions can be simulated to compare results between a dynamic pricing scheme against a fixed toll. The price changes causes demand to shift from the peak to the off-peak, resulting in a decrease in congestion and an improvement in average travel speed as shown in Figure~\ref{fig:toyspeed}. Although there is an improvement in all cases
+
+The magnitude of travel speed improvement depends u
 
  \begin{figure}[H]
     \centering
@@ -303,6 +298,8 @@ There are two demand distributions, one distribution results from a flat toll wh
  	\caption{Average traffic speed by time of day}
  	\label{fig:toyspeed}
  \end{figure}
+ 
+The elasticity will not only determine how sensitive travelers are to price changes, but also effect the aggregated total revenue collected. An increase in revenue from a dynamic pricing scheme compared to a fixed price is not guaranteed and depends upon the parameters selected in the pricing function. Ultimately, the revenue collected from a dynamic pricing scheme primarily depends on the elasticity, $\epsilon$, and the upper and lower limits of the pricing function, $P_{max}$ and $P_{min}$. The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
  
  \begin{figure}[H]
      \centering
