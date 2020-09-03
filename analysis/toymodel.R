@@ -80,7 +80,7 @@ L = 7
 v_f = 100 #Free flow speed
 k_j = 120 #Jam density
 k_c = 30 #Critical density
-E = c("dnull" = 0.1, "dlow" = 0.3, "dhi" = 0.5)
+E = c("0" = 0.1, "low" = 0.3, "high" = 0.5)
 trips = 100000
 inc = 5/60
 t = seq(0,24,by=inc)
@@ -158,7 +158,7 @@ dat.maxmin[ , v1 := q1/k1, by = .(dis,sur)]
 #Calculate new price the previous demand
 dat.maxmin[ , price2 := fun.price(k1, Pmin, Pmax, a, b)]
 #Calculate new density, flow, and number of trips from price
-dat.maxmin[ , k2 := fun.elasticdemand(k1,price1,price2,E['dlow']), by = .(dis,sur)]
+dat.maxmin[ , k2 := fun.elasticdemand(k1,price1,price2,E['low']), by = .(dis,sur)]
 dat.maxmin[ , k2 := sum(k1)*k2/sum(k2), by = .(dis,sur)]
 dat.maxmin[ , mu2 := trips*k2/sum(k2)/inc/nlanes, by = .(dis,sur)]
 dat.maxmin[ , q2 := fun.flowdensity(k2), by = .(dis,sur)]
@@ -309,12 +309,12 @@ mat.maxminelas <- dat.maxminelas[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1
                                   by = .(dis,sur,elas)]
 
 # #Constant prices, simple plots
-# dat.elas <- dat.maxminelas[dis == discount & sur == surcharge & elas %in% as.character(c(E['dnull'], E['dlow'], E['dhi'])), ]
+# dat.elas <- dat.maxminelas[dis == discount & sur == surcharge & elas %in% as.character(c(E['0'], E['low'], E['high'])), ]
 
 # #Constant elasticity
-# mat.maxmin <- mat.maxminelas[elas == as.character(E['dlow']), ]
+# mat.maxmin <- mat.maxminelas[elas == as.character(E['low']), ]
 
-minsur <- as.matrix(mat.maxelas[elas == as.character(E['dlow']) & delaydiff<0 & revdiff>0, ][which.min(revdiff), ])[1,]
+minsur <- as.matrix(mat.maxelas[elas == as.character(E['low']) & delaydiff<0 & revdiff>0, ][which.min(revdiff), ])[1,]
 
 #### Saving data ####
 pars = c("a","b","surcharge","discount","E","pfix","inc","k_c","k_j","L","v_f","trips","nlanes")

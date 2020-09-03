@@ -31,12 +31,12 @@ for(x in rand$rand) plot[['kernel']] <- plot[['kernel']] + stat_function(fun = d
 
 
 #### Elasticity Plot
-elabs <- c(bquote(epsilon[0] ==~.(E['dnull'])), bquote(epsilon[low] ==~.(E['dlow'])), bquote(epsilon[high] ==~.(E['dhi'])))
+elabs <- c(bquote(epsilon[0] ==~.(E['0'])), bquote(epsilon[low] ==~.(E['low'])), bquote(epsilon[high] ==~.(E['high'])))
 
 plot[['elasticity']] <- ggplot(data.frame(x = c(0, 1)), aes(x)) + 
-  stat_function(fun = function(x) exp(-(E['dnull'])*x)-1, aes(linetype = "E0", color = "E0"), alpha = 0.5) +
-  stat_function(fun = function(x) exp(-E['dlow']*x)-1, aes(linetype = "E1", color = "E1")) +
-  stat_function(fun = function(x) exp(-(E['dhi'])*x)-1, aes(linetype = "E2", color = "E2"), alpha = 0.5) +
+  stat_function(fun = function(x) exp(-(E['0'])*x)-1, aes(linetype = "E0", color = "E0"), alpha = 0.5) +
+  stat_function(fun = function(x) exp(-E['low']*x)-1, aes(linetype = "E1", color = "E1")) +
+  stat_function(fun = function(x) exp(-(E['high'])*x)-1, aes(linetype = "E2", color = "E2"), alpha = 0.5) +
   geom_vline(xintercept = 0, linetype="dotted") +
   geom_hline(yintercept = 0, linetype="dotted") +
   scale_x_continuous(expression(Delta~"Price"), labels = scales::percent, limits = c(-1,1)) +
@@ -138,7 +138,10 @@ plot[['demanddist']] <- ggplot(unique(dat.elas[,.(time,n1)])) +
 
 #### Plots: Time series distribution results plots ####
 #### Demand Density Distributions (Same as flow, but with density)
-dlabs = c("Fixed toll", sapply(unique(dat.elas$elas), function(x) bquote("Dynamic toll,"~epsilon == .(x))))
+# dlabs = c("Fixed toll", sapply(unique(dat.elas$elas), function(x) bquote("Dynamic toll,"~epsilon == .(x))))
+dlabs = c("Fixed toll", sapply(seq_along(unique(dat.elas$elas)), function(x) {
+  bquote("Dynamic toll,"~epsilon[.(names(E)[x])] == .(unique(dat.elas$elas)[x]))
+  }))
 
 plot[['density']] <- ggplot(dat.elas) + 
   geom_line(aes(x=time,y=k1, color = "Fixed toll")) + 
@@ -288,7 +291,7 @@ plot[['maxmin.delay']] <- ggplot(mat.maxmin, aes(x = dis, y = sur)) +
 
 # # # # # # # # # Break even points # # # # # #
 #### Total revenue by Elasticity vs break even point
-plot[['breakeven']] <- ggplot(data = mat.maxminelas[elas == as.character(E['dlow']), .SD[which.min(abs(revdiff))], by = .(dis,elas)]) +
+plot[['breakeven']] <- ggplot(data = mat.maxminelas[elas == as.character(E['low']), .SD[which.min(abs(revdiff))], by = .(dis,elas)]) +
   #Revenue lines
   geom_smooth(aes(x = dis, y = sur), color = "black", formula = 'y~x', method = "loess", se=F, fullrange = T, span = 1) +
   geom_ribbon(aes(x = dis, y = sur, ymin = 0, ymax = predict(loess(sur ~ dis)), fill = "Revenue negative and\ndelay reducing"), alpha = 0.5) +
