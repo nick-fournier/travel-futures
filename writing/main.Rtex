@@ -193,12 +193,7 @@ As an example application, suppose there are two adjacent urban centers in a met
         \label{fig:toy}
 \end{figure}
 
-Suppose that the regional metropolitan transportation planning commission wishes alleviate congestion in the peaks with a dynamic tolling system. A study determines that the price elasticity of demand for a conventional dynamic tolling system is $\epsilon_0 = \Sexpr{E0}$, 
-
-
-
-
-The commission has determined the pricing parameters in Table~\ref{tab:toyprice}. They determined that voters are willing to approve a pre-purchase toll system that offers a \Sexpr{round((1-discount)*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surcharge*100)}\% surcharge above existing prices in the peak.
+Suppose that the regional metropolitan transportation planning commission wishes alleviate congestion in the peaks with a dynamic tolling system. A study determines that the price elasticity of demand for a conventional dynamic tolling system without a pre-pay futures market is $\epsilon_0 = \Sexpr{round(E0,1)}$, and that a futures market mechanism would boost elasticity to somewhere between $\epsilon_1 = \Sexpr{round(E1,1)}$ on the low end, and $\epsilon_2 = \Sexpr{round(E2,1)}$ on the high end. They determined that voters are willing to approve a dynamic toll system that is limited to between a \Sexpr{round((1-discount)*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surcharge*100)}\% surcharge above existing fixed prices in the peak. See Table~\ref{tab:toyprice}.
  
  \begin{table}[H]
     \centering
@@ -210,9 +205,9 @@ The commission has determined the pricing parameters in Table~\ref{tab:toyprice}
  		$P_{max}$   & \Sexpr{round(100*surcharge)}\%   & \small Maximum dynamic price ratio ($\sfrac{P_{max}}{P_{fixed}}$)  \\
  		$\alpha$    & \Sexpr{round(a,2)}      & \small Price calibration parameter \\
  		$\beta$     & \Sexpr{round(b,2)}    & \small Price calibration parameter \\
- 		$\epsilon_0$  & \Sexpr{round(E,2)}    & \small Elasticity \\
- 		$\epsilon_1$  & \Sexpr{round(E,2)}    & \small Elasticity \\
- 		$\epsilon_2$  & \Sexpr{round(E,2)}    & \small Elasticity \\ \bottomrule
+ 		$\epsilon_0$  & \Sexpr{round(E0,2)}    & \small Elasticity \\
+ 		$\epsilon_1$  & \Sexpr{round(E1,2)}    & \small Elasticity \\
+ 		$\epsilon_2$  & \Sexpr{round(E2,2)}    & \small Elasticity \\ \bottomrule
  	\end{tabular}
  	\label{tab:toyprice}
  \end{table}
@@ -236,7 +231,7 @@ To simulate the resulting demand shift from pricing, the simple micro-economic p
 \begin{equation}
 \Delta\mu = e^{-\epsilon \cdot \Delta P} - 1
 \end{equation} 
-\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values. For this demonstration, a modest elasticity value of \Sexpr{round(E,2)} is used.
+\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values. For this demonstration, a modest elasticity value of \Sexpr{round(E1,2)} is used.
 
   
 \begin{figure}[H]
@@ -325,14 +320,14 @@ This shows that a modest adjustment in price results in demand shift (i.e., comm
 what would it look like with a different set of pricing and elasticity parameters?
 
 
-To demonstrate this with the toy simulation example, a matrix of the resulting percent change in revenue possibilities are calculated for a varying combination of minimum and maximum prices, $P_{min}$ and $P_{max}$, shown in Figure~\ref{fig:maxminrev}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. For this demonstration, a constant elasticity of $\epsilon = \Sexpr{round(E,1)}$ is used to form the surfaces.
+To demonstrate this with the toy simulation example, a matrix of the resulting percent change in revenue possibilities are calculated for a varying combination of minimum and maximum prices, $P_{min}$ and $P_{max}$, shown in Figure~\ref{fig:maxminrev}. The revenue outcome is calculated as the percentage difference between the dynamic tolling scheme and the fixed tolling scheme. For this demonstration, a constant elasticity of $\epsilon = \Sexpr{round(E1,1)}$ is used to form the surfaces.
 
  \begin{figure}[H]
  	\centering
   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
     plot[["maxmin.rev"]]
     @
-    \caption{Comparison of total revenue by price range $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E,1)}$}
+    \caption{Comparison of total revenue by price range $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E1,1)}$}
     \label{fig:maxminrev}
  \end{figure}
  
@@ -350,7 +345,7 @@ Revenue is only one perspective, and alone does not yet consider operational per
   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
     plot[["maxmin.delay"]]
     @
-    \caption{Comparison of total delay by price range $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E,1)}$}
+    \caption{Comparison of total delay by price range $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E1,1)}$}
     \label{fig:maxmindelay}
  \end{figure}
 
@@ -362,7 +357,7 @@ Extracting the breakeven lines and combining the two, the regions of comparative
   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.85\\textwidth", warning=FALSE>>=
     plot[["breakeven"]]
     @
-    \caption{Breakeven points by total revenue and delay with constant elasticity of $\epsilon = \Sexpr{round(E,1)}$}
+    \caption{Breakeven points by total revenue and delay with constant elasticity of $\epsilon = \Sexpr{round(E1,1)}$}
  	\label{fig:breakeven}
  \end{figure}
 
@@ -378,7 +373,7 @@ To evaluate how elasticity effects the revenue and delay outcomes, a set of plot
  	\label{fig:elasrev}
  \end{figure}
 
-As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E,1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsur["sur"])}\% of the fixed price to be at least revenue neutral and congestion improving. This would result in $<$\Sexpr{round(100*minsur["revdiff"])}\% change in revenue and a \Sexpr{round(100*minsur["delaydiff"])}\% in delay.
+As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E1,1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsur["sur"])}\% of the fixed price to be at least revenue neutral and congestion improving. This would result in $<$\Sexpr{round(100*minsur["revdiff"])}\% change in revenue and a \Sexpr{round(100*minsur["delaydiff"])}\% in delay.
 
 Similar to revenue, the range of possible percent change in delay can be compared by varying elasticity, $\epsilon$, and maximum price, $P_{max}$, shown in Figure~\ref{fig:elasdelay}.
  
