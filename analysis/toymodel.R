@@ -201,8 +201,8 @@ mat.maxmin <- dat.maxmin[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1),
 #### Run with varying elasticity and pmax ####
 #Set up combination matrix
 dat.maxelas = as.data.table(expand.grid(tval = t,
-                                        elas = seq(0, 2, by = 0.025),
-                                        sur = seq(0, 4, by = 0.025)))
+                                        elas = seq(0, 2, by = 0.01),
+                                        sur = seq(0, 4, by = 0.01)))
 #Assign fixed price & scaled price
 dat.maxelas[ , price1 := pfix]
 dat.maxelas[ , Pmin := pfix*0]
@@ -315,6 +315,10 @@ mat.maxminelas <- dat.maxminelas[ , list("revdiff" = (sum(rev2 - rev1))/sum(rev1
 # mat.maxmin <- mat.maxminelas[elas == as.character(E['low']), ]
 
 minsur <- as.matrix(mat.maxelas[elas == as.character(E['low']) & delaydiff<0 & revdiff>0, ][which.min(revdiff), ])[1,]
+
+
+#Simple revenue
+# simprev <- dat.elas[ , sum(rev2)/sum(rev1), by=elas][['V1']]
 
 #### Saving data ####
 pars = c("a","b","surcharge","discount","E","pfix","inc","k_c","k_j","L","v_f","trips","nlanes")

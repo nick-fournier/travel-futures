@@ -290,22 +290,29 @@ plot[['maxmin.delay']] <- ggplot(mat.maxmin, aes(x = dis, y = sur)) +
 
 
 # # # # # # # # # Break even points # # # # # #
+
+breakrev <- mat.maxminelas[, .SD[which.min(abs(revdiff))], by = .(dis,elas)]
+breakdel <- mat.maxminelas[ , .SD[which.min(abs(delaydiff))], by = .(dis,elas)]
+
+blabs = c("+R-D" = "Revenue positive and\ndelay reducing",
+          "-R-D" = "Revenue negative and\ndelay reducing",
+          "-R+D" = "Revenue negative and\ndelay increasing")
+
 #### Total revenue by Elasticity vs break even point
-plot[['breakeven']] <- ggplot(data = mat.maxminelas[elas == as.character(E['low']), .SD[which.min(abs(revdiff))], by = .(dis,elas)]) +
+plot[['breakeven']] <- ggplot() +
+  #Revenue region
+  geom_ribbon(data = breakrev[elas == E['0'],], aes(x = dis, y = sur, ymin = predict(loess(sur ~ dis)), ymax = 5, fill = "+R-D"), alpha = 0.5) +
+  geom_ribbon(data = breakrev[elas == E['0'],], aes(x = dis, y = sur, ymin = 0, ymax = predict(loess(sur ~ dis)), fill = "-R-D"), alpha = 0.5) +
+  #Delay region
+  geom_ribbon(data = breakdel, aes(x = dis, y = sur, ymin = 0, ymax = predict(loess(sur ~ dis)), fill = "-R+D"), alpha = 0.5) +
   #Revenue lines
-  geom_smooth(aes(x = dis, y = sur), color = "black", formula = 'y~x', method = "loess", se=F, fullrange = T, span = 1) +
-  geom_ribbon(aes(x = dis, y = sur, ymin = 0, ymax = predict(loess(sur ~ dis)), fill = "Revenue negative and\ndelay reducing"), alpha = 0.5) +
-  geom_ribbon(aes(x = dis, y = sur, ymin = predict(loess(sur ~ dis)), ymax = 5, fill = "Revenue positive and\ndelay reducing"), alpha = 0.5) +
-  #Delay lines
-  geom_smooth(data = mat.maxminelas[ , .SD[which.min(abs(delaydiff))], by = .(dis,elas)],
-              aes(x = dis, y = sur, color = "Delay breakeven point"), color = "black",
-              formula = 'y~x', method = "loess", se=F, fullrange = T, span = 1, fill = "green") +
-  geom_ribbon(data = mat.maxminelas[ , .SD[which.min(abs(delaydiff))], by = .(dis,elas)],
-              aes(x = dis, y = sur, ymin = 0, ymax = predict(loess(sur ~ dis)), fill = "Revenue negative and\ndelay increasing"), alpha = 0.5) +
+  geom_smooth(data = breakrev, aes(x = dis, y = sur, linetype = factor(elas)), color = "black", formula = 'y~x', method = "loess", se=F) +
+  #Delay break even
+  geom_smooth(data = breakdel, aes(x = dis, y = sur, linetype = factor(elas)), color = "black", formula = 'y~x', method = "loess", se=F) +
   scale_x_continuous(expression("Lower price limit,"~frac(P[min],P[fix])), expand = c(0,0), labels = scales::percent_format()) +
   scale_y_continuous(expression("Upper price limit,"~frac(P[max],P[fix])), expand = c(0,0), labels = scales::percent_format()) +
-  scale_fill_brewer("Outcome region", palette = "RdYlBu") +
-  #scale_linetype(expression("Elasticity,"~epsilon)) +
+  scale_fill_brewer("Outcome region", palette = "RdYlBu", limits = rev(names(blabs)), labels = blabs) +
+  scale_linetype("Break even points", labels = dlabs[-1]) +
   coord_fixed(ratio = max(mat.maxminelas$dis)/max(mat.maxminelas$sur),
               xlim = c(0, max(mat.maxminelas$dis)),
               ylim = c(0, 4)) +
@@ -321,9 +328,13 @@ Erevcodes <- fun.coder(mat.maxelas$revdiff, 25, direction = 1)
 plot[['emax.rev']] <- ggplot(mat.maxelas, aes(x = elas, y = sur)) +
   geom_raster(aes(fill = cut(100*revdiff, Erevcodes$cuts, include.lowest = T))) +
   geom_contour(breaks = Erevcodes$cuts, aes(z = 100*revdiff), color = "black") +
+  geom_smooth(data = mat.maxelas[ revdiff > -0.01 & revdiff < 0.01, ], 
+              aes(x = elas, y = sur, linetype = "Break even point"), 
+              size = 1.5, color = "black", formula = 'y~x', method = "loess", se=F) +
   scale_x_continuous(expression("Price Elasticity of Demand, "~epsilon), expand = c(0,0)) +
   scale_y_continuous(expression("Upper price limit,"~P[max]), expand = c(0,0), labels = scales::percent_format()) +
   scale_fill_manual(expression("Percent change\nin revenue"), label = Erevcodes$labs, values = Erevcodes$colors) +
+  scale_linetype(NULL) +
   coord_fixed(ratio = max(mat.maxelas$elas) / max(mat.maxelas$sur),
               xlim = c(0, max(mat.maxelas$elas)),
               ylim = c(0, max(mat.maxelas$sur))) +
