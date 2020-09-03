@@ -25,7 +25,7 @@
 \addbibresource{references.bib}
 
 %Load in the R scripts
-<<echo=FALSE, cache=TRUE>>==
+<<echo=FALSE, cache=TRUE, warning=FALSE>>==
     source("../analysis/toyplots.R")
  @
 
@@ -42,7 +42,8 @@
 \maketitle
 
 \begin{abstract}
-While transportation funding can be collected in a variety of direct (e.g., fares, tolls and gas taxes) or indirect ways (e.g., property and sales tax), demand dependent dynamic pricing not only collects revenue but provides congestion mitigating benefits. Dynamic pricing varies prices based on congestion, incentivizing travelers to avoid peak-demand periods, thus utilizing infrastructure capacity more efficiently. Unfortunately, dynamic pricing is generally a politically unsavory policy due to equity concerns and the fear of being price-gouged if unexpectedly caught in congestion. However, dynamic pricing is increasingly being proposed as congestion outpaces capacity growth and traditional gas tax-based revenue is rendered insolvent after decades of unadjusted inflation and increased fuel efficiency. This paper seeks to help remedy these concerns by proposing a simple ``futures'' market mechanism that can augment existing fare/toll collection technologies, providing travelers with sufficient pricing information and purchasing options to travel plan and avoid excessive prices. Users can pre-pay their future fares/tolls to lock in a lower price for expected trips, with prices rising as road capacity fills up, thus encouraging good travel planning without extorting regular commuters. As a potential extension, the mechanism enables re-selling of unused future trips at market rate, minimizing financial loss for changing plans and discouraging wasteful ``use it or lose it'' behavior that might otherwise be encouraged. Overall, this simple mechanism not only provides revenue collection and congestion reduction but offers a practical data collection feature of a future demand horizon, useful to both travelers and operators alike.
+While transportation funding can be collected in a variety of direct (e.g., fares, tolls, and gas taxes) or indirect ways (e.g., property and sales tax), dynamic demand responsive pricing not only collects revenue but incentivizes travelers to avoid peak-demand periods, thus utilizing infrastructure capacity more efficiently. Unfortunately, the demand response to price changes, called price elasticity of demand, is generally greater for longer-term (e.g., air and rail travel) than for short-term travel planning (e.g., highway tolls and transit fares). While this is due to a plethora of factors (e.g., time flexibility, etc.), a critical factor is that travelers simple lack sufficient information for future travel planning. For example, airline prices at different times can be easily compared, but a highway driver cannot accurately predict congestion pricing, thus causing price changes to have little effect on demand until after the fact. This leaves any congestion abatement up to inefficient trial and error, and anecdotal speculation. Moreover, dynamic pricing is politically unsavory policy due to this price uncertainty and collateral equity concerns. This paper seeks to help remedy these concerns by proposing a simple ``futures'' market mechanism that can augment existing fare/toll collection technologies, providing travelers with sufficient pricing information and purchasing options to travel plan and avoid excessive prices. Users can pre-pay their future fares/tolls to lock in a lower price for expected trips, with prices rising as road capacity fills up, thus encouraging good travel planning and efficient infrastructure utilization.
+
 \vfill
 \end{abstract}
 
@@ -192,6 +193,30 @@ As an example application, suppose there are two adjacent urban centers in a met
         \label{fig:toy}
 \end{figure}
 
+Suppose that the regional metropolitan transportation planning commission wishes alleviate congestion in the peaks with a dynamic tolling system. A study determines that the price elasticity of demand for a conventional dynamic tolling system is $\epsilon_0 = \Sexpr{E0}$, 
+
+
+
+
+The commission has determined the pricing parameters in Table~\ref{tab:toyprice}. They determined that voters are willing to approve a pre-purchase toll system that offers a \Sexpr{round((1-discount)*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surcharge*100)}\% surcharge above existing prices in the peak.
+ 
+ \begin{table}[H]
+    \centering
+ 	\caption{Desired pricing parameters}
+ 	\begin{tabular}{ c c l}
+ 		\toprule
+ 		Parameter   & Value  & Description                          \\ \hline
+ 		$P_{min}$   & \Sexpr{round(100*discount)}\%    & \small Minimum dynamic price ratio ($\sfrac{P_{min}}{P_{fixed}}$)          \\
+ 		$P_{max}$   & \Sexpr{round(100*surcharge)}\%   & \small Maximum dynamic price ratio ($\sfrac{P_{max}}{P_{fixed}}$)  \\
+ 		$\alpha$    & \Sexpr{round(a,2)}      & \small Price calibration parameter \\
+ 		$\beta$     & \Sexpr{round(b,2)}    & \small Price calibration parameter \\
+ 		$\epsilon_0$  & \Sexpr{round(E,2)}    & \small Elasticity \\
+ 		$\epsilon_1$  & \Sexpr{round(E,2)}    & \small Elasticity \\
+ 		$\epsilon_2$  & \Sexpr{round(E,2)}    & \small Elasticity \\ \bottomrule
+ 	\end{tabular}
+ 	\label{tab:toyprice}
+ \end{table}
+
  
 \subsection{Price elasticity of demand}
 Using calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below.
@@ -268,24 +293,6 @@ Although a variety of more refined macroscopic models have been developed, many 
 The first piece when $k < k_c$ provides a steep curve that peaks at the critical density $k_c$, and the other case when $k \geq k_c$ sets the right-tail of the elongated parabola at jam density $k_j$. The critical and jam densities, $k_c$ and $k_j$, are set to  $30~\sfrac{veh}{km}$, and $120~\sfrac{veh}{km}$, respectively. This asymmetric shape also yields a more gradual decline in speed that is more similar to the bi-linear model (see Figure~\ref{fig:speeddensity}, but without the abrupt speed transition.
 
 \subsection{Simple case}
- 
- Suppose that the metropolitan transportation planning commission wishes alleviate congestion in the peaks with a dynamic tolling system.  The commission has determined the pricing parameters in Table~\ref{tab:toyprice}. They determined that voters are willing to approve a pre-purchase toll system that offers a \Sexpr{round((1-discount)*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surcharge*100)}\% surcharge above existing prices in the peak.
- 
- \begin{table}[H]
-    \centering
- 	\caption{Desired pricing parameters}
- 	\begin{tabular}{ c c l}
- 		\toprule
- 		Parameter   & Value  & Description                          \\ \hline
- 		$P_{min}$   & \Sexpr{round(100*discount)}\%    & \small Minimum dynamic price ratio ($\sfrac{P_{min}}{P_{fixed}}$)          \\
- 		$P_{max}$   & \Sexpr{round(100*surcharge)}\%   & \small Maximum dynamic price ratio ($\sfrac{P_{max}}{P_{fixed}}$)  \\
- 		$\alpha$    & \Sexpr{round(a,2)}      & \small Price calibration parameter \\
- 		$\beta$     & \Sexpr{round(b,2)}    & \small Price calibration parameter \\
- 		$\epsilon$  & \Sexpr{round(E,2)}    & \small Elasticity \\ \bottomrule
- 	\end{tabular}
- 	\label{tab:toyprice}
- \end{table}
- 
  
   
 There are two demand distributions, one distribution results from a flat toll which is constructed from the sum of four Gaussian functions characterized by means at 9:00, 12:00, 14:00 and 17:00, each with a standard deviation of 2. The other distribution is a result of demand shift incentivized by the dynamic toll price, which was calculated using the sigmoid function in Figure~\ref{fig:toyprice}. The net revenue resulting from the simple example actually yielded a slight increase in revenue in this case, as shown in Figure~\ref{fig:toyrevenue}, despite offering a discounted $P_{min}$ toll.
