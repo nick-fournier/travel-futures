@@ -31,18 +31,19 @@ for(x in rand$rand) plot[['kernel']] <- plot[['kernel']] + stat_function(fun = d
 
 
 #### Elasticity Plot
-elabs <- c(bquote(epsilon[0] ==~.(E['0'])), bquote(epsilon[low] ==~.(E['low'])), bquote(epsilon[high] ==~.(E['high'])))
+elabs = sapply(names(E), function(x) bquote(epsilon[.(x)] ==~.(E[x])) )
 
-plot[['elasticity']] <- ggplot(data.frame(x = c(0, 1)), aes(x)) + 
-  stat_function(fun = function(x) exp(-(E['0'])*x)-1, aes(linetype = "E0", color = "E0"), alpha = 0.5) +
-  stat_function(fun = function(x) exp(-E['low']*x)-1, aes(linetype = "E1", color = "E1")) +
-  stat_function(fun = function(x) exp(-(E['high'])*x)-1, aes(linetype = "E2", color = "E2"), alpha = 0.5) +
+plot[['elasticity']] <- ggplot(data.frame(x = c(0, 1), E), aes(x)) + 
+  stat_function(fun = function(x) exp(-(E['0'])*x)-1, aes(linetype = "0", color = "0"), alpha = 0.5) +
+  stat_function(fun = function(x) exp(-E['low']*x)-1, aes(linetype = "low", color = "low")) +
+  stat_function(fun = function(x) exp(-E['medium']*x)-1, aes(linetype = "medium", color = "medium")) +
+  stat_function(fun = function(x) exp(-(E['high'])*x)-1, aes(linetype = "high", color = "high"), alpha = 0.5) +
   geom_vline(xintercept = 0, linetype="dotted") +
   geom_hline(yintercept = 0, linetype="dotted") +
   scale_x_continuous(expression(Delta~"Price"), labels = scales::percent, limits = c(-1,1)) +
   scale_y_continuous(expression(Delta~"Demand"), labels = scales::percent, limits = c(-0.5,0.5)) +
-  scale_color_brewer("Elasticity", palette = "Set1", limits = c("E0","E1","E2"), labels = elabs) +
-  scale_linetype_manual("Elasticity", values = c(2,1,5), limits = c("E0","E1","E2"), labels = elabs) +
+  scale_color_brewer("Elasticity", palette = "Set1", limits = names(E), labels = elabs) +
+  scale_linetype_manual("Elasticity", values = c(1,2,4,5), limits = names(E), labels = elabs) +
   theme_classic()
 # plot[['elasticity']]
 

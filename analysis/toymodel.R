@@ -80,7 +80,7 @@ L = 7
 v_f = 100 #Free flow speed
 k_j = 120 #Jam density
 k_c = 30 #Critical density
-E = c("0" = 0.1, "low" = 0.3, "high" = 0.5)
+E = c("0" = 0.1, "low" = 0.3, "medium" = 0.5, "high" = 0.7)
 trips = 100000
 inc = 5/60
 t = seq(0,24,by=inc)
