@@ -166,12 +166,13 @@ P(k) = P_{min} + \frac{P_{max} - P_{min}}{1 + e^{\alpha - \beta k}}
 
 \noindent where $\alpha$ and $\beta$ are tuning parameters to specify the horizontal shift and ``steepness'' of the function, respectively.  A potentially useful feature of using a bounded sigmoid is that it can be presented to the public as a discount feature for booked and off-peak travelers, not a surcharge. For example, booked off-peak trips are discounted from the typical fixed toll/fare price. This may help make it politically more palatable. Of course, there is no technical difference and the upper boundary will need to be set high enough to collect sufficient net revenue.
 
-While the objective in certain cases (i.e., roadways) is to maintain smooth traffic flow, a dynamic pricing function based directly on traffic speed would fail to capture the underlying demand. Traffic speed is not a reliable measure of demand as speed will remain relatively constant across a range of demand, and only begins to break down when traffic density reaches a critical point. This makes it difficult to set prices for any speed below this critical point. However, given that the goal is to increase infrastructure utilization and efficiency, not simply maintain high speeds, basing pricing on density is a more robust and universal measure. Furthermore, density not only offers a direct input from the trip density estimation, but can be applied to broader range of applications where speed is less dependent on density (e.g., transit).
+While the objective in certain cases (i.e., roadways) is to maintain smooth traffic flow, a dynamic pricing function based directly on traffic speed would fail to capture the underlying demand. Traffic speed is not a reliable measure of demand as speed will remain relatively constant across a range of demand, and only begins to break down when traffic density reaches a critical point. This makes it difficult to set prices for any speed below this critical point. However, given that the goal is to increase infrastructure utilization and efficiency, not simply maintain high speeds, basing pricing on density is a more robust and universal measure. Furthermore, density not only offers a direct input from the trip density estimation, but can be applied to broader range of applications where speed is less variable but density still affects operational efficiency (e.g., transit).
 
 %--------------------------------------------------------
 
 \section{A simulation example}
-As an example application, suppose there are two adjacent urban centers in a metropolitan region as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a six lane bridge, three lanes in each direction, that carries 100,000 trips per day with an existing fixed toll. The daily travel demand possess a demand distribution with two severe peaks as shown in Figure~\ref{fig:toydemdist}. For simplicity, assume the traffic flow is balanced in each direction. 
+As an example application, suppose there are two adjacent urban centers in a metropolitan region as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a bridge that carries 100,000 trips per day with an existing fixed toll. The daily travel demand possess a demand distribution with two severe peaks as shown in Figure~\ref{fig:toydemdist}. For simplicity, assume the traffic flow is balanced in each direction and the bridge has three lanes in each direction.
+
 
 \begin{figure}[H]
      \centering
@@ -212,12 +213,12 @@ Suppose that the regional metropolitan transportation planning commission wishes
  	\label{tab:toyprice}
  \end{table}
 
-Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are set for $\alpha$ and $\beta$, respectively, provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented with traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below those levels.
+Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are set for $\alpha$ and $\beta$, respectively, which provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented on the traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below those levels.
 
  \begin{figure}[H]
  	\centering
  	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
     plot[["price"]]
     @
  	\caption{Pricing sigmoid function}
@@ -227,13 +228,17 @@ Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are se
  
 \subsection{Price elasticity of demand}
 
-To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. For this simulation, a constant isoelastic price-demand function was used, which can be expressed as
+To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. Price elasticity of demand in transportation tends to be fairly inelastic, typically in the range of 0.10 - 0.20 for shorter-term price changes and 0.20 - 0.80 for longer-term price changes, in absolute values, where short-term is considered price changes in a period of less than two years \citep{Litman2019}.
+
+Although this temporal variation in transportation elasticity is due to a variety of complex socio-economic and behavioral factors, a simple explanation is that it takes time for people to adjust their behavior depending on conditions in their life. For example, housing choice and automobile ownership is a long-term decision. If fuel prices rise, they cannot easily move homes or purchase a more fuel efficient car. However, the objective of the proposed travel pricing futures market is to increase elasticity by giving travelers some of the advantages typically associated with longer-term travel behavior. That is, to be able to compare prices well in advanced, rather than speculating future traffic conditions based on anecdotal evidence. For this simulation, a constant isoelastic price-demand function was used, which can be expressed as
 
 \begin{equation}
 \Delta\mu = e^{-\epsilon \cdot \Delta P} - 1
 \end{equation} 
 
-\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. Price elasticity of demand in transportation tends to be very inelastic, typically in the range of 0.15 - 0.60, in absolute values.
+\noindent where $\Delta\mu$ is percent change in demand and $\Delta P$ is percent change in price, with the function centered on the origin, as shown in Figure~\ref{fig:toyelasticity}. To explore a range of elasticities in the following simulation, three elasticity points are used
+
+\Sexpr{round(E[1])}
 
 \begin{figure}[H]
     \centering
@@ -341,7 +346,7 @@ Similar to revenue, operational performance can be evaluated in terms of delay. 
     \label{fig:maxmindelay}
  \end{figure}
 
-In Figures~\ref{fig:maxminrev} and~\ref{fig:maxmindelay}, the break even point are points, which form a line, are when the parameters balance out, resulting in 0\% change in revenue or delay. Extracting the break even lines and combining the two, the general regions comparative gains can be illustrated in Figure~\ref{fig:breakeven}.
+In Figures~\ref{fig:maxminrev} and~\ref{fig:maxmindelay}, the break even point are points, which form a line, are when the parameters balance out, resulting in 0\% change in revenue or delay. Extracting the break even lines and combining the two, the general regions comparative gains can be illustrated in Figure~\ref{fig:breakeven}. What is apparent is that congestion can be mitigated as long the upper price limit $P_{max}$ is greater than the lower price limit $P_{min}$. This makes intuitive sense, any amount of dynamic pricing where $P_{max} > P_{min}$ will yield delay improvement, but may come at the cost of revenue loss. 
 
  \begin{figure}[H]
  	\centering
@@ -352,13 +357,9 @@ In Figures~\ref{fig:maxminrev} and~\ref{fig:maxmindelay}, the break even point a
  	\label{fig:breakeven}
  \end{figure}
  
-What is apparent in Figure~\ref{fig:breakeven} is that congestion can be mitigated as long the upper price limit $P_{max}$ is greater than the lower price limit $P_{min}$. This makes intuitive sense, any amount of dynamic pricing where $P_{max} > P_{min}$ will yield delay improvement, but may come at the cost of revenue loss. To avoid revenue loss, the upper pricing limit must be approximately double the amount lost from $P_{min}$ compared to the fixed toll, or $\approx 1 + \right( 1 - P_{min} \right) \%$. 
+To avoid revenue loss, the upper pricing limit must be approximately double the amount lost from $P_{min}$ compared to the fixed toll, or $\approx P_{fixed} (2 - \frac{P_{min}}{P_{fixed}} )$. However, this varies depending on the elasticity, which causes the revenue break even point to curve slightly upward, increasing the upper price limit $P_{max}$. In contrast to the revenue break even point, the delay break even point appears unchanged by elasticity. This is merely because the break even point shifts proportionally with elasticity, but it still has an effect on delay. Assuming a reasonable and moderate elasticity of \Sexpr{round(E['low'],1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsur["sur"])}\% of the fixed price to be at least revenue neutral and congestion improving. This would result in $<$\Sexpr{round(100*minsur["revdiff"])}\% change in revenue and a \Sexpr{round(100*minsur["delaydiff"])}\% in delay.
 
-
-
-
-
-To evaluate how elasticity effects the revenue and delay outcomes, a set of plots can be similarly created by varying the maximum price and elasticity, $P_{max}$ and $\epsilon$. For simplicity, a lower bound, $P_{min}$ of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, this extremely theoretical scenario is not explored for simplicity. The 
+Exploring how elasticity effects the revenue and delay outcomes, a set of plots can be similarly created by varying the maximum price and elasticity, $P_{max}$ and $\epsilon$ (see Figure~\ref{fig:elasrev}. For simplicity, a lower bound, $P_{min}$ of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, this extremely theoretical scenario is not explored for simplicity. The 
 
  \begin{figure}[H]
  	\centering
@@ -369,8 +370,9 @@ To evaluate how elasticity effects the revenue and delay outcomes, a set of plot
  	\label{fig:elasrev}
  \end{figure}
 
-As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue. Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. Assuming a reasonable and moderate elasticity of \Sexpr{round(E['low'],1)} in this case, $P_{max}$ must be at least \Sexpr{round(100*minsur["sur"])}\% of the fixed price to be at least revenue neutral and congestion improving. This would result in $<$\Sexpr{round(100*minsur["revdiff"])}\% change in revenue and a \Sexpr{round(100*minsur["delaydiff"])}\% in delay.
- 
+As expected, when price elasticity of demand becomes more elastic (i.e., larger value of $\epsilon$), a higher $P_{max}$ is required to maintain revenue levels. The reason is that while greater elasticity means travelers will more easily change their trip time, this also means that more travelers will choose to travel at lower priced times, thus decreasing total revenue.
+
+
 \begin{figure}[H]
  	\centering
   	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.75\\textwidth", warning=FALSE>>=
@@ -379,7 +381,9 @@ As expected, when price elasticity of demand becomes more elastic (i.e., larger 
     \caption{Delay comparison between dynamic and fixed pricing varying elasticity $\epsilon$ and $P_{max}$ with constant $P_{min}=0$} 	\label{fig:elasdelay}
 \end{figure}
 
- 
+
+Intuitively, this means that high inelasticity is good from a revenue perspective, making it easy to price-gouge travelers unwilling to change their behavior, but does little to mitigate congestion, and vice versa. 
+
 Unlike with revenue in Figure~\ref{fig:elasrev}, the maximum performance benefits appear to be saddled around an elasticity of 1.0 and a maximum price above 100\%. The saddle shaped region is an interesting outcome, showing that there is diminishing returns as elasticity moves away from unit elasticity. However, there appears to be strong performance gains from 0\% to 30\% reduction in delay across the entire region explored, with the exception of the extreme upper right corner (i.e., high $\epsilon$ and high $P_{max}$). It would seem that in the elastic region where $\epsilon > 1$ and $P_{max} > 100\%$ causes travelers to shift departure such that overall conditions can worse. However, this is a very unrealistic scenario since transportation demand is generally very inelastic, especially to short term changes. 
  
 While this toy example yielded interesting results, showing potential improvements in both revenue and performance, it is important to point out that this is a very simplified case. It assumes a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose not travel entirely. Moreover, elasticity may also vary depending on a variety of factors, such as on time, purpose, and individual preferences and flexibility. This is an important reality to consider, particularly in regards to transportation equity when considering increasing transportation costs for individuals. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield a more globally optimal solution. 
