@@ -84,10 +84,10 @@ This paper seeks to help remedy these critical flaws of dynamic pricing through 
 
 More recently, there has been some discussion surrounding the concept of travel credits, exploiting the aspect of finite roadway capacity as the basis for a ``cap and trade'' type model for mitigating congestion by crediting travelers for not traveling during the peak \citep{Perrels2010}. Another more market-based evolution of the approach has also been proposed, enabling travelers to ``sell'' their trip rights to the highest bidder, achieving a similar goal without the need for governments to credit travelers \citep{Akamatsu2017,Fan2013,Wang2012,Yang2011}. There has also been a great deal of hype around the concept of Mobility as a Service (MaaS) or Transportation as a Service (TaaS) where ``travel brokers'', acting almost as an automated travel agency, provide integrated multi-modal trip packages to travelers. To date, few of these concepts have had much traction outside of academia in recent years, but some technology companies have implemented conceptually similar trip routing and payment integration features in their platforms (e.g., mobile payment systems with transit and ride hailing services), laying the groundwork for MaaS/TaaS concepts in the future.
 
-**** Notes:
-- Any similar proposals?
-- Elasticity for pre-payment
-- Elasticity for longer term travel modes
+%**** Notes:
+%- Any similar proposals?
+%- Elasticity for pre-payment
+%- Elasticity for longer term travel modes
 
 
 The proposed futures mechanism is not necessarily a radical new concept, nor is it a technologically driven disruption, but merely an attempt to implement efficient congestion reducing market mechanisms by augmenting existing conventional revenue collection technologies (e.g., automated tolls and electronic fares). The goal of this proposed scheme is to enhance pricing information transmission and purchasing options for travelers, which can increase price elasticity of demand and improve congestion mitigation. 
@@ -417,10 +417,8 @@ While simple micro-economic elasticities may often be too theoretical for practi
 In practice, simple price elasticity of demand may be too crude a value for day-to-day optimization. A more refined approach might be to calibrate the parameters with a bounded  bi-criterion objective that seeks to optimize for both revenue and/or congestion in a bounded region, such as in Figure~\ref{fig:breakeven} but also accounting for variable elasticity. Further, the pricing function itself could be modified from the symmetric sigmoid function to some custom optimized function using empirical data (e.g., use artificial intelligence to set prices to maximize the objective). The booking apparatus lends itself to such an optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield wider benefits.
 
 
-
-
-\section*{Acknowledgments}
-The author would like to acknowledge 
+%\section*{Acknowledgments}
+%The author would like to acknowledge 
 
 \printbibliography
 
