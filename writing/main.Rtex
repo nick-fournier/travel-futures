@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 
-\usepackage[letterpaper, margin=1.25in]{geometry}
+\usepackage[letterpaper, margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{enumitem}
 \usepackage{caption}
@@ -13,20 +13,22 @@
 \usepackage{float}
 \usepackage{datetime}
 \usepackage{lineno}
-%\usepackage[square,sort&compress,comma,numbers]{natbib})
-\usepackage[style=numeric-comp, natbib=true, sorting=none]{biblatex}
-\AtEveryBibitem{%
-  \clearfield{issn} % Remove issn
-  %\clearfield{doi} % Remove doi
-  \ifentrytype{online}{}{% Remove url except for @online
-    \clearfield{url}
-  }
-}
-\addbibresource{references.bib}
+\usepackage[square,sort&compress,comma,numbers]{natbib}
+\bibliographystyle{unsrtnat}
+
+%\usepackage[style=numeric-comp, natbib=true, sorting=none]{biblatex}
+%\AtEveryBibitem{%
+%  \clearfield{issn} % Remove issn
+%  %\clearfield{doi} % Remove doi
+%  \ifentrytype{online}{}{% Remove url except for @online
+%    \clearfield{url}
+%  }
+%}
+%\addbibresource{references.bib}
 
 %Load in the R scripts
-<<echo=FALSE, cache=TRUE, warning=FALSE>>==
-    source("analysis/toyplots.R")
+<<mainfuncs, echo=FALSE, cache=TRUE, warning=FALSE>>==
+    source("../analysis/toyplots.R")
  @
 
 \linenumbers
@@ -34,7 +36,7 @@
 \graphicspath{ {figures/} }
 
 \title{Travel futures: A pre-pay market mechanism for more effective demand responsive travel pricing}
-\author{Nicholas Fournier}
+\author{Nicholas Fournier, Ph.D.}
 \date{\usdate}
 
 \begin{document}
@@ -122,7 +124,7 @@ The overall objective is to increase prices when too many travelers try to occup
 
 \begin{figure}[H]
 	\centering
-	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.6, out.width="0.6\\textwidth", warning=FALSE>>=
+	<<captime, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.6, out.width="0.6\\textwidth", warning=FALSE>>=
     plot[["captime"]]
     @
 	\caption{Capacity across descretized time}
@@ -146,7 +148,7 @@ To estimate trip density (i.e., congestion) from discrete time increments requir
 \begin{figure}[H]
     \centering
 	%\includegraphics[width=0.66\linewidth]{figures/KDE.pdf}
- 	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+ 	<<kernel, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
     plot[["kernel"]]
     @
 	\caption{Kernel Density Estimation using Gaussian function}
@@ -208,7 +210,7 @@ As an example application, suppose there are two adjacent urban centers in a met
      \end{subfigure}
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
+     	<<toydemdist, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
         plot[["demanddist"]]
         @
      	\caption{Demand distribution}
@@ -244,7 +246,7 @@ Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are se
  \begin{figure}[H]
  	\centering
  	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
-  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+  	<<pricesigmoid, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
     plot[["price"]]
     @
  	\caption{Pricing sigmoid function}
@@ -267,7 +269,7 @@ Although this temporal variation in transportation elasticity is due to a variet
 \begin{figure}[H]
     \centering
 %  	\includegraphics[width=0.66\linewidth]{figures/toyelasticity}
-  	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.6\\textwidth", warning=FALSE>>=
+  	<<elasticity, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.6\\textwidth", warning=FALSE>>=
     plot[["elasticity"]]
     @
  	\caption{Price elasticity}
@@ -294,7 +296,7 @@ Although a variety of more refined macroscopic models have been developed, many 
      \centering
      \begin{subfigure}[b]{0.45\textwidth}
         \centering
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
+     	<<flowdens, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
             plot[["flowdensity"]]
         @
          \caption{Flow-density functions}
@@ -302,7 +304,7 @@ Although a variety of more refined macroscopic models have been developed, many 
      \end{subfigure}
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-     	<<echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
+     	<<speeddens, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
         plot[["speeddensity"]]
         @
      	\caption{Speed-density functions}
@@ -320,7 +322,7 @@ Using the parameters in Table~\ref{tab:toyprice}, the macroscopic traffic condit
 
  \begin{figure}[H]
     \centering
- 	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.35, out.width="0.8\\textwidth", warning=FALSE>>=
+ 	<<speedtod, echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.35, out.width="0.8\\textwidth", warning=FALSE>>=
         plot[["speed"]]
     @
  	\caption{Average traffic speed by time of day}
@@ -331,7 +333,7 @@ The elasticity will not only determine how sensitive travelers are to price chan
  
  \begin{figure}[H]
      \centering
- 	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.35, out.width="0.8\\textwidth", warning=FALSE>>=
+ 	<<revtod, echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.35, out.width="0.8\\textwidth", warning=FALSE>>=
  	simprev <- dat.elas[ , sum(rev2)/sum(rev1), by=elas][['V1']]
     plot[["revsum"]]
     @
@@ -346,7 +348,7 @@ To explore the price and elasticity parameters effects, a matrix of simulation r
 
  \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
+  	<<maxminrev, echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
     plot[["maxmin.rev"]]
     @
     \caption{Revenue comparison between dynamic and fixed pricing varying $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$}
@@ -364,7 +366,7 @@ Similar to revenue, operational performance can be evaluated in terms of delay. 
 
  \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
+  	<<maxmindelay, echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
     plot[["maxmin.delay"]]
     @
     \caption{Delay comparison between dynamic and fixed pricing varying $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$}
@@ -375,7 +377,7 @@ The dark solid line in Figures~\ref{fig:maxminrev} and~\ref{fig:maxmindelay} are
 
  \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.8\\textwidth", warning=FALSE>>=
+  	<<breakeven, echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.8\\textwidth", warning=FALSE>>=
     plot[["breakeven"]]
     @
     \caption{Break even points between dynamic and fixed pricing with constant elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$}
@@ -390,7 +392,7 @@ Exploring how elasticity effects the revenue and delay outcomes, a set of plots 
 
  \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
+  	<<elasmaxrev, echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
     plot[["emax.rev"]]
     @
     \caption{Revenue comparison between dynamic and fixed pricing varying elasticity $\epsilon$ and $P_{max}$ with constant $P_{min}=0$}
@@ -401,7 +403,7 @@ Unlike with revenue, delay as elasticity varies provides a more interesting outc
 
 \begin{figure}[H]
  	\centering
-  	<<echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
+  	<<elasmaxdelay, echo=FALSE, cache=TRUE, fig.width=6, fig.asp = 0.7, out.width="0.7\\textwidth", warning=FALSE>>=
     plot[["emax.delay"]]
     @
     \caption{Delay comparison between dynamic and fixed pricing varying elasticity $\epsilon$ and $P_{max}$ with constant $P_{min}=0$}
@@ -417,9 +419,11 @@ While simple micro-economic elasticities may often be too theoretical for practi
 In practice, simple price elasticity of demand may be too crude a value for day-to-day optimization. A more refined approach might be to calibrate the parameters with a bounded  bi-criterion objective that seeks to optimize for both revenue and/or congestion in a bounded region, such as in Figure~\ref{fig:breakeven} but also accounting for variable elasticity. Further, the pricing function itself could be modified from the symmetric sigmoid function to some custom optimized function using empirical data (e.g., use artificial intelligence to set prices to maximize the objective). The booking apparatus lends itself to such an optimization, providing data of future demand to help best predict optimal prices; a feature unavailable in current dynamic pricing systems. Moreover, integration and revenue sharing policies with other modes, such as public transit, could yield wider benefits.
 
 
-%\section*{Acknowledgments}
-%The author would like to acknowledge 
 
-\printbibliography
+% \section*{Acknowledgments}
+% The author would like to acknowledge 
+
+%\printbibliography
+\bibliography{references}
 
 \end{document}
