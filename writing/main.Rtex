@@ -38,14 +38,14 @@
 \title{Exploring delay and revenue impacts of a pre-pay demand responsive travel pricing system.}
 
 \author{Nicholas Fournier, Ph.D.}
-\date{Draft dated 12 December, 2020}
+\date{\usdate}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-While transportation funding can be collected in a variety of direct (e.g., fares, tolls, and gas taxes) or indirect ways (e.g., property and sales tax), dynamic demand responsive pricing not only collects revenue but incentivizes travelers to avoid peak-demand periods, thus utilizing infrastructure capacity more efficiently. Unfortunately, the demand response to price changes, called price elasticity of demand, is generally greater for longer-term travel planning (e.g., air and rail travel) than for short-term (e.g., highway tolls and transit fares). While this is due to a plethora of factors (e.g., time flexibility, housing choice, automobile investment, etc.), a critical factor is that travelers simply lack sufficient information for future travel planning. For example, airline prices at different times can be easily compared, but a highway driver cannot accurately predict congestion pricing, thus causing price changes to have little effect on demand until after the fact. This leaves any congestion abatement up to inefficient trial and error, and anecdotal speculation. Moreover, dynamic pricing is a politically unsavory policy due to this price uncertainty and collateral equity concerns. This paper seeks to help remedy these concerns by proposing a simple ``futures'' market mechanism that can augment existing fare/toll collection technologies, providing travelers with sufficient pricing information and purchasing options to travel plan and avoid excessive prices. Users can pre-pay their future fares/tolls to lock in a lower price for expected trips, with prices rising as capacity fills up, thus encouraging good travel planning and efficient infrastructure utilization.
+While transportation funding can be collected in a variety of direct (e.g., fares, tolls, and gas taxes) or indirect ways (e.g., property and sales tax), dynamic demand responsive pricing not only collects revenue but incentivizes travelers to avoid peak-demand periods, thus utilizing infrastructure capacity more efficiently. Unfortunately, the demand response to price changes, called price elasticity of demand, is generally greater for longer-term travel planning (e.g., air and rail travel) than for short-term (e.g., highway tolls and transit fares). While this is due to a plethora of factors (e.g., time flexibility, housing choice, automobile investment, etc.), a critical factor is that travelers simply lack sufficient information for future travel planning. For example, airline prices at different times can be easily compared, but a highway driver cannot accurately predict congestion nor congestion pricing, thus causing price changes to have little effect on demand. This leaves any congestion abatement up to inefficient trial and error, and anecdotal speculation by travelers. Moreover, dynamic pricing is a politically unsavory policy due to this price uncertainty and collateral equity concerns. This paper seeks to help remedy these concerns by proposing a simple ``futures'' market mechanism that can augment existing fare/toll collection technologies, providing travelers with sufficient pricing information and purchasing options to travel plan and avoid excessive prices. Users can pre-pay their future fares/tolls to lock in a lower price for expected trips, with prices rising as capacity fills up, thus encouraging good travel planning and efficient infrastructure utilization.
 \vfill
 \end{abstract}
 
@@ -61,7 +61,7 @@ Providing additional transportation capacity (e.g., more transit vehicles or roa
 	\label{fig:flatprice}
 \end{figure}
 
-The obvious solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during targeted congested periods and shift it to periods of low demand (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive, as has been done for decades in other transportation sectors (e.g., rail and air travel), but are far less common in more short-term high-frequency cases (e.g., highway tolls and transit fares). While dynamic pricing is less common for daily tolls and fares due to practical and logistical concerns, such as cost and complexity, it is largely a political barrier from public disdain for variable pricing. Understandably, travelers generally do not want to pay for travel, let alone be subject to unpredictable increased costs that they perceive as having little control over. Moreover, dynamic pricing creates equity concerns if it simply extorts travelers without any reasonable alternative travel options, such as highway tolls without a transit alternative.
+One solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during targeted congested periods and shift it to periods of low demand (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive, as has been done for decades in other transportation sectors (e.g., rail and air travel), but are far less common in more short-term high-frequency cases (e.g., highway tolls and transit fares). While dynamic pricing is less common for daily tolls and fares due to practical and logistical concerns, such as cost and complexity, it is largely a political barrier from public disdain for variable pricing. Understandably, travelers generally do not want to pay for travel beyond the sunk cost of fuel and automobile ownership, let alone be subject to unpredictable congestion-related costs that they perceive as having little control over. Moreover, dynamic pricing creates equity concerns if it simply extorts travelers without any reasonable alternative travel options, such as highway tolls without a transit alternative.
 
 \begin{figure}[H]
 	\includegraphics[width=0.6\textwidth]{figures/dynamicprice}
@@ -70,22 +70,25 @@ The obvious solution to this problem is to dynamically adjust pricing based on d
 	\label{fig:dynamicprice}
 \end{figure}
 
-Fundamentally, dynamic pricing hinges on the notion that a change in price will result in some change in demand. To economists, this is called price elasticity of demand, where elasticity reflects the relative demand sensitivity to price change. This means that the aforementioned price uncertainty is a critical aspect to dynamic pricing. For example, if the travel cost is uncertain, travelers will have a diminished ability to react, thus diminishing price elasticity of demand and having little impact on congestion. To explain using utility theory, where a decision making ``agent'' will choose the choice which provides the greatest ``utility'' ultimately assumes that the traveler has sufficient information about price and return (e.g., travel time) to make a decision about if and when to travel.
+Fundamentally, dynamic pricing hinges on the notion that a change in price will result in some change in demand. To economists, this is called price elasticity of demand, where elasticity reflects the relative demand sensitivity to price change. This means that the aforementioned price uncertainty is a critical aspect to dynamic pricing. For example, if the travel cost is uncertain, travelers will have a diminished ability to react, thus diminishing price elasticity of demand and having little impact on congestion. Similarly explained using utility theory, where a decision making ``agent'' will choose the choice which provides the greatest ``utility''. Utility theory ultimately assumes that the traveler is logical and has sufficient information about price and return (e.g., travel time) to make a decision about if and when to travel. Without sufficient information, the decision maker cannot make a logical decision. 
 
-In practice, travelers may base their travel decisions off of anecdotal evidence of past experiences, speculating future traffic conditions and price in the case of dynamic pricing. For example, a daily commuter may have local knowledge of typical travel conditions and routing, enabling a reasonably informed decision after enough experience. However, this is hardly an efficient transmission of knowledge and only works in relatively steady-state conditions. Moreover, this would yield a delayed demand response to price changes, resulting is a very inelastic dynamic pricing system. Meaning, dynamic pricing would have little short-term effect on demand and that long-term demand change would only result after enough travelers were sufficiently disappointed by their previous choices. This then connects with the political aspect and public disdain for dynamic pricing schemes. Moreover, it is often an unfortunate truth that those most economically vulnerable often have the least travel flexibility (e.g., low income workers with strict working hours), and are often unfairly punished for this. 
+In practice, travelers may base their travel decisions off of anecdotal evidence of past experiences, speculating future traffic conditions and price in the case of dynamic pricing. For example, a daily commuter may have local knowledge of typical travel conditions and routing, enabling a reasonably informed decision after enough experience. However, this is hardly an efficient transmission of knowledge and only works in relatively steady-state conditions, a rare case in the post-COVID era. Moreover, this would yield a delayed demand response to price changes, resulting is a very inelastic dynamic pricing system. Meaning, dynamic pricing would have little short-term effect on demand and that long-term demand change would only result after enough travelers were sufficiently disappointed by their previous choices. This then connects with the political aspect and public disdain for dynamic pricing schemes. Moreover, it is often an unfortunate truth that those most economically vulnerable often have the least travel flexibility (e.g., low income workers with strict working hours), and are often unfairly punished for this. 
 
-% To summarize, due the the price uncertainty of dynamic pricing it has three critical flaws:
-% \begin{itemize}
-%     \item low elasticity of demand yielding less congestion mitigating effect,
-%     \item public disdain due to price risk, and
-%     \item equity concerns due to lack of travel planning options.
-% \end{itemize}
+To summarize, conventional dynamic toll pricing it has three critical problems:
+\begin{itemize}
+    \item low elasticity of demand, yielding less congestion mitigating effect,
+    \item public disdain due to price risk, and
+    \item equity concerns due to lack of travel planning options.
+\end{itemize}
 
-This paper seeks to help remedy these critical flaws of dynamic pricing through a pre-pay mechanism similar to a futures market. The proposed concept is simple, travelers are presented with the current price for future travel with the option to purchase trips ahead of time at that price. As more trips are booked by travelers, and demand approaches capacity, the price rices. This not only incentivizes travelers to avoid the peak congested periods, but offers an opportunity for regular commuters to minimize the risk of price-gouging from unexpected congestion by purchasing tolls in advance and compare prices. The proposed mechanism helps overcome some of the shortcomings of dynamic pricing, potentially yielding greater congestion mitigation benefits of dynamic pricing by effectively increasing price elasticity of demand.
+This paper seeks to explore a potential remedy to these critical flaws of dynamic pricing through a pre-pay mechanism similar to a futures market. The proposed concept is simple, travelers are presented with the current price for future travel with the option to purchase trips ahead of time at that price. As more trips are booked by travelers, and demand approaches capacity, the price rices. This not only incentivizes travelers to avoid the peak congested periods, but offers an opportunity for regular commuters to minimize the risk of price-gouging from unexpected congestion by purchasing tolls in advance and compare prices. The proposed mechanism helps overcome some of the shortcomings of dynamic pricing, potentially yielding greater congestion mitigation benefits of dynamic pricing by effectively increasing price elasticity of demand.
 
 \section{Background}
 
-More recently, there has been some discussion surrounding the concept of travel credits, exploiting the aspect of finite roadway capacity as the basis for a ``cap and trade'' type model for mitigating congestion by crediting travelers for not traveling during the peak \citep{Perrels2010}. Another more market-based evolution of the approach has also been proposed, enabling travelers to ``sell'' their trip rights to the highest bidder, achieving a similar goal without the need for governments to credit travelers \citep{Akamatsu2017,Fan2013,Wang2012,Yang2011}. There has also been a great deal of hype around the concept of Mobility as a Service (MaaS) or Transportation as a Service (TaaS) where ``travel brokers'', acting almost as an automated travel agency, provide integrated multi-modal trip packages to travelers. To date, few of these concepts have had much traction outside of academia in recent years, but some technology companies have implemented conceptually similar trip routing and payment integration features in their platforms (e.g., mobile payment systems with transit and ride hailing services), laying the groundwork for MaaS/TaaS concepts in the future.
+NOTE: NEED TO EXPAND THIS
+~
+
+While this concept is not entirely new or novel, it had yet to be implemented. However, the literature is full of exotic market-based approaches to congestion mitigation. One such example is the concept of travel credits, which exploits the aspect of finite roadway capacity as the basis for a ``cap and trade'' type model for mitigating congestion by crediting travelers for not traveling during the peak \citep{Perrels2010}. Another more market-based evolution of the approach has also been proposed, enabling travelers to ``sell'' their trip rights to the highest bidder, achieving a similar goal without the need for governments to credit travelers \citep{Akamatsu2017,Fan2013,Wang2012,Yang2011}. There has also been a great deal of hype around the concept of Mobility as a Service (MaaS) or Transportation as a Service (TaaS) where ``travel brokers'', acting almost as an automated travel agency, provide integrated multi-modal trip packages to travelers. However, few of these concepts have had much traction outside of academia, but some technology companies have implemented conceptually similar trip routing and payment integration features in their platforms (e.g., mobile payment systems with transit and ride hailing services), laying the groundwork for MaaS/TaaS concepts in the future. Until then, more immediate solutions are available with existing technologies. 
 
 %**** Notes:
 %- Any similar proposals?
@@ -111,9 +114,11 @@ The basic concept for the system is shown in Figure~\ref{fig:systemmodel}, where
 
 The overall process of booking, density estimation, and then pricing is continually updated until the horizon of the future trip time or some cut-off period is reached. At this point the sale of future trips in the ``futures market'' is closed to booking and any travel must be paid at the conventional real-time market price based on the actual observed traffic density. It is possible, and likely, that there will be a difference between the futures price and the real time market price. This difference is not a problem, and is a motivating force behind real futures markets; for buyers to try beat the market price, and for sellers to create stability of demand in exchange for a discount by locking buyers into a contract. In this case with transportation, as opposed to commodities like oil and grain, there are two possible outcomes for price differences:
 
-\emph{Futures rate $<$ Actual rate.} This occurs when too few people booked their trips, having limited congestion mitigating effects until sufficient market penetration is reached. However, the booked travelers would yield a large discount against the conventional toll, thus incentivizing more travelers to adopt the booking system, eventually correcting this difference and increasing congestion mitigation effects.
+\begin{itemize}
+\item\emph{Futures rate $<$ Actual rate.} This occurs when too few people booked their trips, having limited congestion mitigating effects until sufficient market penetration is reached. However, the booked travelers would yield a large discount against the conventional toll, thus incentivizing more travelers to adopt the booking system, eventually correcting this difference and increasing congestion mitigation effects.
     
-\emph{Futures rate $>$ Actual rate.} Although highly unlikely, but still possible, this occurs when too many travelers failed to meet their target window or did not show up at all. The travelers would incur a loss on their booked trips, thus incentivizing travelers to be punctual or to sell unused trips back to the system, making that capacity available to others. 
+\item\emph{Futures rate $>$ Actual rate.} Although highly unlikely, but still possible, this occurs when too many travelers failed to meet their target window or did not show up at all. The travelers would incur a loss on their booked trips, thus incentivizing travelers to be punctual or to sell unused trips back to the system, making that capacity available to others. 
+\end{itemize}
 
 A more detailed description for each of the proposed mechanism's components are contained in the following subsections.
 
@@ -158,9 +163,11 @@ To estimate trip density (i.e., congestion) from discrete time increments requir
 
 
 \subsection{Pricing}
-Once a smooth and stable value of future traffic density $\hat{k}(t)$ is calculated in Equation~\eqref{eq:kde}, it can be easily inputted into a pricing function to calculate an estimated future price at that travel window. Although pricing could be determined by some free floating ``free market'' calibrated to match the limited ``supply'' of capacity, such an uncontrollable system may be unstable. Prices could fluctuate wildly due to extreme congestion scenarios or speculative trip booking. 
+Once a smooth and stable value of future traffic density $\hat{k}(t)$ is calculated in Equation~\eqref{eq:kde}, it can be easily inputted into a pricing function to calculate an estimated future price at that travel window. Although it is theoretically feasible to have a truly free floating pricing system in which travelers place bids in some auction-based market, this is both impractical for drivers to do at any reasonable scale, and is susceptible to severe market fluctuations given the instability of traffic flow. For example, once traffic flow breaks down to a near standstill, there is little to stop the price from increasing towards infinity. Moreover, if travelers are able to sell their unused trips, this could lead to exploitative practices (e.g., intentionally inducing congestion or disaster speculation). 
 
-Alternatively, an engineered market price could be determined using a parametric function designed to achieve the best possible congestion mitigating and revenue collecting results while remaining stable. A simple pricing function shown in Figure~\ref{fig:costflow} uses an S-shaped sigmoid as a function of trip density $k$ (e.g., traffic density in $veh/km/hr$). 
+Alternatively, a more stable market price could be determined using an engineered pricing function. A parametric function calibrated to match the limited ``supply'' of roadway capacity with demand would provide both a stable and efficient pricing system. Although a linear or monotonically increasing function would offer simplicity, it may be beneficial for political reasons to set upper and lower price constraints on a dynamic pricing system to increase public acceptance.
+
+A simple pricing function shown in Figure~\ref{fig:costflow} uses an S-shaped sigmoid as a function of trip density $k$ (e.g., traffic density in $veh/km/hr$). This provides upper and lower boundaries without sudden transitions as would be the case in a piece-wise linear model. 
 
 \begin{figure}[H]
     \centering
@@ -176,90 +183,26 @@ P(k) = P_{min} + \frac{P_{max} - P_{min}}{1 + e^{\alpha - \beta k}}
 \label{eq:price}
 \end{equation}
 
-\noindent where $\alpha$ and $\beta$ are tuning parameters to specify the horizontal shift and ``steepness'' of the function, respectively.  A potentially useful feature of using a bounded sigmoid is that it can be presented to the public as a discount feature for booked and off-peak travelers, not a surcharge. For example, booked off-peak trips are discounted from the typical fixed toll/fare price. This may help make it politically more palatable. Of course, there is no technical difference and the upper boundary will need to be set high enough to collect sufficient net revenue.
+\noindent where $\alpha$ and $\beta$ are tuning parameters to specify the horizontal shift and ``steepness'' of the function, respectively.  A potentially useful feature of using a bounded sigmoid is that it can be presented to the public as a discount feature for booked and off-peak travelers, not a surcharge. For example, booked off-peak trips are discounted from the typical fixed toll/fare price. This may help make it more politically palatable. Of course, there is no technical difference and the upper boundary will need to be set high enough to collect sufficient net revenue.
 
 While the objective in certain cases (i.e., roadways) is to maintain smooth traffic flow, a dynamic pricing function based directly on traffic speed would fail to capture the underlying demand. Traffic speed is not a reliable measure of demand as speed will remain relatively constant across a range of demand, and only begins to break down when traffic density reaches a critical point. This makes it difficult to set prices for any speed below this critical point. However, given that the goal is to increase infrastructure utilization and efficiency, not simply maintain high speeds, basing pricing on density is a more robust and universal measure. Furthermore, density not only offers a direct input from the trip density estimation, but can be applied to broader range of applications where speed is less variable but density still affects operational efficiency (e.g., transit).
 
 %--------------------------------------------------------
 
-\subsection{Implementation}
-A potential feature of the futures market concept is that it can be developed independently, simply augmenting an existing system rather than as a complete replacement. An existing dynamic toll system can be easily augmented with a futures market to further improve demand optimization with only software changes necessary. A fixed toll system can use a futures market to introduce dynamic pricing as an ``opt in'' program, incentivizing users with discounts for booking travel during periods of low demand. Infrastructure investment would be minimal, especially if electronic tolling is already in place. A futures market in this case would be a soft way to introduce dynamic pricing in an otherwise politically hostile environment. In this case the futures market may result in revenue loss if the fixed toll, which is used as $P_{max}$, is not sufficiently high enough. The loss could be considered acceptable if improving operational performance is priority, but it is also possible that with improved operations and reduced pricing overall demand could increase, offsetting the loss. However, this is difficult to speculate. 
+\section{Methodology}
+Although there two primary objectives for dynamic toll pricing: revenue and congestion, the goal of this study is not to achieve a bi-critera optimization, but rather explore and evaluate possible outcomes through simulation. Through simulated parameter exploration, a sensitivity analysis is conducted on the proposed framework by varying lower price limit, $P_{min}$, upper price limit, $P_{max}$, and price elasticity of demand, $\epsilon$. The analysis is conducted in three parts:
+\begin{enumerate}
+	\item First setting the context with fixed-parameter example case,
+	\item further exploring how varying the upper and lower price limits affects total delay and revenue, and 
+	\item exploring how changes in elasticity affects total delay and revenue.
+\end{enumerate}
 
-Although this paper presents the mechanism for a simple bridge toll, it can be easily expanded to other applications, such as corridor tolls, congestion pricing zones, transit fares, ride hailing, or applications beyond transportation. This could provide a basic framework for a broader, more mode agnostic, transportation system which is of growing importance as ride sharing, hailing, and other future mobility platforms emerge. However, when creating a new market, care must be taken to ensure operation is smooth and stable, but also equitable. The following subsections discuss several basic market safeguards and practical constraints.
+The purpose is to explore how different upper and lower price limits can affect revenue and delay outcomes. Moreover, the importance of exploring price elasticity is that increasing the price elasticity through a pre-pay ``futures'' market could enhance both revenue and congestion mitigation benefits of dynamic tolling. In the following subsections, the price elasticity of demand and the macroscopic traffic flow model used for simulation are described.
 
-\subsubsection{Market manipulators and exploitation}
-If unused trips are able to be ``sold'' back to the system, there is the potential for profiteering. This would only cause undesirable price fluctuations in the system that does not correspond to physical infrastructure capacity and demand. Thus to prevent users from inappropriately exploiting the system, restrictions should be set. For example, to prevent users from manipulating the market price, a practical restriction could limit users to only purchasing one trip per time slot (otherwise it would be a travel impossibility), or to limit the number of sales a user can make to ensure a net profit cannot be made. Ensuring zero profit would also help avoid any user tax complexities. Although restrictions may seem market prohibitive, the intent of the system to promote efficient travel and revenue collection, not market capitalization. 
-
-\subsubsection{Pricing calibration}
-To avoid reaching outrageous prices and the public backlash that follows [cite Virginia example and uber surge pricing], reasonable upper limits on price should be set to avoid public backlash. Similarly, a lower price limit could also be set to provide a baseline revenue collection and travel disincentive. The pricing function will need to be calibrated to match demand sensitivity as well as meet revenue obligations, while remaining politically palatable. Ideally the upper bound will be kept as low as possible to avoid public dissatisfaction, but high enough to achieve the desired shift in travel behavior. The lower bound must also be kept low enough to encourage a shift in travel behavior, but high enough to collect sufficient revenue. Research will be needed to measure user arrival time demand elasticity, that is how sensitive are travelers to increases in price. From this, the function can be optimized to balance operations with revenue, and will likely need regular tuning to adjust for current conditions. 
-\subsubsection{Time scale}
-Although theoretically possible to operate with narrow time intervals, such as $<$1-second, the computational limitations of accounting for that many tokens and transferring every second is likely intractable. Moreover, travelers probably will not bother with such detail nor be held to such precision. It's likely that users will pick a target time $\pm$ some buffer time (e.g., $\pm$ 30 minutes from expected arrival). However, it is uncertain whether travelers will be equally as likely to arrive early as late, which can be modeled with a Guassian normal curve; or perhaps travelers trend on being late but not early, which can be modeled with a log-normal curve. Research is needed in this area to determine feasible parameters and the relative reliability of travelers. Alternatively, the system could be designed in such a way to allow for users to specify their desired travel window, offering greater discount to more punctual travelers and a penalty to those that fail to meet their target.
-
-%--------------------------------------------------------
-
-\section{A simulation example}
-As an example application, suppose there are two adjacent urban centers in a metropolitan region as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a bridge that carries 100,000 trips per day with an existing fixed toll. The daily travel demand possess a demand distribution with two severe peaks as shown in Figure~\ref{fig:toydemdist}. For simplicity, assume the traffic flow is balanced in each direction and the bridge has three lanes in each direction.
-
-
-\begin{figure}[H]
-     \centering
-     \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-     	\includegraphics[width=\linewidth]{figures/silvergate}
-     	\caption{Scenario}
-     	\label{fig:toymap}
-     \end{subfigure}
-     \begin{subfigure}[b]{0.45\textwidth}
-         \centering
-     	<<toydemdist, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
-        plot[["demanddist"]]
-        @
-     	\caption{Demand distribution}
-     	\label{fig:toydemdist}
-     \end{subfigure}
-        \caption{Toy simulation scenario}
-        \label{fig:toy}
-\end{figure}
-
-Suppose that the regional metropolitan transportation planning commission wishes alleviate congestion in the peaks with a dynamic tolling system. A study determines that the price elasticity of demand for a conventional dynamic tolling system without a pre-pay futures market is $\epsilon_0 = \Sexpr{round(E['0'],1)}$, and that a futures market mechanism would boost elasticity to somewhere between $\epsilon_{low} = \Sexpr{round(E['low'],1)}$ on the low end, and $\epsilon_{high} = \Sexpr{round(E['high'],1)}$ on the high end. They determined that voters are willing to approve a dynamic toll system that is limited to between a \Sexpr{round((1-discount)*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surcharge*100)}\% surcharge above existing fixed prices in the peak (See Table~\ref{tab:toyprice}).
- 
- \begin{table}[H]
-    \centering
- 	\caption{Desired pricing parameters}
- 	\begin{tabular}{ c c l}
- 		\toprule
- 		Parameter   & Value  & Description                          \\ \hline
- 		$P_{min}$   & \Sexpr{round(100*discount)}\%    & \small Minimum dynamic price ratio ($\sfrac{P_{min}}{P_{fixed}}$)          \\
- 		$P_{max}$   & \Sexpr{round(100*surcharge)}\%   & \small Maximum dynamic price ratio ($\sfrac{P_{max}}{P_{fixed}}$)  \\
- 		$\alpha$    & \Sexpr{round(a,2)}      & \small Price calibration parameter \\
- 		$\beta$     & \Sexpr{round(b,2)}    & \small Price calibration parameter \\
- 		%$\epsilon_0$  & \Sexpr{round(E['0'],2)}    & \small Elasticity \\
- 		%$\epsilon_{low}$  & \Sexpr{round(E['low'],2)}    & \small Elasticity \\
- 		%$\epsilon_{medium}$  & \Sexpr{round(E['medium'],2)}    & \small Elasticity \\
- 		%$\epsilon_{high}$  & \Sexpr{round(E['high'],2)}    & \small Elasticity \\
- 		\bottomrule
- 	\end{tabular}
- 	\label{tab:toyprice}
- \end{table}
-
-Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are set for $\alpha$ and $\beta$, respectively, which provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented on the traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below those levels.
-
- \begin{figure}[H]
- 	\centering
- 	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
-  	<<pricesigmoid, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
-    plot[["price"]]
-    @
- 	\caption{Pricing sigmoid function}
- 	\label{fig:toyprice}
- \end{figure}
-
- 
 \subsection{Price elasticity of demand}
-
 To simulate the resulting demand shift from pricing, the simple micro-economic principle of price elasticity of demand can be utilized. Elasticity, $\epsilon$, reflects the demand sensitivity to price, that is the percent change in demand resulting from a percent change in price. Recall that elasticities of $\epsilon < 1$ are considered ``inelastic'' where there is a small change in demand from a change is price, $\epsilon > 1$ are considered ``elastic'' where there is a greater change in demand from a change in price, and $\epsilon = 1$ are considered ``unit elastic'' where the change is equal. Price elasticity of demand in transportation tends to be fairly inelastic, typically in the range of 0.10 - 0.20 for shorter-term price changes and 0.20 - 0.80 for longer-term price changes, in absolute values, where short-term is considered price changes in a period of less than two years \citep{Litman2019}.
 
-Although this temporal variation in transportation elasticity is due to a variety of complex socio-economic and behavioral factors, a simple explanation is that it takes time for people to adjust their behavior depending on conditions in their life. For example, housing choice and automobile ownership is a long-term decision. If fuel prices rise, they cannot easily move homes or purchase a more fuel efficient car. However, the objective of the proposed travel pricing futures market is to increase elasticity by giving travelers some of the advantages typically associated with longer-term travel behavior. That is, to be able to compare prices well in advanced, rather than speculating future traffic conditions based on anecdotal evidence. For this simulation, a constant isoelastic price-demand function was used, which can be expressed as
+Although this temporal variation in transportation elasticity is due to a variety of complex socio-economic and behavioral factors, a simple explanation is that it takes time for people to adjust their behavior depending on conditions in their life. For example, housing choice and automobile ownership is a long-term decision. If fuel prices rise, they cannot easily move homes or purchase a more fuel efficient car. However, the objective of the proposed travel pricing futures market is to increase elasticity by giving travelers some of the advantages typically associated with longer-term travel behavior. That is, to be able to compare prices well in advanced, rather than speculating future traffic conditions based on anecdotal evidence. For this simulation, a constant isoelastic price-demand function is used, which can be expressed as
 
 \begin{equation}
 \Delta\mu = e^{-\epsilon \cdot \Delta P} - 1
@@ -316,9 +259,84 @@ Although a variety of more refined macroscopic models have been developed, many 
 \end{figure}
 
 The first piece when $k < k_c$ provides a steep curve that peaks at the critical density $k_c$, and the other case when $k \geq k_c$ sets the right-tail of the elongated parabola at jam density $k_j$. The critical and jam densities, $k_c$ and $k_j$, are set to  $30~\sfrac{veh}{km}$, and $120~\sfrac{veh}{km}$, respectively. This asymmetric shape also yields a more gradual decline in speed that is more similar to the bi-linear model (see Figure~\ref{fig:speeddensity}, but without the abrupt speed transition.
- 
 
-\subsection{Simulation results}
+\subsection{Performance measures}
+Although a variety of alternative performance measures exist in practice, such as vehicle miles traveled, energy consumption, greenhouse gas emission, etc., this study will focus more narrowly on the primary operational outcomes of revenue and delay. Revenue is simply calculated as the sum of the product of demand, $\mu_i$, and price, $P_i$ per time increment $i$, respectively.
+
+\begin{equation}
+	\text{Revenue} = \sum\limits_i \mu_i P_i
+	    \label{eq:revenue}
+\end{equation}
+
+
+Similar to revenue, operational performance can be evaluated in terms of delay. The total delay in each scheme can be compared as the percent change in aggregated total delay, $\Delta\%~d$, calculated as
+
+\begin{equation}
+    \Delta\%~d = \frac{\sum\limits_i d_{2i} - \sum\limits_i d{1i}}{\sum\limits_i d{1i}} = \frac{ \sum\limits_i \frac{n_{2i}}{v_{2i}} \left( v_{f} - v_{2i} \right) }{ \sum\limits_i \frac{n_{1i}}{v_{fi}} \left( v_{f} - v_{1i} \right)}
+    \label{eq:delay}
+\end{equation}
+
+\noindent where delay is $d = n_i L \left(\sfrac{1}{v_i} - \sfrac{1}{v_f}\right)$ for each time increment $i$. $L$ is the distance traveled, which cancels out in percent change; $n_{1i}$ and $n_{2i}$ are the demand in number of trips, and $v_{1i}$ and $v_{2i}$ are the calculated traffic speeds for the fixed and dynamic tolls, respectively. Equation~\eqref{eq:delay} effectively sums up the total delay experienced across the entire 24-hour period, and calculates the percentage change between the fixed and dynamic tolling schemes.
+ 
+\section{Results}
+The results are organized as follows, first a fixed-parameter example case is tested to demonstrate the model in a simple scenario. Next, a sensitivity analysis of delay and revenue is conducted by varying the upper and lower price limits. This explores how setting the upper and lower price limits can affect revenue and delay outcomes. Similarly, a further sensitivity analysis is conducted by varying elasticity to see how greater changes in elasticity can affect revenue and delay.
+
+\subsection{Simulation case - fixed parameters}
+Although unnecessary to the simulation, a simple case example provides context for discussion but also in selecting reasonable parameter ranges. As an example application, suppose there are two adjacent urban centers in a metropolitan region as shown in Figure~\ref{fig:toymap}, which are separated by a body of water. The two cities are connected by a bridge that carries 100,000 trips per day with an existing fixed toll. The daily travel demand possess a demand distribution with two severe peaks as shown in Figure~\ref{fig:toydemdist}. For simplicity, assume the traffic flow is balanced in each direction and the bridge has three lanes in each direction.
+
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+     	\includegraphics[width=\linewidth]{figures/silvergate}
+     	\caption{Scenario}
+     	\label{fig:toymap}
+     \end{subfigure}
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+     	<<toydemdist, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="\\textwidth", warning=FALSE>>=
+        plot[["demanddist"]]
+        @
+     	\caption{Demand distribution}
+     	\label{fig:toydemdist}
+     \end{subfigure}
+        \caption{Toy simulation scenario}
+        \label{fig:toy}
+\end{figure}
+
+Suppose that the regional metropolitan transportation planning commission wishes to alleviate congestion in the peaks with a dynamic tolling system. A study determines that the price elasticity of demand for a conventional dynamic tolling system without a pre-pay futures market is $\epsilon_0 = \Sexpr{round(E['0'],1)}$, and that a futures market mechanism would boost elasticity to somewhere between $\epsilon_{low} = \Sexpr{round(E['low'],1)}$ on the low end, and $\epsilon_{high} = \Sexpr{round(E['high'],1)}$ on the high end. They determined that voters are willing to approve a dynamic toll system that is limited to between a \Sexpr{round((1-discount)*100)}\% discount for off-peak travel, but no more than a \Sexpr{round(surcharge*100)}\% surcharge above existing fixed prices in the peak (See Table~\ref{tab:toyprice}).
+ 
+ \begin{table}[H]
+    \centering
+ 	\caption{Example fixed pricing parameters}
+ 	\begin{tabular}{ c c l}
+ 		\toprule
+ 		Parameter   & Value  & Description                          \\ \hline
+ 		$P_{min}$   & \Sexpr{round(100*discount)}\%    & \small Minimum dynamic price ratio ($\sfrac{P_{min}}{P_{fixed}}$)          \\
+ 		$P_{max}$   & \Sexpr{round(100*surcharge)}\%   & \small Maximum dynamic price ratio ($\sfrac{P_{max}}{P_{fixed}}$)  \\
+ 		$\alpha$    & \Sexpr{round(a,2)}      & \small Price calibration parameter \\
+ 		$\beta$     & \Sexpr{round(b,2)}    & \small Price calibration parameter \\
+ 		%$\epsilon_0$  & \Sexpr{round(E['0'],2)}    & \small Elasticity \\
+ 		%$\epsilon_{low}$  & \Sexpr{round(E['low'],2)}    & \small Elasticity \\
+ 		%$\epsilon_{medium}$  & \Sexpr{round(E['medium'],2)}    & \small Elasticity \\
+ 		%$\epsilon_{high}$  & \Sexpr{round(E['high'],2)}    & \small Elasticity \\
+ 		\bottomrule
+ 	\end{tabular}
+ 	\label{tab:toyprice}
+ \end{table}
+
+Calibration parameter values of \Sexpr{round(a,2)} and \Sexpr{round(b,2)} are set for $\alpha$ and $\beta$, respectively, which provides a smooth S-shaped sigmoid function with the upper and lower limits being approximately oriented on the traffic densities of 0 and \Sexpr{round(k_c)} $\sfrac{veh}{km}$, as shown in Figure~\ref{fig:toyprice}. A pricing function in this case should align the upper price limit to desired congestion values to incentivize demand to stay below those levels.
+
+ \begin{figure}[H]
+ 	\centering
+ 	%\includegraphics[width=0.66\linewidth]{figures/toyprice}
+  	<<pricesigmoid, echo=FALSE, cache=TRUE, fig.width=4, fig.asp = 0.5, out.width="0.5\\textwidth", warning=FALSE>>=
+    plot[["price"]]
+    @
+ 	\caption{Pricing sigmoid function}
+ 	\label{fig:toyprice}
+ \end{figure}
+
 Using the parameters in Table~\ref{tab:toyprice}, the macroscopic traffic conditions can be simulated to compare results between a dynamic pricing scheme against a fixed toll. The price changes causes demand to shift from the peak to the off-peak, resulting in a decrease in congestion and an improvement in average travel speed as shown in Figure~\ref{fig:toyspeed}. Although there is a travel speed improvement in all cases, the magnitude of travel speed improvement depends upon the elasticity. The greater the elasticity, the greater the improvement.
 
  \begin{figure}[H]
@@ -342,9 +360,9 @@ The elasticity will not only determine how sensitive travelers are to price chan
  	\label{fig:toyrevenue}
  \end{figure}
 
-This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. In fact, in this case it yields a revenue increase of \Sexpr{round(100*simprev[1])}\% for the conventional dynamic pricing. However, as elasticity increases, it yields decreasing revenue of \Sexpr{round(100*simprev[2])}\%, \Sexpr{round(100*simprev[3])}\%, and \Sexpr{round(100*simprev[4])}\% for low, medium, and high elasticity futures market cases, respectively. The reason for this is that if travelers are more sensitive to price changes, more will shift to cheaper off-peak times and the increased volume in the cheaper times does not outweigh the revenue loss in the peak. This highlights how critical the upper and lower price limits $P_{max}$ and $P_{min}$ are to both the congestion and revenue outcomes. 
+This shows that a modest adjustment in price results in demand shift (i.e., commuters shifting behavior to avoid high tolls) without revenue loss. In this case it yields a revenue increase of \Sexpr{round(100*simprev[1])}\% for the conventional dynamic pricing. However, as elasticity increases, it yields decreasing revenue of \Sexpr{round(100*simprev[2])}\%, \Sexpr{round(100*simprev[3])}\%, and \Sexpr{round(100*simprev[4])}\% for low, medium, and high elasticity futures market cases, respectively. The reason for this is that if travelers are more sensitive to price changes, more will shift to cheaper off-peak times and the increased volume in the cheaper times does not outweigh the revenue loss in the peak. This highlights how critical the upper and lower price limits $P_{max}$ and $P_{min}$ are to both the congestion and revenue outcomes.
 
-\subsection{Optimal price limits}
+\subsection{Price change effects}
 To explore the price and elasticity parameters effects, a matrix of simulation results can be computed and plotted. Figure~\ref{fig:maxminrev} shows the percent change in revenue achievable by varying the combination of $P_{min}$ and $P_{max}$ simultaneously with a fixed elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$ used to form the surfaces.
 
  \begin{figure}[H]
@@ -355,15 +373,19 @@ To explore the price and elasticity parameters effects, a matrix of simulation r
     \caption{Revenue comparison between dynamic and fixed pricing varying $P_{max}$ and $P_{min}$ with constant elasticity of $\epsilon = \Sexpr{round(E['low'],1)}$}
     \label{fig:maxminrev}
  \end{figure}
+ 
+This shows that an appropriately balanced combination of lower and upper price limits must be chosen. For example, if the lower price limit is lowered, then the upper price limit must be sufficiently raised to compensate for the lost discount revenue. This is a result of the relatively low elasticities (i.e., $\epsilon<1$), which mean that a change in price will have a proportionally smaller impact on demand. 
 
-Similar to revenue, operational performance can be evaluated in terms of delay. The total delay in each scheme can be compared as the percent change in aggregated total delay, calculated as
 
+<<<<<<< HEAD
+=======
 \begin{equation}
     \Delta\%~d = \frac{\sum\limits_i d_{2i} - \sum\limits_i d_{1i}}{\sum\limits_i d_{1i}} = \frac{ \sum\limits_i \frac{n_{2i}}{v_{2i}} \left( v_{f} - v_{2i} \right) }{ \sum\limits_i \frac{n_{1i}}{v_{fi}} \left( v_{f} - v_{1i} \right)}
     \label{eq:delay}
 \end{equation}
 
 \noindent where delay is $d = n_i L \left(\sfrac{1}{v_i} - \sfrac{1}{v_f}\right)$ for each time increment $i$. $L$ is the distance traveled, which cancels out in percent change; $n_{1i}$ and $n_{2i}$ are the demand in number of trips, and $v_{1i}$ and $v_{2i}$ are the calculated traffic speeds for the fixed and dynamic tolls, respectively. Equation~\eqref{eq:delay} effectively sums up the total delay experienced across the entire 24-hour period, and calculates the percentage change between the fixed and dynamic tolling schemes.
+>>>>>>> 5d3d6ded38d7df06fb50468bbf08b81a11a6c5a6
 
  \begin{figure}[H]
  	\centering
@@ -387,7 +409,7 @@ The dark solid line in Figures~\ref{fig:maxminrev} and~\ref{fig:maxmindelay} are
 
 To avoid revenue loss, the upper pricing limit must be approximately double the amount lost from $P_{min}$ compared to the fixed toll, or $P_{max} \approx P_{fixed} (2 - \frac{P_{min}}{P_{fixed}} )$. However, this varies depending on the elasticity, which causes the revenue break even line to curve slightly upward, increasing the upper price limit $P_{max}$. In contrast to the revenue break even point, the delay break even point appears unchanged by elasticity. This is merely because the break even point shifts proportionally with elasticity from this particular perspective shown in Figure~\ref{fig:breakeven}, but in reality elasticity does affect demand. The following analysis will explore how elasticity affects both revenue and delay in more detail. 
 
-\subsection{Optimal elasticity}
+\subsection{Elasticity change effects}
 
 Exploring how elasticity effects the revenue and delay outcomes, a set of plots can be similarly created by varying the maximum price and elasticity, $P_{max}$ and $\epsilon$. For simplicity, a lower price limit $P_{min}$ of \$0 was chosen as the extreme floor for dynamic pricing. While it is technically possible to go below \$0, effectively offering a subsidy for off-peak times, for simplicity this theoretical scenario is not explored. As reflected in the break even region plot, Figure~\ref{fig:elasrev} shows that as elasticity increases, an exponentially higher $P_{max}$ is required to maintain revenue levels.
 
@@ -410,6 +432,22 @@ Unlike with revenue, delay as elasticity varies provides a more interesting outc
     \caption{Delay comparison between dynamic and fixed pricing varying elasticity $\epsilon$ and $P_{max}$ with constant $P_{min}=0$}
     \label{fig:elasdelay}
 \end{figure}
+
+%--------------------------------------------------------
+
+\subsection{Discussion}
+A potential feature of the futures market concept is that it can be developed independently, simply augmenting an existing system rather than as a complete replacement. An existing dynamic toll system can be easily augmented with a futures market to further improve demand optimization with only software changes necessary. A fixed toll system can use a futures market to introduce dynamic pricing as an ``opt in'' program, incentivizing users with discounts for booking travel during periods of low demand. Infrastructure investment would be minimal, especially if electronic tolling is already in place. A futures market in this case would be a soft way to introduce dynamic pricing in an otherwise politically hostile environment. In this case the futures market may result in revenue loss if the fixed toll, which is used as $P_{max}$, is not sufficiently high enough. The loss could be considered acceptable if improving operational performance is priority, but it is also possible that with improved operations and reduced pricing overall demand could increase, offsetting the loss. However, this is difficult to speculate. 
+
+Although this paper presents the mechanism for a simple bridge toll, it can be easily expanded to other applications, such as corridor tolls, congestion pricing zones, transit fares, ride hailing, or applications beyond transportation. This could provide a basic framework for a broader, more mode agnostic, transportation system which is of growing importance as ride sharing, hailing, and other future mobility platforms emerge. However, when creating a new market, care must be taken to ensure operation is smooth and stable, but also equitable. The following subsections discuss several basic market safeguards and practical constraints.
+
+\subsubsection{Market manipulators and exploitation}
+If unused trips are able to be ``sold'' back to the system, there is the potential for profiteering. This would only cause undesirable price fluctuations in the system that does not correspond to physical infrastructure capacity and demand. Thus to prevent users from inappropriately exploiting the system, restrictions should be set. For example, to prevent users from manipulating the market price, a practical restriction could limit users to only purchasing one trip per time slot (otherwise it would be a travel impossibility), or to limit the number of sales a user can make to ensure a net profit cannot be made. Ensuring zero profit would also help avoid any user tax complexities. Although restrictions may seem market prohibitive, the intent of the system to promote efficient travel and revenue collection, not market capitalization. 
+
+\subsubsection{Pricing calibration}
+To avoid reaching outrageous prices and the public backlash that follows [cite Virginia example and uber surge pricing], reasonable upper limits on price should be set to avoid public backlash. Similarly, a lower price limit could also be set to provide a baseline revenue collection and travel disincentive. The pricing function will need to be calibrated to match demand sensitivity as well as meet revenue obligations, while remaining politically palatable. Ideally the upper bound will be kept as low as possible to avoid public dissatisfaction, but high enough to achieve the desired shift in travel behavior. The lower bound must also be kept low enough to encourage a shift in travel behavior, but high enough to collect sufficient revenue. Research will be needed to measure user arrival time demand elasticity, that is how sensitive are travelers to increases in price. From this, the function can be optimized to balance operations with revenue, and will likely need regular tuning to adjust for current conditions. 
+\subsubsection{Time scale}
+Although theoretically possible to operate with narrow time intervals, such as $<$1-second, the computational limitations of accounting for that many tokens and transferring every second is likely intractable. Moreover, travelers probably will not bother with such detail nor be held to such precision. It's likely that users will pick a target time $\pm$ some buffer time (e.g., $\pm$ 30 minutes from expected arrival). However, it is uncertain whether travelers will be equally as likely to arrive early as late, which can be modeled with a Guassian normal curve; or perhaps travelers trend on being late but not early, which can be modeled with a log-normal curve. Research is needed in this area to determine feasible parameters and the relative reliability of travelers. Alternatively, the system could be designed in such a way to allow for users to specify their desired travel window, offering greater discount to more punctual travelers and a penalty to those that fail to meet their target.
+
 
 \section{Conclusions}
 This toy example yielded interesting results, showing strong potential improvements in both revenue and performance, but it is important to point out that this is a very simplified case. It assumes a closed system of trips, meaning that people merely adjust their trip schedule and do not change modes or choose to not travel entirely. Moreover, elasticity may also vary depending on a variety of factors, such as on time, purpose, and individual preferences and flexibility. This is an important reality to consider, particularly in regards to transportation equity when considering increasing transportation costs for individuals. 
