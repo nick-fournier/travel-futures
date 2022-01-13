@@ -35,9 +35,10 @@
 
 \graphicspath{ {figures/} }
 
-\title{Travel futures: A pre-pay market mechanism for more effective demand responsive travel pricing}
+\title{Exploring delay and revenue impacts of a pre-pay demand responsive travel pricing system.}
+
 \author{Nicholas Fournier, Ph.D.}
-\date{\usdate}
+\date{Draft dated 12 December, 2020}
 
 \begin{document}
 
@@ -358,7 +359,7 @@ To explore the price and elasticity parameters effects, a matrix of simulation r
 Similar to revenue, operational performance can be evaluated in terms of delay. The total delay in each scheme can be compared as the percent change in aggregated total delay, calculated as
 
 \begin{equation}
-    \Delta\%~d = \frac{\sum\limits_i d_{2i} - \sum\limits_i d{1i}}{\sum\limits_i d{1i}} = \frac{ \sum\limits_i \frac{n_{2i}}{v_{2i}} \left( v_{f} - v_{2i} \right) }{ \sum\limits_i \frac{n_{1i}}{v_{fi}} \left( v_{f} - v_{1i} \right)}
+    \Delta\%~d = \frac{\sum\limits_i d_{2i} - \sum\limits_i d_{1i}}{\sum\limits_i d_{1i}} = \frac{ \sum\limits_i \frac{n_{2i}}{v_{2i}} \left( v_{f} - v_{2i} \right) }{ \sum\limits_i \frac{n_{1i}}{v_{fi}} \left( v_{f} - v_{1i} \right)}
     \label{eq:delay}
 \end{equation}
 
