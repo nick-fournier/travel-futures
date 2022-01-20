@@ -15,6 +15,8 @@
 \usepackage{lineno}
 \usepackage[square,sort&compress,comma,numbers]{natbib}
 \bibliographystyle{unsrtnat}
+\usepackage{authblk}
+
 
 %\usepackage[style=numeric-comp, natbib=true, sorting=none]{biblatex}
 %\AtEveryBibitem{%
@@ -35,9 +37,12 @@
 
 \graphicspath{ {figures/} }
 
-\title{Exploring delay and revenue impacts of a pre-pay demand responsive travel pricing system.}
+\title{Exploring delay and revenue impacts of a pre-pay demand responsive travel pricing system}
 
-\author{Nicholas Fournier, Ph.D.}
+\author{Nicholas Fournier}
+\author{Alexander Skabardonis}
+\affil{University of California, Berkeley}
+
 \date{\usdate}
 
 \begin{document}
@@ -52,7 +57,20 @@ While transportation funding can be collected in a variety of direct (e.g., fare
 \newpage
 
 \section{Introduction}
-Providing additional transportation capacity (e.g., more transit vehicles or road lanes) for only a very brief peak-demand period leaves infrastructure largely underutilized for the remaining time or simply cost prohibitive. The challenge is then how to more efficiently utilize existing capacity, rather than building over-sized infrastructure solely for the peak periods. Tolls and increased fares are one tool used to raise revenue and mitigate congestion for decades, but conventional fixed prices fails to target the congested periods and merely apply a uniform downward disincentive on travel (see Figure~\ref{fig:flatprice}). This is especially true when no travel alternative exists, such as with road tolls without a transit alternative. While it may reduce congestion by reducing overall travel demand, it does not necessarily encourage efficient use of infrastructure. Moreover, it is economically problematic by potentially dampening economic activity, as well as posing serious equity concerns to those who cannot afford costly travel.
+Despite the proven operational and revenue benefits of dynamic toll pricing, dynamic tolls are seldom implemented in the United States. This is largely due to public disdain for tolls and the historic success and reliance on the gas tax funded Federal Highway Trust Fund (HTF). However, nearly three decades of unadjusted inflation coupled with ever increasing vehicle fuel efficiency has eroded the HTF's solvency, sparking a renewed interest in alternative revenue streams. Still, dynamic toll pricing faces challenges to public acceptance, equity concerns, and operational limitations. 
+
+While there are a myriad of factors affecting public acceptance, equity concerns, and operational limitations, one root factor is uncertainty of price and travel time. Given the unpredictable nature of traffic congestion, the public disdain for dynamic tolls is understandable since regular travelers are exposed to both price risk and travel time risk \cite{Bansal2018}. For lower income travelers, the presents a regressive tax on top of an already regressive gas tax \citep{Donna2021}, posing major equity concerns if no reasonable travel alternative exists. Lastly, automobile travel is notoriously inelastic, dampening the congestion mitigating benefits of dynamic pricing. To summarize, there are three critical challenges with dynamic toll pricing:
+\begin{itemize}
+    \item low elasticity of demand, yielding less congestion mitigating effect,
+    \item public disdain due to price risk, and
+    \item equity concerns due to lack of travel planning options.
+\end{itemize}
+
+This paper seeks to explore a potential remedy to these critical flaws of dynamic pricing through a pre-pay mechanism similar to a futures market. The proposed concept is simple, travelers can lock in their toll price by pre-paying for future tolls, with the future price varying as more travelers book an overlapping time slot. This not only incentivizes travelers to avoid the peak congested periods, but offers an opportunity for regular commuters to minimize the risk of price-gouging from unexpected congestion by purchasing tolls in advance and compare prices. The proposed mechanism helps overcome some of the shortcomings of dynamic pricing, potentially yielding greater congestion mitigation benefits of dynamic pricing by effectively increasing price elasticity of demand. To evaluate the effectiveness of such a system, this paper conducts a thorough sensitivity analysis of elasticity and pricing constraints to explore possible system outcomes for two objectives of congestion reduction and revenue collection. 
+
+
+\section{Background}
+Transportation agencies must balance between providing sufficient capacity for the peak-period, but without over-building. Wasteful over-building is not only cost prohibitive and inefficient, leaving the majority of the off-peak periods grossly underutilized, but can lead to a vicious cycle of induced demand. Transportation agencies increasingly rely on tolls as one tool to both raise revenue and mitigate congestion. However, a conventional fixed toll price fails to target the congested periods and merely applies a uniform downward disincentive on travel (see Figure~\ref{fig:flatprice}). This is especially true when no travel alternative exists, such as with road tolls without any reasonable travel alternatives (e.g., transit) \citep{Matas2003}. While it may reduce congestion by reducing overall travel demand, it does not necessarily encourage efficient use of infrastructure. Moreover, it is economically problematic by potentially dampening overall economic activity rather than increasing efficiency, as well as posing serious equity concerns to those who cannot afford costly travel \citep{Matas2003}.
 
 \begin{figure}[H]
 	\includegraphics[width=0.6\textwidth]{figures/flatprice}
@@ -61,7 +79,7 @@ Providing additional transportation capacity (e.g., more transit vehicles or roa
 	\label{fig:flatprice}
 \end{figure}
 
-One solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during targeted congested periods and shift it to periods of low demand (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive, as has been done for decades in other transportation sectors (e.g., rail and air travel), but are far less common in more short-term high-frequency cases (e.g., highway tolls and transit fares). While dynamic pricing is less common for daily tolls and fares due to practical and logistical concerns, such as cost and complexity, it is largely a political barrier from public disdain for variable pricing. Understandably, travelers generally do not want to pay for travel beyond the sunk cost of fuel and automobile ownership, let alone be subject to unpredictable congestion-related costs that they perceive as having little control over. Moreover, dynamic pricing creates equity concerns if it simply extorts travelers without any reasonable alternative travel options, such as highway tolls without a transit alternative.
+One solution to this problem is to dynamically adjust pricing based on demand to help discourage travel during those congested periods and shift it to other modes or off-peak periods (see Figure~\ref{fig:dynamicprice}). Dynamic tolls have long been proposed as a solution to provide a more targeted congestion mitigating incentive \citep{Vickrey1969,Burris2003,Cain2001}. Although similar schemes have been utilized in other transportation sectors (e.g., air and rail travel), the short-term high-frequency use case of highway tolls and transit fares presented a formidable technical barrier. However, with the advent of electric toll collection, the lack of dynamic tolls is largely a political barrier \citep{Odeck2008}. Understandably, travelers generally do not want to pay for travel beyond the sunk cost of fuel and automobile ownership, let alone be subject to unpredictable congestion-related costs that they perceive as having little control over. Moreover, dynamic pricing creates equity concerns if it simply extorts travelers without any reasonable alternative travel options, such as highway tolls without an alternative \citep{Donna2021,Matas2003}.
 
 \begin{figure}[H]
 	\includegraphics[width=0.6\textwidth]{figures/dynamicprice}
@@ -70,33 +88,22 @@ One solution to this problem is to dynamically adjust pricing based on demand to
 	\label{fig:dynamicprice}
 \end{figure}
 
-Fundamentally, dynamic pricing hinges on the notion that a change in price will result in some change in demand. To economists, this is called price elasticity of demand, where elasticity reflects the relative demand sensitivity to price change. This means that the aforementioned price uncertainty is a critical aspect to dynamic pricing. For example, if the travel cost is uncertain, travelers will have a diminished ability to react, thus diminishing price elasticity of demand and having little impact on congestion. Similarly explained using utility theory, where a decision making ``agent'' will choose the choice which provides the greatest ``utility''. Utility theory ultimately assumes that the traveler is logical and has sufficient information about price and return (e.g., travel time) to make a decision about if and when to travel. Without sufficient information, the decision maker cannot make a logical decision. 
+Dynamic pricing ultimately depends on the concept that a change in price will result in some change in demand. To economists, this is called price elasticity of demand, where elasticity reflects the relative demand sensitivity to price change. Automobile travel is relatively inelastic mode \citep{Cervero1990}. This is due to a myriad of exogenous factors, such as housing location choice, personal investment in an automobile, land-use context, or lack of travel alternatives \citep{Litman2019}. 
 
-In practice, travelers may base their travel decisions off of anecdotal evidence of past experiences, speculating future traffic conditions and price in the case of dynamic pricing. For example, a daily commuter may have local knowledge of typical travel conditions and routing, enabling a reasonably informed decision after enough experience. However, this is hardly an efficient transmission of knowledge and only works in relatively steady-state conditions, a rare case in the post-COVID era. Moreover, this would yield a delayed demand response to price changes, resulting is a very inelastic dynamic pricing system. Meaning, dynamic pricing would have little short-term effect on demand and that long-term demand change would only result after enough travelers were sufficiently disappointed by their previous choices. This then connects with the political aspect and public disdain for dynamic pricing schemes. Moreover, it is often an unfortunate truth that those most economically vulnerable often have the least travel flexibility (e.g., low income workers with strict working hours), and are often unfairly punished for this. 
+A fundamental issue with dynamic pricing is uncertainty and lack of information. For example, if travelers have no information about future travel cost or time, they are unlikely to adjust their behavior. Thus, price changes will have little effect on demand in the short-term. In practice, travelers base their travel decisions off current traffic conditions and anecdotal evidence of past experiences, speculating on future traffic conditions. However, this is hardly an efficient transmission of knowledge and only works in a relatively steady-state conditions. As a result, price elasticity of automobile travel demand remains relatively weak compared to other modes (e.g., rail or air travel). Meaning that the effectiveness of dynamic pricing is dampened by travelers inability to avoid congestion in the first place. 
 
-To summarize, conventional dynamic toll pricing it has three critical problems:
-\begin{itemize}
-    \item low elasticity of demand, yielding less congestion mitigating effect,
-    \item public disdain due to price risk, and
-    \item equity concerns due to lack of travel planning options.
-\end{itemize}
+Looking beyond automobile transport, insight can be drawn from industries with more mature dynamic pricing systems. To date, most modern airlines rely on sophisticated dynamic pricing systems. In the era of airline price deregulation in the 1980s, the first airlines to adopt dynamic pricing were able to out-compete their less efficient rivals \citep{McAfee2006}. More recently, it has been shown that airline ticket elasticity increased with the proliferation of telecommunications and online ticket sales \citep{Granados2012}. This demonstrates that with increased information, travelers can make informed decisions, thus increasing elasticity.
 
-This paper seeks to explore a potential remedy to these critical flaws of dynamic pricing through a pre-pay mechanism similar to a futures market. The proposed concept is simple, travelers are presented with the current price for future travel with the option to purchase trips ahead of time at that price. As more trips are booked by travelers, and demand approaches capacity, the price rices. This not only incentivizes travelers to avoid the peak congested periods, but offers an opportunity for regular commuters to minimize the risk of price-gouging from unexpected congestion by purchasing tolls in advance and compare prices. The proposed mechanism helps overcome some of the shortcomings of dynamic pricing, potentially yielding greater congestion mitigation benefits of dynamic pricing by effectively increasing price elasticity of demand.
 
-\section{Background}
 
-NOTE: NEED TO EXPAND THIS
-~
+
+
+
 
 While this concept is not entirely new or novel, it had yet to be implemented. However, the literature is full of exotic market-based approaches to congestion mitigation. One such example is the concept of travel credits, which exploits the aspect of finite roadway capacity as the basis for a ``cap and trade'' type model for mitigating congestion by crediting travelers for not traveling during the peak \citep{Perrels2010}. Another more market-based evolution of the approach has also been proposed, enabling travelers to ``sell'' their trip rights to the highest bidder, achieving a similar goal without the need for governments to credit travelers \citep{Akamatsu2017,Fan2013,Wang2012,Yang2011}. There has also been a great deal of hype around the concept of Mobility as a Service (MaaS) or Transportation as a Service (TaaS) where ``travel brokers'', acting almost as an automated travel agency, provide integrated multi-modal trip packages to travelers. However, few of these concepts have had much traction outside of academia, but some technology companies have implemented conceptually similar trip routing and payment integration features in their platforms (e.g., mobile payment systems with transit and ride hailing services), laying the groundwork for MaaS/TaaS concepts in the future. Until then, more immediate solutions are available with existing technologies. 
 
-%**** Notes:
-%- Any similar proposals?
-%- Elasticity for pre-payment
-%- Elasticity for longer term travel modes
+The proposed futures mechanism is not necessarily a radical new concept, nor is it a technologically driven paradigm shift, but merely an attempt to implement efficient congestion reducing market mechanisms by augmenting existing conventional revenue collection technologies (e.g., automated tolls and electronic fares). The goal of this proposed scheme is to enhance pricing information transmission and purchasing options for travelers, which can increase price elasticity of demand and improve congestion mitigation, but also help mitigate some of the public disdain for dynamic toll pricing. 
 
-
-The proposed futures mechanism is not necessarily a radical new concept, nor is it a technologically driven disruption, but merely an attempt to implement efficient congestion reducing market mechanisms by augmenting existing conventional revenue collection technologies (e.g., automated tolls and electronic fares). The goal of this proposed scheme is to enhance pricing information transmission and purchasing options for travelers, which can increase price elasticity of demand and improve congestion mitigation. 
 
 
 
